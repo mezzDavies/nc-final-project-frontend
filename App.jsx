@@ -1,5 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
+import SignInPage from "./components/SignInPage";
 // import app from "./firebase";
 // import { fireDB } from "./firebase";
 
