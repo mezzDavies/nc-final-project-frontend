@@ -1,0 +1,19 @@
+# Ignore artifacts:
+build
+coverage
+node_module
+logs
+__tests__
+
+# hidden files and dirs
+.github
+.husky
+.env
+.env.*
+.eslintignore
+.gitignore
+.prettierignore
+
+# Ignore all HTML files:
+*.html
+*.md
