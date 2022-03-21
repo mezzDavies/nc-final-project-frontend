@@ -15,13 +15,11 @@ const styles = StyleSheet.create({
     color: "#DD1F13",
     fontSize: 60,
     fontFamily: "Bangers_400Regular",
-    lineHeight: 0,
   },
   tagLine: {
     color: "black",
     fontWeight: "800",
     fontSize: 17,
-    lineHeight: 15,
   },
 });
 
