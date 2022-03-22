@@ -1,3 +1,4 @@
+import React from "react";
 import { Text, View, StyleSheet, SafeAreaView } from "react-native";
 import AppLoading from "expo-app-loading";
 import { useFonts, Bangers_400Regular } from "@expo-google-fonts/dev";
@@ -23,7 +24,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const Header = () => {
+const Header = ({ navigation }) => {
   let [fontsLoaded] = useFonts({
     Bangers_400Regular,
   });
@@ -33,7 +34,10 @@ const Header = () => {
   }
   return (
     <SafeAreaView style={styles.body}>
-      <Text style={styles.baseText}>{`Planet Scran It `}</Text>
+      <Text
+        style={styles.baseText}
+        onPress={() => navigation.navigate("Homepage")}
+      >{`Planet Scran It `}</Text>
       <Text style={styles.tagLine}>{`\nA whole new world of food!`}</Text>
     </SafeAreaView>
   );
