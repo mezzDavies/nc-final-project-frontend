@@ -1,25 +1,23 @@
 import React from "react";
-import { View } from "react-native";
-import { Button } from "react-native-web";
+import { View, Button } from "react-native";
 
 const Footer = ({ navigation }) => {
   return (
     <View>
-      <Button></Button>
       <Button
-        title="SelectionList"
+        title="Selection List"
         onPress={() => navigation.navigate("SelectionList")}
       />
       <Button
-        title="HouseHold"
+        title="Household"
         onPress={() => navigation.navigate("Household")}
       />
       <Button
-        title="ShoppingList"
+        title="Shopping List"
         onPress={() => navigation.navigate("ShoppingList")}
       />
       <Button
-        title="SignInPage"
+        title="Sign In Page"
         onPress={() => navigation.navigate("SignInPage")}
       />
     </View>

@@ -37,8 +37,8 @@ const Header = ({ navigation }) => {
       <Text
         style={styles.baseText}
         onPress={() => navigation.navigate("Homepage")}
-      >{`Planet Scran It `}</Text>
-      <Text style={styles.tagLine}>{`\nA whole new world of food!`}</Text>
+      >Planet Scran It </Text>
+      <Text style={styles.tagLine}>A whole new world of food!</Text>
     </SafeAreaView>
   );
 };
