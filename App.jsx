@@ -1,4 +1,6 @@
 
+import { StatusBar } from "expo-status-bar";
+import { StyleSheet, Text, View } from "react-native";
 import SignInPage from "./components/auth-components/SignInPage";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -11,9 +13,14 @@ import ShoppingList from "./components/ShoppingList";
 import Household from "./components/Household";
 import Header from "./components/Header";
 
+import { getRecipes, getRecipeById } from "./api/firestoreFunctions";
+
 const Stack = createNativeStackNavigator();
 
 export default function App() {
+  console.log("firebase function: getRecipes >>", getRecipes());
+  console.log("function: getRecipeById >>", getRecipeById("652134"));
+
   return (
     <NavigationContainer>
       <Stack.Navigator>
