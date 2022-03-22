@@ -1,3 +1,8 @@
+import { StatusBar } from "expo-status-bar";
+import { StyleSheet, Text, View } from "react-native";
+import SignInPage from "./components/SignInPage";
+// import app from "./firebase";
+// import { fireDB } from "./firebase";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { StackRouter } from "react-navigation";
