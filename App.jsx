@@ -1,5 +1,5 @@
 
-import SignInPage from "./components/SignInPage";
+import SignInPage from "./components/auth-components/SignInPage";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { StackRouter } from "react-navigation"; 

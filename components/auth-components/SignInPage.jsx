@@ -1,8 +1,8 @@
 import React from 'react';
 import { Button, View } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
-import { FormTextField } from './FormTextField';
-import { auth } from '../firebase';
+import { FormTextField } from '../FormTextField';
+import { auth } from '../../firebase';
 import { signInWithEmailAndPassword } from "firebase/auth";
 
 
