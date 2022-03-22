@@ -7,13 +7,16 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 
 
 const SignInPage = () => {
-    const { control, handleSubmit, formState: { errors } } = useForm();
+    const { control, handleSubmit, reset, formState: { errors } } = useForm();
 
     const onSubmit = (data) => {
         const email = data.email;
         const password = data.password;
 
         signInWithEmailAndPassword(auth, email, password).then((cred) => { })
+            .then(() => {
+                reset();
+            })
     };
 
     return (
