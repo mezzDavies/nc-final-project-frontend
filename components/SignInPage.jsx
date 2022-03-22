@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, View } from 'react-native-web';
+import { Button, View } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { FormTextField } from './FormTextField';
 import { auth } from '../firebase';

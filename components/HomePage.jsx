@@ -1,6 +1,5 @@
 import React from "react";
-import { View, Text } from "react-native";
-import { Button } from "react-native-web";
+import { View, Button } from "react-native";
 import Footer from "./Footer";
 import Header from "./Header";
 
@@ -12,7 +11,6 @@ const Homepage = ({ navigation }) => {
         title="Link to recipe"
         onPress={() => navigation.navigate("RecipePage")}
       />
-      {/* ^^^^ This button will be the image of the recipe it links to  */}
       <Footer navigation={navigation} />
     </View>
   );
