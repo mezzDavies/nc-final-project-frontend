@@ -12,6 +12,7 @@ import SelectionList from "./components/SelectionList";
 import Footer from "./components/Footer";
 import ShoppingList from "./components/ShoppingList";
 import Household from "./components/Household";
+import Header from "./components/Header";
 
 const Stack = createNativeStackNavigator();
 
@@ -25,6 +26,7 @@ export default function App() {
         <Stack.Screen name="SelectionList" component={SelectionList} />
         <Stack.Screen name="ShoppingList" component={ShoppingList} />
         <Stack.Screen name="Household" component={Household} />
+        <Stack.Screen name="Header" component={Header} />
       </Stack.Navigator>
     </NavigationContainer>
   );
