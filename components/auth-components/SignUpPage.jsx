@@ -4,10 +4,13 @@ import { useForm, Controller } from 'react-hook-form';
 import { FormTextField } from '../FormTextField';
 import { auth, fireDB } from '../../firebase';
 import { createUserWithEmailAndPassword } from "firebase/auth";
+import { fireFunctions } from '../../firebase';
+import { httpsCallable } from 'firebase/functions';
+import { doc, setDoc } from 'firebase/firestore';
 
 
 const SignUpPage = () => {
-    const { control, handleSubmit, formState: { errors } } = useForm();
+    const { control, handleSubmit, reset, formState: { errors } } = useForm();
 
     const onSubmit = (data) => {
         const firstName = data.firstName;
@@ -16,7 +19,14 @@ const SignUpPage = () => {
 
         createUserWithEmailAndPassword(auth, email, password)
             .then((cred) => {
-                console.log(cred.user.uid)
+                setDoc(doc(fireDB, "users", cred.user.uid), {
+                    name: firstName
+                });
+                const addParentRole = httpsCallable(fireFunctions, 'addParentRole');
+                return addParentRole({ email: cred.user.email })
+            })
+            .then((result) => {
+                reset();
             })
     };
 

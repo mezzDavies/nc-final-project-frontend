@@ -20,6 +20,10 @@ const Footer = ({ navigation }) => {
         title="Sign In Page"
         onPress={() => navigation.navigate("SignInPage")}
       />
+      <Button
+        title="Sign Up Page"
+        onPress={() => navigation.navigate("SignUpPage")}
+      />
     </View>
   );
 };
