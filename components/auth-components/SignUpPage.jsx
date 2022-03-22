@@ -16,7 +16,7 @@ const SignUpPage = () => {
 
         createUserWithEmailAndPassword(auth, email, password)
             .then((cred) => {
-                console.log(cred)
+                console.log(cred.user.uid)
             })
     };
 
