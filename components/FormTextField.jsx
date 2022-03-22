@@ -5,9 +5,7 @@ export const FormTextField = (props) => {
     return (
         <View>
             <TextInput {...props} />
-            {props.errorText && (
-                <Text>{props.errorText}</Text>
-            )}
-        </View>
+            {props.errorText ? <Text>{props.errorText}</Text> : null }
+        </View> 
     );
 }
