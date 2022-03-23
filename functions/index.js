@@ -1,9 +1,17 @@
-// const functions = require("firebase-functions");
+const functions = require("firebase-functions");
+const admin = require("firebase-admin");
 
-// // Create and Deploy Your First Cloud Functions
-// // https://firebase.google.com/docs/functions/write-firebase-functions
-//
-// exports.helloWorld = functions.https.onRequest((request, response) => {
-//   functions.logger.info("Hello logs!", {structuredData: true});
-//   response.send("Hello from Firebase!");
-// });
+admin.initializeApp();
+
+exports.addParentRole = functions.https.onCall((data) =>
+  admin
+    .auth()
+    .getUserByEmail(data.email)
+    .then((user) =>
+      admin.auth().setCustomUserClaims(user.uid, { parent: true })
+    )
+    .then(() => ({
+      message: `Success! ${data.email} has been set as a parent.`,
+    }))
+    .catch((err) => err)
+);
