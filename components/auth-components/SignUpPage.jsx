@@ -1,4 +1,5 @@
 import React from "react";
+import { useState } from 'react';
 import { Button, Text, View } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 import { FormTextField } from "../FormTextField";
@@ -15,21 +16,23 @@ const SignUpPage = ({ navigation }) => {
     reset,
     formState: { errors },
   } = useForm();
+  const [loadingMessage, setLoadingMessage] = useState('')
 
   const onSubmit = (data) => {
     const firstName = data.firstName;
     const email = data.email;
     const password = data.password;
 
+    setLoadingMessage(`We're just creating your account for you now...`)
     createUserWithEmailAndPassword(auth, email, password)
       .then((cred) => {
         setDoc(doc(fireDB, "users", cred.user.uid), {
           name: firstName,
         });
-        const addParentRole = httpsCallable(fireFunctions, "addParentRole");
-        return addParentRole({ email: cred.user.email });
+        const addParentClaim = httpsCallable(fireFunctions, "addParentClaim");
+        return addParentClaim({ email: cred.user.email });
       })
-      .then((result) => {
+      .then(() => {
         reset();
         navigation.navigate("Profile");
       });
@@ -103,6 +106,7 @@ const SignUpPage = ({ navigation }) => {
         name="password"
       />
       <Button title="Submit" onPress={handleSubmit(onSubmit)} />
+      <Text>{loadingMessage}</Text>
     </View>
   );
 };
