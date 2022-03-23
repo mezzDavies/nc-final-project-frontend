@@ -23,9 +23,12 @@ const Homepage = ({ navigation }) => {
             setFirstName(userData.name);
           }
         })
+      } else {
+        setUserStatus(false);
+        setFirstName('');
       }
     })
-  }, [])
+  }, [userStatus])
 
   if(userStatus) {
     return (
@@ -37,7 +40,7 @@ const Homepage = ({ navigation }) => {
         />
         <Button
           title="Go to profile..."
-          onPress={() => navigation.navigate("Profile")}
+          onPress={() => navigation.navigate("Account", { screen: "Profile" })}
         />
         <Button
           title="Go to search page in..."
@@ -51,16 +54,16 @@ const Homepage = ({ navigation }) => {
         <View>
           <Text style={{ textAlign: "center", marginTop: 300 }}>Home Screen</Text>
           <Button
-            title="Go to recipe..."
+            title="Go to recipes..."
             onPress={() => navigation.navigate("RecipePage")}
           />
           <Button
             title="Go to sign up..."
-            onPress={() => navigation.navigate("SignUp")}
+            onPress={() => navigation.navigate("Account", { screen: "SignUp" })}
           />
           <Button
             title="Go to sign in..."
-            onPress={() => navigation.navigate("SignIn")}
+            onPress={() => navigation.navigate("Account", { screen: "SignIn" })}
           />
           <Button
             title="Go to search page in..."
