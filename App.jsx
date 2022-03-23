@@ -1,3 +1,9 @@
+<<<<<<< HEAD
+import Header from "./components/Header";
+import * as React from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import BottomTabNavigator from "./components/Navigation/TabNavigation";
+=======
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 import SignInPage from "./components/auth-components/SignInPage";
@@ -17,12 +23,18 @@ import SignUpPage from './components/auth-components/SignUpPage';
 import { getRecipes, getRecipeById } from "./api/firestoreFunctions";
 
 const Stack = createNativeStackNavigator();
+>>>>>>> dev
 
 export default function App() {
-  console.log("firebase function: getRecipes >>", getRecipes());
-  console.log("function: getRecipeById >>", getRecipeById("652134"));
-
   return (
+<<<<<<< HEAD
+    <>
+      <Header />
+      <NavigationContainer>
+        <BottomTabNavigator />
+      </NavigationContainer>
+    </>
+=======
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen name="Homepage" component={Homepage} />
@@ -36,5 +48,6 @@ export default function App() {
         <Stack.Screen name="SignUpPage" component={SignUpPage} />
       </Stack.Navigator>
     </NavigationContainer>
+>>>>>>> dev
   );
 }

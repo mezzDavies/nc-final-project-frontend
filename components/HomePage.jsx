@@ -1,17 +1,15 @@
 import React from "react";
-import { View, Button } from "react-native";
-import Footer from "./Footer";
-import Header from "./Header";
+import { View, Text } from "react-native";
+import { Button } from "react-native-web";
 
 const Homepage = ({ navigation }) => {
   return (
     <View>
-      <Header navigation={navigation} />
+      <Text style={{ textAlign: "center", marginTop: 300 }}>Home Screen</Text>
       <Button
-        title="Link to recipe"
+        title="Go to recipe..."
         onPress={() => navigation.navigate("RecipePage")}
       />
-      <Footer navigation={navigation} />
     </View>
   );
 };

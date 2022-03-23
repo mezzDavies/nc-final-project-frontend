@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, View, StyleSheet, SafeAreaView } from "react-native";
+import { Text, StyleSheet, SafeAreaView } from "react-native";
 import AppLoading from "expo-app-loading";
 import { useFonts, Bangers_400Regular } from "@expo-google-fonts/dev";
 
@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
   body: {
     color: "#DD1F13",
     backgroundColor: "white",
-    height: "22%",
+    height: "15%",
     alignItems: "center",
     justifyContent: "center",
     justifyContent: "center",
@@ -37,7 +37,9 @@ const Header = ({ navigation }) => {
       <Text
         style={styles.baseText}
         onPress={() => navigation.navigate("Homepage")}
-      >Planet Scran It </Text>
+      >
+        Planet Scran It{" "}
+      </Text>
       <Text style={styles.tagLine}>A whole new world of food!</Text>
     </SafeAreaView>
   );
