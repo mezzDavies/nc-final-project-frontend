@@ -11,14 +11,13 @@ const RecipesList = () => {
     setIsLoading(true);
     getRecipes()
       .then(({ recipeCards: recipes }) => {
-        console.log(recipes);
         setRecipesList(recipes);
         setIsLoading(false);
       })
       .catch((err) => console.log(err));
   }, []);
 
-  if (!isLoading) return <Text>Loading...</Text>;
+  if (isLoading) return <Text>Loading...</Text>;
 
   return (
     <View>
