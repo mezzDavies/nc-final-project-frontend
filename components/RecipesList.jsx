@@ -3,7 +3,7 @@ import { Text, View } from "react-native";
 import { getRecipes } from "../api/firestoreFunctions";
 import RecipeCard from "./RecipeCard";
 
-const RecipesList = () => {
+const RecipesList = (searchTerm) => {
   const [recipesList, setRecipesList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -15,7 +15,7 @@ const RecipesList = () => {
         setIsLoading(false);
       })
       .catch((err) => console.log(err));
-  }, []);
+  }, [searchTerm]);
 
   if (isLoading) return <Text>Loading...</Text>;
 

@@ -19,8 +19,11 @@ const Homepage = ({ navigation }) => {
           title="Go to sign in..."
           onPress={() => navigation.navigate("SignIn")}
         />
+        <Button
+          title="Go to search page in..."
+          onPress={() => navigation.navigate("SearchPage")}
+        />
       </View>
-      <RecipesList />
     </>
   );
 };
