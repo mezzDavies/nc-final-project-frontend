@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, View, Text } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 import { FormTextField } from "../FormTextField";
@@ -20,12 +20,19 @@ const SignInPage = ({ navigation }) => {
 
     setLoadingMessage(`We're just logging you in...`)
     signInWithEmailAndPassword(auth, email, password)
-      .then((cred) => {})
-      .then(() => {
+      .then((cred) => {
         reset();
         navigation.navigate("Profile");
       });
   };
+
+  useEffect(() => {
+    auth.onAuthStateChanged(function(user) {
+      if(user) {
+        navigation.navigate("Profile");
+      }
+    })
+  }, []);
 
   return (
     <View>

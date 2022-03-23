@@ -22,6 +22,7 @@ const HomepageNavigation = () => {
         <Stack.Screen name="SignUp" component={SignUpPage} />
         <Stack.Screen name="SignIn" component={SignInPage} />
         <Stack.Screen name="Profile" component={ProfileScreen} />
+        <Stack.Screen name="Household" component={HouseHoldScreen} />
       </Stack.Navigator>
     </>
   );

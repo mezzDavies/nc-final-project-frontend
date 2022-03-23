@@ -29,10 +29,10 @@ const SignUpPage = ({ navigation }) => {
         setDoc(doc(fireDB, "users", cred.user.uid), {
           name: firstName,
         });
-        const addParentRole = httpsCallable(fireFunctions, "addParentRole");
-        return addParentRole({ email: cred.user.email });
+        const addParentClaim = httpsCallable(fireFunctions, "addParentClaim");
+        return addParentClaim({ email: cred.user.email });
       })
-      .then((result) => {
+      .then(() => {
         reset();
         navigation.navigate("Profile");
       });
