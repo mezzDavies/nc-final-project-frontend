@@ -10,12 +10,7 @@ import { httpsCallable } from "firebase/functions";
 import { doc, setDoc } from "firebase/firestore";
 
 const SignUpPage = ({ navigation }) => {
-  const {
-    control,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm();
+  const { control, handleSubmit, reset, formState: { errors } } = useForm();
   const [loadingMessage, setLoadingMessage] = useState('')
 
   const onSubmit = (data) => {
