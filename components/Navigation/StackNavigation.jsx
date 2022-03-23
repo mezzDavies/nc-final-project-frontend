@@ -8,6 +8,8 @@ import ProfileScreen from "../Profile";
 import SelectionListScreen from "../SelectionList";
 import ShoppingListScreen from "../ShoppingList";
 import MealPlanScreen from "../MealPlan";
+import SignUpPage from "../auth-components/SignUpPage";
+import SignInPage from "../auth-components/SignInPage";
 
 const Stack = createStackNavigator();
 
@@ -17,6 +19,9 @@ const HomepageNavigation = () => {
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="HomePage" component={Homepage} />
         <Stack.Screen name="RecipePage" component={RecipePage} />
+        <Stack.Screen name="SignUp" component={SignUpPage} />
+        <Stack.Screen name="SignIn" component={SignInPage} />
+        <Stack.Screen name="Profile" component={ProfileScreen} />
       </Stack.Navigator>
     </>
   );
@@ -32,15 +37,15 @@ const HouseholdNavigation = () => {
   );
 };
 
-const ProfileNavigation = () => {
-  return (
-    <>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Profile" component={ProfileScreen} />
-      </Stack.Navigator>
-    </>
-  );
-};
+// const ProfileNavigation = () => {
+//   return (
+//     <>
+//       <Stack.Navigator screenOptions={{ headerShown: false }}>
+//         <Stack.Screen name="Profile" component={ProfileScreen} />
+//       </Stack.Navigator>
+//     </>
+//   );
+// };
 
 const SelectionListNavigation = () => {
   return (
@@ -72,11 +77,22 @@ const MealPlanNavigation = () => {
   );
 };
 
+const SignUpNavigation = () => {
+  return (
+    <>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="Profile" component={ProfileScreen} />
+      </Stack.Navigator>
+    </>
+  );
+};
+
 export {
   HomepageNavigation,
   HouseholdNavigation,
-  ProfileNavigation,
+  // ProfileNavigation,
   SelectionListNavigation,
   ShoppingListNavigation,
   MealPlanNavigation,
+  SignUpNavigation,
 };
