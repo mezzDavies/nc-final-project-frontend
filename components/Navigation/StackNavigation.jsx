@@ -2,7 +2,9 @@ import * as React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 
 import Homepage from "../HomePage";
-import HouseHoldScreen from "../Household";
+import HouseHoldScreen from "../Household-components/Household";
+import JoinGroupScreen from "../Household-components/JoinGroupScreen";
+import CreateGroupScreen from "../Household-components/CreateGroupScreen";
 import RecipePage from "../RecipePage";
 import ProfileScreen from "../Profile";
 import SelectionListScreen from "../SelectionList";
@@ -34,6 +36,8 @@ const AccountNavigation = () => {
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Profile" component={ProfileScreen} />
         <Stack.Screen name="Household" component={HouseHoldScreen} />
+        <Stack.Screen name="JoinGroup" component={JoinGroupScreen} />
+        <Stack.Screen name="CreateGroup" component={CreateGroupScreen} />
         <Stack.Screen name="SignUp" component={SignUpPage} />
         <Stack.Screen name="SignIn" component={SignInPage} />
       </Stack.Navigator>
