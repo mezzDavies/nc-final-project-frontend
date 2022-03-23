@@ -21,10 +21,6 @@ const HomepageNavigation = () => {
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="HomePage" component={Homepage} />
         <Stack.Screen name="RecipePage" component={RecipePage} />
-        <Stack.Screen name="SignUp" component={SignUpPage} />
-        <Stack.Screen name="SignIn" component={SignInPage} />
-        <Stack.Screen name="Profile" component={ProfileScreen} />
-        <Stack.Screen name="Household" component={HouseHoldScreen} />
         <Stack.Screen name="Testing" component={TestingPage} />
         <Stack.Screen name="SearchPage" component={SearchPage} />
       </Stack.Navigator>
@@ -32,25 +28,18 @@ const HomepageNavigation = () => {
   );
 };
 
-const HouseholdNavigation = () => {
+const AccountNavigation = () => {
   return (
     <>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="Profile" component={ProfileScreen} />
         <Stack.Screen name="Household" component={HouseHoldScreen} />
+        <Stack.Screen name="SignUp" component={SignUpPage} />
+        <Stack.Screen name="SignIn" component={SignInPage} />
       </Stack.Navigator>
     </>
   );
 };
-
-// const ProfileNavigation = () => {
-//   return (
-//     <>
-//       <Stack.Navigator screenOptions={{ headerShown: false }}>
-//         <Stack.Screen name="Profile" component={ProfileScreen} />
-//       </Stack.Navigator>
-//     </>
-//   );
-// };
 
 const SelectionListNavigation = () => {
   return (
@@ -94,8 +83,7 @@ const SignUpNavigation = () => {
 
 export {
   HomepageNavigation,
-  HouseholdNavigation,
-  // ProfileNavigation,
+  AccountNavigation,
   SelectionListNavigation,
   ShoppingListNavigation,
   MealPlanNavigation,
