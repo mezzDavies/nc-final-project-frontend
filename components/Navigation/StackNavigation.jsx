@@ -11,6 +11,7 @@ import MealPlanScreen from "../MealPlan";
 import SignUpPage from "../auth-components/SignUpPage";
 import SignInPage from "../auth-components/SignInPage";
 import TestingPage from "./Testing";
+import SearchPage from "../SearchPage";
 
 const Stack = createStackNavigator();
 
@@ -24,6 +25,7 @@ const HomepageNavigation = () => {
         <Stack.Screen name="SignIn" component={SignInPage} />
         <Stack.Screen name="Profile" component={ProfileScreen} />
         <Stack.Screen name="Testing" component={TestingPage} />
+        <Stack.Screen name="SearchPage" component={SearchPage} />
       </Stack.Navigator>
     </>
   );
