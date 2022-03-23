@@ -10,6 +10,7 @@ import ShoppingListScreen from "../ShoppingList";
 import MealPlanScreen from "../MealPlan";
 import SignUpPage from "../auth-components/SignUpPage";
 import SignInPage from "../auth-components/SignInPage";
+import TestingPage from "./Testing";
 
 const Stack = createStackNavigator();
 
@@ -22,6 +23,7 @@ const HomepageNavigation = () => {
         <Stack.Screen name="SignUp" component={SignUpPage} />
         <Stack.Screen name="SignIn" component={SignInPage} />
         <Stack.Screen name="Profile" component={ProfileScreen} />
+        <Stack.Screen name="Testing" component={TestingPage} />
       </Stack.Navigator>
     </>
   );
