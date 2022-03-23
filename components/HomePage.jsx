@@ -1,6 +1,7 @@
 import React from "react";
 import { Button, View, Text } from "react-native";
 
+
 const Homepage = ({ navigation }) => {
   return (
     <View>
@@ -8,6 +9,18 @@ const Homepage = ({ navigation }) => {
       <Button
         title="Go to recipe..."
         onPress={() => navigation.navigate("RecipePage")}
+      />
+      <Button
+        title="Go to sign up..."
+        onPress={() => navigation.navigate("SignUp")}
+      />
+      <Button
+        title="Go to sign in..."
+        onPress={() => navigation.navigate("SignIn")}
+      />
+      <Button
+        title="Go to Testing..."
+        onPress={() => navigation.navigate("Testing")}
       />
     </View>
   );
