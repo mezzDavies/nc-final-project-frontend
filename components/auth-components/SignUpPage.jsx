@@ -106,6 +106,7 @@ const SignUpPage = ({ navigation }) => {
         name="password"
       />
       <Button title="Submit" onPress={handleSubmit(onSubmit)} />
+      <Text>{loadingMessage}</Text>
     </View>
   );
 };

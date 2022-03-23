@@ -1,5 +1,5 @@
-import React from "react";
-import { Button, View } from "react-native";
+import React, { useState } from "react";
+import { Button, View, Text } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 import { FormTextField } from "../FormTextField";
 import { auth } from "../../firebase";
@@ -12,11 +12,13 @@ const SignInPage = ({ navigation }) => {
     reset,
     formState: { errors },
   } = useForm();
+  const [loadingMessage, setLoadingMessage] = useState('');
 
   const onSubmit = (data) => {
     const email = data.email;
     const password = data.password;
 
+    setLoadingMessage(`We're just logging you in...`)
     signInWithEmailAndPassword(auth, email, password)
       .then((cred) => {})
       .then(() => {
@@ -69,6 +71,7 @@ const SignInPage = ({ navigation }) => {
         name="password"
       />
       <Button title="Submit" onPress={handleSubmit(onSubmit)} />
+      <Text>{loadingMessage}</Text>
     </View>
   );
 };
