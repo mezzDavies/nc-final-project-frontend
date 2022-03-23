@@ -1,12 +1,14 @@
 import React from "react";
 import { View, Text } from "react-native";
 
-const SelectionList = () => {
+const SelectionListScreen = () => {
   return (
     <View>
-      <Text>This is the SelectionList !!!!</Text>
+      <Text style={{ textAlign: "center", marginTop: 300 }}>
+        SelectionList screen
+      </Text>
     </View>
   );
 };
 
-export default SelectionList;
+export default SelectionListScreen;

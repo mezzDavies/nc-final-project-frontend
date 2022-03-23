@@ -1,14 +1,12 @@
 import React from "react";
-import { View, Text } from "react-native";
-import Footer from "./Footer";
-import Header from "./Header";
+import { View, Text, Button } from "react-native";
 
-const RecipePage = ({ navigation }) => {
+const RecipePage = () => {
   return (
     <View>
-      <Header navigation={navigation} />
-      <Text>This is the RecipePage !!!!</Text>
-      <Footer navigation={navigation} />
+      <Text style={{ textAlign: "center", marginTop: 300 }}>Recipe Page</Text>
+      <Button title="Add to shortlist" onPress={{}} />
+      <Button title="Add to favourites" onPress={{}} />
     </View>
   );
 };

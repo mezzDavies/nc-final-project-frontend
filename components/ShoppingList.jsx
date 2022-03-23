@@ -1,14 +1,14 @@
 import React from "react";
 import { View, Text } from "react-native";
 
-const ShoppingList = ({ navigation }) => {
+const ShoppingListScreen = () => {
   return (
     <View>
-      <Header navigation={navigation} />
-      <Text>This is the ShoppingList !!!!</Text>
-      <Footer navigation={navigation} />
+      <Text style={{ textAlign: "center", marginTop: 300 }}>
+        ShoppingList screen
+      </Text>
     </View>
   );
 };
 
-export default ShoppingList;
+export default ShoppingListScreen;
