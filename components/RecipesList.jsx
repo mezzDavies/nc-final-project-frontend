@@ -18,6 +18,8 @@ const RecipesList = () => {
       .catch((err) => console.log(err));
   }, []);
 
+  if (!isLoading) return <Text>Loading...</Text>;
+
   return (
     <View>
       {recipesList.map((recipe, index) => {
