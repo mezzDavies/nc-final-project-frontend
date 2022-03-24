@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Button, View, Text } from "react-native";
+import { Button, View, Text, ScrollView } from "react-native";
 import { auth } from "../firebase";
 import { fireDB } from "../firebase";
 import { doc, getDoc } from "firebase/firestore";
+import RandomRecipes from "./RandomRecipes";
 
 const Homepage = ({ navigation }) => {
   const [userStatus, setUserStatus] = useState(false);
@@ -29,14 +30,15 @@ const Homepage = ({ navigation }) => {
       }
     })
   }, [userStatus])
-
+  
   if(userStatus) {
     return (
+      <ScrollView>
       <View>
-        <Text style={{ textAlign: "center", marginTop: 300 }}>Hello {firstName}, welcome back!</Text>
+      <RandomRecipes navigation={navigation} />
         <Button
-          title="Go to recipe..."
-          onPress={() => navigation.navigate("RecipePage")}
+          title="Go to Testing..."
+          onPress={() => navigation.navigate("Testing")}
         />
         <Button
           title="Go to profile..."
@@ -47,6 +49,7 @@ const Homepage = ({ navigation }) => {
           onPress={() => navigation.navigate("SearchPage")}
         />
       </View>
+    </ScrollView>
     );
   } else {
     return (
