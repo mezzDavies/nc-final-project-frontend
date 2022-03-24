@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, Image } from "react-native";
+import { Text, View, Image, TouchableHighlight } from "react-native";
 import { getRecipeById } from "../../../api/firestoreFunctions";
 import DeleteRecipeFromList from "./DeleteRecipeFromList";
 
 const SelectionListCard = ({
+  navigation,
   recipeId,
   familyId,
   selectionListId,
@@ -28,7 +29,13 @@ const SelectionListCard = ({
 
   return (
     <View>
-      <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
+      <TouchableHighlight
+        onPress={() => {
+          navigation.navigate("RecipePage", { id });
+        }}
+      >
+        <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
+      </TouchableHighlight>
       <Text>{`${title}`}</Text>
       <DeleteRecipeFromList
         recipeId={recipeId}
