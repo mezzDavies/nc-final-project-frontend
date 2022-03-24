@@ -1,28 +1,30 @@
+import { View, Text, Button, ScrollView } from "react-native";
 import React from "react";
-import { View, Text, Button } from "react-native";
+import RandomRecipes from "./RandomRecipes";
 
-const Homepage = ({ navigation }) => {
+export default function Homepage({ navigation }) {
   return (
-    <View>
-      <Text style={{ textAlign: "center", marginTop: 300 }}>Home Screen</Text>
-      <Button
-        title="Go to recipe..."
-        onPress={() => navigation.navigate("RecipePage")}
-      />
-      <Button
-        title="Go to sign up..."
-        onPress={() => navigation.navigate("SignUp")}
-      />
-      <Button
-        title="Go to sign in..."
-        onPress={() => navigation.navigate("SignIn")}
-      />
-      <Button
-        title="Go to Testing..."
-        onPress={() => navigation.navigate("Testing")}
-      />
-    </View>
+    <ScrollView>
+      <View>
+        <RandomRecipes navigation={navigation} />
+        <Text style={{ textAlign: "center", marginTop: 20 }}>Home Screen</Text>
+        <Button
+          title="Go to recipe..."
+          onPress={() => navigation.navigate("RecipePage")}
+        />
+        <Button
+          title="Go to sign up..."
+          onPress={() => navigation.navigate("SignUp")}
+        />
+        <Button
+          title="Go to sign in..."
+          onPress={() => navigation.navigate("SignIn")}
+        />
+        <Button
+          title="Go to Testing..."
+          onPress={() => navigation.navigate("Testing")}
+        />
+      </View>
+    </ScrollView>
   );
-};
-
-export default Homepage;
+}
