@@ -5,7 +5,7 @@ import Homepage from "../HomePage";
 import HouseHoldScreen from "../Household-components/Household";
 import JoinGroupScreen from "../Household-components/JoinGroupScreen";
 import CreateGroupScreen from "../Household-components/CreateGroupScreen";
-import RecipePage from "../RecipePage";
+import RecipePage from "../Recipes/RecipePage";
 import ProfileScreen from "../Profile";
 import SelectionListScreen from "../SelectionList/SelectionListScreen";
 import ShoppingListScreen from "../ShoppingList";
@@ -13,7 +13,7 @@ import MealPlanScreen from "../MealPlan";
 import SignUpPage from "../auth-components/SignUpPage";
 import SignInPage from "../auth-components/SignInPage";
 import TestingPage from "./Testing";
-import SearchPage from "../SearchPage";
+import RecipesAll from "../Recipes/RecipesAll";
 
 const Stack = createStackNavigator();
 
@@ -24,7 +24,7 @@ const HomepageNavigation = () => {
         <Stack.Screen name="HomePage" component={Homepage} />
         <Stack.Screen name="RecipePage" component={RecipePage} />
         <Stack.Screen name="Testing" component={TestingPage} />
-        <Stack.Screen name="SearchPage" component={SearchPage} />
+        <Stack.Screen name="RecipesAll" component={RecipesAll} />
       </Stack.Navigator>
     </>
   );
