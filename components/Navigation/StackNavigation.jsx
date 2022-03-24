@@ -7,7 +7,7 @@ import JoinGroupScreen from "../Household-components/JoinGroupScreen";
 import CreateGroupScreen from "../Household-components/CreateGroupScreen";
 import RecipePage from "../RecipePage";
 import ProfileScreen from "../Profile";
-import SelectionListScreen from "../SelectionList";
+import SelectionListScreen from "../SelectionList/SelectionListScreen";
 import ShoppingListScreen from "../ShoppingList";
 import MealPlanScreen from "../MealPlan";
 import SignUpPage from "../auth-components/SignUpPage";
