@@ -1,6 +1,5 @@
 //IMPORTS - react
-import React from "react";
-import { useState } from 'react';
+import React, {useState} from "react";
 import { Button, Text, View } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 
@@ -28,16 +27,26 @@ const SignUpPage = ({ navigation }) => {
     setLoadingMessage(`We're just creating your account for you now...`)
     createUserWithEmailAndPassword(auth, email, password)
       .then((cred) => {
-        setDoc(doc(fireDB, "users", cred.user.uid), {
+        const createDoc =  setDoc(doc(fireDB, "users", cred.user.uid), {
           name: firstName,
+          isParent: true
         });
+        return Promise.all([cred, createDoc])
+      })
+      .then(([cred, docResult]) => {
         const addParentClaim = httpsCallable(fireFunctions, "addParentClaim");
         return addParentClaim({ email: cred.user.email });
       })
       .then(() => {
+        return auth.currentUser.getIdToken(true);
+      })
+      .then(() => {
         reset();
         navigation.navigate("Profile");
-      });
+      })
+      .catch((err) => {
+        return err
+      })
   };
 
   //-----Rendering-----
@@ -46,6 +55,9 @@ const SignUpPage = ({ navigation }) => {
       <Text>
         Hi! Welcome to Planet Scran It, please enter your details below to sign
         up and enter a whole new world of food!
+      </Text>
+      <Text>
+        Once you're registered, it may take a second to load but you will then be taken to the Sign In page to confirm your login details.
       </Text>
       <Controller
         defaultValue=""

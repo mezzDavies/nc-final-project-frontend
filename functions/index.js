@@ -12,15 +12,40 @@ admin.initializeApp();
 // Return function, invoked with an object containing correct keys. E.G 'addParentClaim' accesses 'data.email' so the object needs to contain a key-value pair with key 'email' and value of the user's email.
 // Code example: return addParentClaim({ email: (users-email-string) });
 
-exports.addParentClaim = functions.https.onCall((data) =>
-  admin
+exports.addParentClaim = functions.https.onCall((data) => admin
     .auth()
     .getUserByEmail(data.email)
-    .then((user) =>
-      admin.auth().setCustomUserClaims(user.uid, { parent: true })
-    )
+    .then((user) => admin.auth().setCustomUserClaims(user.uid, { parent: true }))
     .then(() => ({
-      message: `Success! ${data.email} has been set as a parent.`,
-    }))
-    .catch((err) => err)
-);
+        message: `Successfully added user as a parent`,
+      }))
+    .catch((err) => err));
+
+exports.switchToChildAccount = functions.https.onCall((data, context) => {
+  const {uid} = context.auth;
+  const {childId} = data;
+  return admin
+    .auth()
+    .getUser(uid)
+    .then((user) => admin
+        .auth()
+        .setCustomUserClaims(user.uid, { parent: false, childId }))
+    .then(() => ({
+        message: `Successfully switched to child account`,
+      }))
+    .catch((err) => err);
+});
+
+exports.switchToParentAccount = functions.https.onCall((data, context) => {
+  const {uid} = context.auth;
+  return admin
+    .auth()
+    .getUser(uid)
+    .then((user) => admin
+        .auth()
+        .setCustomUserClaims(user.uid, { parent: true, childId: null }))
+    .then(() => ({
+        message: `Successfully switched to parent account`,
+      }))
+    .catch((err) => err);
+});
