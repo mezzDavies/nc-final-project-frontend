@@ -1,5 +1,11 @@
 import { React, useState, useEffect } from "react";
-import { View, Image, StyleSheet, Text } from "react-native";
+import {
+  View,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableHighlight,
+} from "react-native";
 import { getRecipes } from "../api/firestoreFunctions";
 
 export default function RandomRecipes({ navigation }) {
@@ -51,14 +57,17 @@ export default function RandomRecipes({ navigation }) {
             const { image, readyInMinutes, title, id } = recipe;
             return (
               <View key={`container-` + id}>
-                <Image
-                  key={"image-" + id}
-                  source={{ uri: image }}
-                  style={imageStyles.container}
-                  onClick={() => {
+                <TouchableHighlight
+                  onPress={() => {
                     navigation.navigate("RecipePage", { id });
                   }}
-                />
+                >
+                  <Image
+                    key={"image-" + id}
+                    source={{ uri: image }}
+                    style={imageStyles.container}
+                  />
+                </TouchableHighlight>
                 <Text key={"title-" + id} style={foodTitleStyle.container}>
                   {title}
                 </Text>
