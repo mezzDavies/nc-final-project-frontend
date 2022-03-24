@@ -5,7 +5,7 @@ import { useForm, Controller } from "react-hook-form";
 import { FormTextField } from "../FormTextField";
 
 import { addFamily } from "../../api/firestoreFunctions";
-import { getUserDataAndClaims } from "../../utils/getUserDataAndClaims";
+import getUserDataAndClaims from "../../utils/getUserDataAndClaims";
 
 
 const CreateGroupScreen = ({ navigation }) => {
