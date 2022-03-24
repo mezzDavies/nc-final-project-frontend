@@ -7,7 +7,7 @@ import {
   StyleSheet,
   ScrollView,
 } from "react-native";
-import { getRecipeById } from "../api/firestoreFunctions";
+import { getRecipeById } from "../../api/firestoreFunctions";
 
 const RecipePage = ({ route }) => {
   const [imageUrl, setImageUrl] = useState("");

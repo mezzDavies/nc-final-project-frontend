@@ -3,8 +3,8 @@ import { View, Text, ScrollView } from "react-native";
 import { getSelectionList } from "../../api/firestoreFunctions";
 import SelectionListCard from "./components/SelectionListCard";
 
-const familyId = "Fxj4fb7gWPdFCKDCa5K9";
-const selectionListId = "bo2XEWgWaO8Y1VWtxi2j";
+const familyId = "yPRj8Q1cEgwJ465bec04";
+const selectionListId = "oeAuz0njIbYyPeLUqpUw";
 
 const SelectionListScreen = ({ navigation }) => {
   const [selectionList, setSelectionList] = useState([]);
