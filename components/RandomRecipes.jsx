@@ -10,11 +10,14 @@ import { getRecipes } from "../api/firestoreFunctions";
 
 export default function RandomRecipes({ navigation }) {
   const [recipes, setRecipes] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    setIsLoading(true);
     getRecipes().then(({ recipeCards }) => {
       const shuffled = [...recipeCards].sort(() => 0.5 - Math.random());
       setRecipes(shuffled.slice(0, 3));
+      setIsLoading(false);
     });
   }, []);
 
@@ -48,6 +51,8 @@ export default function RandomRecipes({ navigation }) {
       textAlign: "center",
     },
   });
+
+  if (isLoading) return <Text>Loading...</Text>;
 
   return (
     <View>

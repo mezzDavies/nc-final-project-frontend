@@ -19,6 +19,7 @@ const RecipePage = ({ route }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   const recipeId = route.params.id;
+  console.log(recipeId);
 
   const styles = StyleSheet.create({
     body: {
