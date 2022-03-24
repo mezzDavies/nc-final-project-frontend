@@ -4,10 +4,8 @@ import { Button, View, Text } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 import { FormTextField } from "../FormTextField";
 
-import { auth, fireDB } from "../../firebase";
-import { doc, getDoc } from "firebase/firestore";
-
 import { addFamily } from "../../api/firestoreFunctions";
+import { getUserDataAndClaims } from "../../utils/getUserDataAndClaims";
 
 
 const CreateGroupScreen = ({ navigation }) => {
@@ -17,20 +15,13 @@ const CreateGroupScreen = ({ navigation }) => {
   const { control, handleSubmit, reset, formState: { errors } } = useForm();
 
   useEffect(() => {
-    auth.currentUser.getIdTokenResult()
-    .then(({ claims }) => {
-      const userDocRef = doc(fireDB, 'users', claims.user_id);
-      if(claims.parent) {
-        setUserId(claims.user_id)
-        return getDoc(userDocRef)
-      }
-    })
-    .then((docSnap) => {
-      if(docSnap.exists()) {
-        const userData = docSnap.data();
-        setFirstName(userData.name);
-      }
-    })
+    getUserDataAndClaims()
+      .then(({ claims, userData }) => {
+        if(claims.parent) {
+          setUserId(claims.user_id);
+          setFirstName(userData.name);
+        }
+      })
   }, [])
 
   const onSubmit = (data) => {

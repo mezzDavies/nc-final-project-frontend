@@ -15,6 +15,7 @@ const HouseHoldScreen = ({ navigation }) => {
   const [userId, setUserId] = useState('');
   const [userStatus, setUserStatus] = useState(false);
   const [familyId, setFamilyId] = useState('');
+  const [familyMembers, setFamilyMembers] = useState([]);
   const [firstName, setFirstName] = useState('');
 
   //-----Use Effects-----
