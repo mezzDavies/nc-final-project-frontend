@@ -4,7 +4,6 @@ import { getRecipes } from "../api/firestoreFunctions";
 
 export default function RandomRecipes({ navigation }) {
   const [recipes, setRecipes] = useState([]);
-  const [recipeId, setRecipeId] = useState("");
 
   useEffect(() => {
     getRecipes().then(({ recipeCards }) => {
@@ -57,8 +56,7 @@ export default function RandomRecipes({ navigation }) {
                   source={{ uri: image }}
                   style={imageStyles.container}
                   onClick={() => {
-                    setRecipeId(id);
-                    navigation.navigate("RecipePage");
+                    navigation.navigate("RecipePage", { id });
                   }}
                 />
                 <Text key={"title-" + id} style={foodTitleStyle.container}>
