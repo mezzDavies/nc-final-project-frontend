@@ -2,12 +2,18 @@ import * as React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 
 import Homepage from "../HomePage";
-import HouseHoldScreen from "../Household";
+import HouseHoldScreen from "../Household-components/Household";
+import JoinGroupScreen from "../Household-components/JoinGroupScreen";
+import CreateGroupScreen from "../Household-components/CreateGroupScreen";
 import RecipePage from "../RecipePage";
 import ProfileScreen from "../Profile";
-import SelectionListScreen from "../SelectionList";
+import SelectionListScreen from "../SelectionList/SelectionListScreen";
 import ShoppingListScreen from "../ShoppingList";
 import MealPlanScreen from "../MealPlan";
+import SignUpPage from "../auth-components/SignUpPage";
+import SignInPage from "../auth-components/SignInPage";
+import TestingPage from "./Testing";
+import SearchPage from "../SearchPage";
 
 const Stack = createStackNavigator();
 
@@ -17,26 +23,23 @@ const HomepageNavigation = () => {
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="HomePage" component={Homepage} />
         <Stack.Screen name="RecipePage" component={RecipePage} />
+        <Stack.Screen name="Testing" component={TestingPage} />
+        <Stack.Screen name="SearchPage" component={SearchPage} />
       </Stack.Navigator>
     </>
   );
 };
 
-const HouseholdNavigation = () => {
-  return (
-    <>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Household" component={HouseHoldScreen} />
-      </Stack.Navigator>
-    </>
-  );
-};
-
-const ProfileNavigation = () => {
+const AccountNavigation = () => {
   return (
     <>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Profile" component={ProfileScreen} />
+        <Stack.Screen name="Household" component={HouseHoldScreen} />
+        <Stack.Screen name="JoinGroup" component={JoinGroupScreen} />
+        <Stack.Screen name="CreateGroup" component={CreateGroupScreen} />
+        <Stack.Screen name="SignUp" component={SignUpPage} />
+        <Stack.Screen name="SignIn" component={SignInPage} />
       </Stack.Navigator>
     </>
   );
@@ -72,11 +75,21 @@ const MealPlanNavigation = () => {
   );
 };
 
+const SignUpNavigation = () => {
+  return (
+    <>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="Profile" component={ProfileScreen} />
+      </Stack.Navigator>
+    </>
+  );
+};
+
 export {
   HomepageNavigation,
-  HouseholdNavigation,
-  ProfileNavigation,
+  AccountNavigation,
   SelectionListNavigation,
   ShoppingListNavigation,
   MealPlanNavigation,
+  SignUpNavigation,
 };
