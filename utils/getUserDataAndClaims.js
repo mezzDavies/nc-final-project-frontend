@@ -1,7 +1,8 @@
 import { doc, getDoc } from "firebase/firestore";
 import { auth, fireDB } from "../firebase";
 
-const getUserDataAndClaims = () => auth.currentUser
+const getUserDataAndClaims = () =>
+  auth.currentUser
     .getIdTokenResult()
     .then(({ claims }) => {
       const userDocRef = doc(fireDB, "users", claims.user_id);
@@ -11,9 +12,8 @@ const getUserDataAndClaims = () => auth.currentUser
       if (docSnap.exists()) {
         const userData = docSnap.data();
         return { claims, userData };
-      } 
-        return { claims };
-      
+      }
+      return { claims };
     })
     .catch((err) => err);
 
