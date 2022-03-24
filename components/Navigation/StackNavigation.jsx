@@ -2,7 +2,9 @@ import * as React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 
 import Homepage from "../HomePage";
-import HouseHoldScreen from "../Household";
+import HouseHoldScreen from "../Household-components/Household";
+import JoinGroupScreen from "../Household-components/JoinGroupScreen";
+import CreateGroupScreen from "../Household-components/CreateGroupScreen";
 import RecipePage from "../RecipePage";
 import ProfileScreen from "../Profile";
 import SelectionListScreen from "../SelectionList";
@@ -21,10 +23,6 @@ const HomepageNavigation = () => {
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="HomePage" component={Homepage} />
         <Stack.Screen name="RecipePage" component={RecipePage} />
-        <Stack.Screen name="SignUp" component={SignUpPage} />
-        <Stack.Screen name="SignIn" component={SignInPage} />
-        <Stack.Screen name="Profile" component={ProfileScreen} />
-        <Stack.Screen name="Household" component={HouseHoldScreen} />
         <Stack.Screen name="Testing" component={TestingPage} />
         <Stack.Screen name="SearchPage" component={SearchPage} />
       </Stack.Navigator>
@@ -32,25 +30,20 @@ const HomepageNavigation = () => {
   );
 };
 
-const HouseholdNavigation = () => {
+const AccountNavigation = () => {
   return (
     <>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="Profile" component={ProfileScreen} />
         <Stack.Screen name="Household" component={HouseHoldScreen} />
+        <Stack.Screen name="JoinGroup" component={JoinGroupScreen} />
+        <Stack.Screen name="CreateGroup" component={CreateGroupScreen} />
+        <Stack.Screen name="SignUp" component={SignUpPage} />
+        <Stack.Screen name="SignIn" component={SignInPage} />
       </Stack.Navigator>
     </>
   );
 };
-
-// const ProfileNavigation = () => {
-//   return (
-//     <>
-//       <Stack.Navigator screenOptions={{ headerShown: false }}>
-//         <Stack.Screen name="Profile" component={ProfileScreen} />
-//       </Stack.Navigator>
-//     </>
-//   );
-// };
 
 const SelectionListNavigation = () => {
   return (
@@ -94,8 +87,7 @@ const SignUpNavigation = () => {
 
 export {
   HomepageNavigation,
-  HouseholdNavigation,
-  // ProfileNavigation,
+  AccountNavigation,
   SelectionListNavigation,
   ShoppingListNavigation,
   MealPlanNavigation,
