@@ -55,11 +55,8 @@ const RecipePage = ({ route }) => {
 
   const addToSelectionPress = () => {
     addToSelectionList(familyId, selectionListId, recipeId).catch(() => {
-      setSelectionList((currentSelectionList) => {
-        return [deletedRecipe, ...currentSelectionList];
-      });
       alert(
-        "Error: recipe not deleted. Please check your connection and click to delete recipe again."
+        "Error: recipe not added. Please check your connection and click again to add recipe."
       );
     });
   };
