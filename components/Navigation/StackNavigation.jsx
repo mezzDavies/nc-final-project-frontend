@@ -5,7 +5,7 @@ import Homepage from "../HomePage";
 import HouseHoldScreen from "../Household";
 import RecipePage from "../RecipePage";
 import ProfileScreen from "../Profile";
-import SelectionListScreen from "../SelectionList";
+import SelectionListScreen from "../SelectionList/SelectionListScreen";
 import ShoppingListScreen from "../ShoppingList";
 import MealPlanScreen from "../MealPlan";
 import SignUpPage from "../auth-components/SignUpPage";
