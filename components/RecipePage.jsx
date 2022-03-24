@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { getRecipeById } from "../api/firestoreFunctions";
 
-const RecipePage = () => {
+const RecipePage = ({ route }) => {
   const [imageUrl, setImageUrl] = useState("");
   const [ingredients, setIngredients] = useState([]);
   const [recipeTitle, setRecipeTitle] = useState("");
@@ -17,6 +17,8 @@ const RecipePage = () => {
   const [instructions, setInstructions] = useState("");
   const [servings, setServings] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+
+  const recipeId = route.params.id;
 
   const styles = StyleSheet.create({
     body: {
@@ -29,7 +31,7 @@ const RecipePage = () => {
 
   useEffect(() => {
     setIsLoading(true);
-    getRecipeById("511728")
+    getRecipeById(recipeId)
       .then((res) => {
         // console.log("res >>>", res);
         setImageUrl(res.summary.image);
