@@ -12,7 +12,7 @@ import { doc, setDoc } from "firebase/firestore";
 
 //IMPORTS - utils functions
 import { FormTextField } from "../FormTextField";
-import { createChildAccount } from "../../api/createChildAccount";
+import createChildAccount from "../../api/createChildAccount";
 import { useEffect } from "react/cjs/react.production.min";
 
 //----------COMPONENT----------
