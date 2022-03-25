@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Text, View, Image, TouchableHighlight } from "react-native";
-import { getRecipeById } from "../../../api/firestoreFunctions.selectionLists";
+import { getRecipeById } from "../../../api/firestoreFunctions.recipes";
 import DeleteRecipeFromList from "./DeleteRecipeFromList";
 
 const SelectionListCard = ({
