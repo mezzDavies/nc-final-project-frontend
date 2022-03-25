@@ -14,6 +14,7 @@ import SignUpPage from "../auth-components/SignUpPage";
 import SignInPage from "../auth-components/SignInPage";
 import TestingPage from "./Testing";
 import RecipesAll from "../Recipes/RecipesAll";
+import MealPlanRecipePage from "../MealPlan/components/MealPlanRecipePage";
 
 const Stack = createStackNavigator();
 
@@ -70,6 +71,10 @@ const MealPlanNavigation = () => {
     <>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="MealPlan" component={MealPlanScreen} />
+        <Stack.Screen
+          name="MealPlanRecipePage"
+          component={MealPlanRecipePage}
+        />
       </Stack.Navigator>
     </>
   );
