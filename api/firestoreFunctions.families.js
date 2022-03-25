@@ -59,26 +59,30 @@ async function getFamilies(userId) {
 }
 
 async function getFamily(familyId) {
-  const docRef = doc(fireDB, "families", familyId);
-  const collectionRef = collection(
-    fireDB,
-    `families/${familyId}/selectionLists`
-  );
-  const result = {};
-  result.selectionLists = [];
+  try {
+    const docRef = doc(fireDB, "families", familyId);
+    const collectionRef = collection(
+      fireDB,
+      `families/${familyId}/selectionLists`
+    );
+    const result = {};
+    result.selectionLists = [];
 
-  const querySnapshots = await Promise.all([
-    getDoc(docRef),
-    getDocs(collectionRef),
-  ]);
+    const querySnapshots = await Promise.all([
+      getDoc(docRef),
+      getDocs(collectionRef),
+    ]);
 
-  result.family = querySnapshots[0].data();
+    result.family = querySnapshots[0].data();
 
-  querySnapshots[1].forEach((selectionList) => {
-    result.selectionLists.push(selectionList.data());
-  });
+    querySnapshots[1].forEach((selectionList) => {
+      result.selectionLists.push(selectionList.data());
+    });
 
-  return result;
+    return result;
+  } catch (err) {
+    return err;
+  }
 }
 
 // Setup a listener on the family

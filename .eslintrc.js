@@ -15,7 +15,7 @@ module.exports = {
   rules: {},
   overrides: [
     {
-      files: ["api/createChildAccount.js"],
+      files: ["api/firestoreFunctions.users.js"],
       rules: {
         "no-underscore-dangle": "off",
       },
