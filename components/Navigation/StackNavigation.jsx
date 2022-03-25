@@ -15,6 +15,7 @@ import SignInPage from "../auth-components/SignInPage";
 import TestingPage from "./Testing";
 import RecipesAll from "../Recipes/RecipesAll";
 import MealPlanRecipePage from "../MealPlan/components/MealPlanRecipePage";
+import ShortList from "../Shortlist";
 
 const Stack = createStackNavigator();
 
@@ -51,6 +52,7 @@ const SelectionListNavigation = () => {
     <>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="SelectionList" component={SelectionListScreen} />
+        <Stack.Screen name="Shortlist" component={ShortList} />
       </Stack.Navigator>
     </>
   );
