@@ -9,7 +9,7 @@ import RecipePage from "../Recipes/RecipePage";
 import ProfileScreen from "../Profile";
 import SelectionListScreen from "../SelectionList/SelectionListScreen";
 import ShoppingListScreen from "../ShoppingList";
-import MealPlanScreen from "../MealPlan";
+import MealPlanScreen from "../MealPlan/MealPlanScreen";
 import SignUpPage from "../auth-components/SignUpPage";
 import SignInPage from "../auth-components/SignInPage";
 import TestingPage from "./Testing";
