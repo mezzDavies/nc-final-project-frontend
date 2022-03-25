@@ -11,8 +11,8 @@ const SelectionListCard = ({
   selectionListId,
   setSelectionList,
 }) => {
-  const [recipe, setRecipe] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [recipe, setRecipe] = useState([]);
 
   useEffect(() => {
     setIsLoading(true);
