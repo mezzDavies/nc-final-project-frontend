@@ -1,20 +1,31 @@
 import react from "react";
 import { Button } from "react-native";
-import { useState } from "react";
-import { addToShortList } from "../../../api/firestoreFunctions.shortLists";
+import { useState, useEffect } from "react";
+import {
+  addToShortList,
+  getShortList,
+} from "../../../api/firestoreFunctions.shortLists";
 
-const AddToShortList = ({ recipeId, familyId, selectionListId }) => {
-  const [isDisabled, setIsDisabled] = useState(false);
+const AddToShortList = ({
+  recipeId,
+  familyId,
+  selectionListId,
+  idArray,
+  setIdArray,
+}) => {
   const userId = "ItsERU60MCYeXcSCtXJeaBR1JQa2";
   const mealPlanId = "V00CM4zYfykUNjxUXI80";
   const shortListId = "5w7i9bZCss4JXtgfQWg6";
+  const getShortListId = "pyo37SSXc3rlDrODekIY";
 
   return (
     <Button
       title="Vote"
-      disabled={isDisabled}
+      disabled={idArray.includes(recipeId) ? true : false}
       onPress={() => {
-        setIsDisabled(true);
+        setIdArray((currentIdArray) => {
+          return [...currentIdArray, recipeId];
+        });
         addToShortList(
           userId,
           familyId,
