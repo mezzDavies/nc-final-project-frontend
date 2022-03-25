@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Text, View } from "react-native";
-import { getRecipes } from "../api/firestoreFunctions.recipes";
+import { getRecipes } from "../../api/firestoreFunctions.recipes";
 import RecipeCard from "./RecipeCard";
 
 const RecipesList = (searchTerm) => {

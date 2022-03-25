@@ -1,7 +1,7 @@
 import { useIsFocused } from "@react-navigation/native";
 import React, { useState, useEffect } from "react";
 import { View, Text, ScrollView } from "react-native";
-import { getSelectionList } from "../../api/firestoreFunctions";
+import { getSelectionList } from "../../api/firestoreFunctions.selectionLists";
 import SelectionListCard from "./components/SelectionListCard";
 
 const familyId = "yPRj8Q1cEgwJ465bec04";
