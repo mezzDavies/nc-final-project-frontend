@@ -13,13 +13,15 @@ const SelectionListScreen = ({ navigation }) => {
   const isFocused = useIsFocused();
 
   useEffect(() => {
-    setIsLoading(true);
-    getSelectionList(familyId, selectionListId)
-      .then(({ recipeIds }) => {
-        setSelectionList(recipeIds);
-        setIsLoading(false);
-      })
-      .catch((err) => console.log(err));
+    if (isFocused) {
+      setIsLoading(true);
+      getSelectionList(familyId, selectionListId)
+        .then(({ recipeIds }) => {
+          setSelectionList(recipeIds);
+          setIsLoading(false);
+        })
+        .catch((err) => console.log(err));
+    }
   }, [isFocused]);
 
   if (isLoading) return <Text>Loading...</Text>;

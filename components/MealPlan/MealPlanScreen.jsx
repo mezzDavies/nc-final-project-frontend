@@ -1,10 +1,11 @@
 import React from "react";
 import { View, Text } from "react-native";
+import MealPlanList from "./components/MealPlanList";
 
 const MealPlanScreen = ({ navigation }) => {
   return (
     <View>
-      <Text>This is the Meal Plan !!!!</Text>
+      <MealPlanList navigation={navigation} />
     </View>
   );
 };
