@@ -8,6 +8,7 @@ const familyId = "yPRj8Q1cEgwJ465bec04";
 const selectionListId = "oeAuz0njIbYyPeLUqpUw";
 
 const SelectionListScreen = ({ navigation }) => {
+  const [idArray, setIdArray] = useState([]);
   const [selectionList, setSelectionList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const isFocused = useIsFocused();
@@ -32,6 +33,8 @@ const SelectionListScreen = ({ navigation }) => {
         {selectionList.map((recipeId, index) => {
           return (
             <SelectionListCard
+              idArray={idArray}
+              setIdArray={setIdArray}
               recipeId={recipeId}
               selectionListId={selectionListId}
               familyId={familyId}
