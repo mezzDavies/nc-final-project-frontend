@@ -5,6 +5,7 @@ import {
   toggleMealPlanStatus,
 } from "../../../api/firestoreFunctions.mealPlans";
 import { getRecipeById } from "../../../api/firestoreFunctions.recipes";
+import getUserDataAndClaims from "../../../utils/getUserDataAndClaims";
 import MealPlanCard from "./MealPlanCard";
 
 const MealPlanList = ({ navigation }) => {
@@ -15,6 +16,7 @@ const MealPlanList = ({ navigation }) => {
   const [mealPlan, setMealPlan] = useState([]);
   const [mealPlanConfirmation, setMealPlanConfirmation] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [isChild, setIsChild] = useState(false);
 
   useEffect(() => {
     getMealPlan(familyId, selectionListId, mealPlanId)
@@ -41,6 +43,15 @@ const MealPlanList = ({ navigation }) => {
       .catch((err) => console.log(err));
   }, []);
 
+  useEffect(() => {
+    getUserDataAndClaims()
+      .then(({ claims, useData }) => {
+        if (claims.parent) setIsChild(false);
+        else setIsChild(true);
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
   if (isLoading) return <Text>Is Loading...</Text>;
 
   return (
@@ -60,7 +71,9 @@ const MealPlanList = ({ navigation }) => {
         </Text>
         <Button
           title={
-            mealPlanConfirmation
+            isChild
+              ? "Only adult user can confirm Meal Plans"
+              : mealPlanConfirmation
               ? "Meal Plan Already Confirmed"
               : "Confirm Your Meal Plan"
           }
@@ -70,7 +83,7 @@ const MealPlanList = ({ navigation }) => {
               return !currentMealPlanConfirmation;
             });
           }}
-          disabled={mealPlanConfirmation}
+          disabled={isChild ? true : mealPlanConfirmation}
         />
       </View>
     </ScrollView>
