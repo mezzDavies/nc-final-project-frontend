@@ -7,10 +7,9 @@ import {
   StyleSheet,
   ScrollView,
 } from "react-native";
-import {
-  addToSelectionList,
-  getRecipeById,
-} from "../../api/firestoreFunctions.recipes";
+import { getRecipeById } from "../../api/firestoreFunctions.recipes";
+
+import { addToSelectionList } from "../../api/firestoreFunctions.selectionLists";
 
 const familyId = "yPRj8Q1cEgwJ465bec04";
 const selectionListId = "oeAuz0njIbYyPeLUqpUw";
