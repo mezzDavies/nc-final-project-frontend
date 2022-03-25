@@ -1,14 +1,23 @@
 import { React, useState, useEffect } from "react";
-import { View, Image, StyleSheet, Text } from "react-native";
-import { getRecipes } from "../api/firestoreFunctions";
+import {
+  View,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableHighlight,
+} from "react-native";
+import { getRecipes } from "../api/firestoreFunctions.recipes";
 
 export default function RandomRecipes({ navigation }) {
   const [recipes, setRecipes] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    setIsLoading(true);
     getRecipes().then(({ recipeCards }) => {
       const shuffled = [...recipeCards].sort(() => 0.5 - Math.random());
       setRecipes(shuffled.slice(0, 3));
+      setIsLoading(false);
     });
   }, []);
 
@@ -43,6 +52,8 @@ export default function RandomRecipes({ navigation }) {
     },
   });
 
+  if (isLoading) return <Text>Loading...</Text>;
+
   return (
     <View>
       <Text style={titleStyle.container}>Todays favourites...</Text>
@@ -51,14 +62,17 @@ export default function RandomRecipes({ navigation }) {
             const { image, readyInMinutes, title, id } = recipe;
             return (
               <View key={`container-` + id}>
-                <Image
-                  key={"image-" + id}
-                  source={{ uri: image }}
-                  style={imageStyles.container}
-                  onClick={() => {
+                <TouchableHighlight
+                  onPress={() => {
                     navigation.navigate("RecipePage", { id });
                   }}
-                />
+                >
+                  <Image
+                    key={"image-" + id}
+                    source={{ uri: image }}
+                    style={imageStyles.container}
+                  />
+                </TouchableHighlight>
                 <Text key={"title-" + id} style={foodTitleStyle.container}>
                   {title}
                 </Text>

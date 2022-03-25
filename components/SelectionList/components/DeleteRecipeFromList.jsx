@@ -1,6 +1,6 @@
 import { Button } from "react-native";
 import React, { useState } from "react";
-import { deleteFromSelectionList } from "../../../api/firestoreFunctions";
+import { deleteFromSelectionList } from "../../../api/firestoreFunctions.selectionLists";
 
 const DeleteRecipeFromList = ({
   familyId,

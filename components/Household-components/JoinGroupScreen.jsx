@@ -8,9 +8,11 @@ import { FormTextField } from "../FormTextField";
 import { auth, fireDB } from "../../firebase";
 import { doc, getDoc } from "firebase/firestore";
 
+
 //IMPORTS - utils functions
-import { addUserToFamily } from "../../api/firestoreFunctions";
 import getUserDataAndClaims from "../../utils/getUserDataAndClaims";
+import { addUserToFamily } from "../../api/firestoreFunctions.families";
+
 
 //----------COMPONENT----------
 const JoinGroupScreen = ({ navigation }) => {

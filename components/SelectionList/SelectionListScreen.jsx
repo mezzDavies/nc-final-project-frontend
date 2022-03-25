@@ -1,14 +1,16 @@
+import { useIsFocused } from "@react-navigation/native";
 import React, { useState, useEffect } from "react";
 import { View, Text, ScrollView } from "react-native";
-import { getSelectionList } from "../../api/firestoreFunctions";
+import { getSelectionList } from "../../api/firestoreFunctions.selectionLists";
 import SelectionListCard from "./components/SelectionListCard";
 
-const familyId = "Fxj4fb7gWPdFCKDCa5K9";
-const selectionListId = "bo2XEWgWaO8Y1VWtxi2j";
+const familyId = "yPRj8Q1cEgwJ465bec04";
+const selectionListId = "oeAuz0njIbYyPeLUqpUw";
 
-const SelectionListScreen = () => {
+const SelectionListScreen = ({ navigation }) => {
   const [selectionList, setSelectionList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const isFocused = useIsFocused();
 
   useEffect(() => {
     setIsLoading(true);
@@ -18,7 +20,7 @@ const SelectionListScreen = () => {
         setIsLoading(false);
       })
       .catch((err) => console.log(err));
-  }, []);
+  }, [isFocused]);
 
   if (isLoading) return <Text>Loading...</Text>;
 
@@ -33,6 +35,7 @@ const SelectionListScreen = () => {
               familyId={familyId}
               setSelectionList={setSelectionList}
               key={`${recipeId} - ${index}`}
+              navigation={navigation}
             />
           );
         })}

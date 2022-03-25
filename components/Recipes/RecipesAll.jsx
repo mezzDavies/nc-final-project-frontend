@@ -2,13 +2,13 @@ import { Text, View, ScrollView } from "react-native";
 import React, { useState } from "react";
 import RecipesList from "./RecipesList";
 
-const SearchPage = () => {
+const RecipesAll = () => {
   const [searchTerm, setSearchTerm] = useState("");
   return (
     <ScrollView>
-      <RecipesList searchTerm={searchTerm} />
+      <RecipesList />
     </ScrollView>
   );
 };
 
-export default SearchPage;
+export default RecipesAll;
