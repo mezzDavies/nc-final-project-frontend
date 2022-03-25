@@ -5,6 +5,7 @@ import Homepage from "../HomePage";
 import HouseHoldScreen from "../Household-components/Household";
 import JoinGroupScreen from "../Household-components/JoinGroupScreen";
 import CreateGroupScreen from "../Household-components/CreateGroupScreen";
+import AddChildrenScreen from "../Household-components/AddChildrenScreen";
 import RecipePage from "../Recipes/RecipePage";
 import ProfileScreen from "../Profile";
 import SelectionListScreen from "../SelectionList/SelectionListScreen";
@@ -39,6 +40,7 @@ const AccountNavigation = () => {
         <Stack.Screen name="Household" component={HouseHoldScreen} />
         <Stack.Screen name="JoinGroup" component={JoinGroupScreen} />
         <Stack.Screen name="CreateGroup" component={CreateGroupScreen} />
+        <Stack.Screen name="AddChildren" component={AddChildrenScreen} />
         <Stack.Screen name="SignUp" component={SignUpPage} />
         <Stack.Screen name="SignIn" component={SignInPage} />
       </Stack.Navigator>

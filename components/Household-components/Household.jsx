@@ -8,6 +8,7 @@ import { doc, getDoc } from "firebase/firestore";
 
 //IMPORTS - utils functions
 import userNotLoggedIn from "../../utils/userNotLoggedIn";
+import getUserDataAndClaims from "../../utils/getUserDataAndClaims";
 
 //----------COMPONENT----------
 const HouseHoldScreen = ({ navigation }) => {
@@ -23,31 +24,23 @@ const HouseHoldScreen = ({ navigation }) => {
     auth.onAuthStateChanged(function(user) {
       if(user) {
         setUserStatus(true);
-        auth.currentUser.getIdTokenResult()
-        .then(({ claims }) => {
-          const userDocRef = doc(fireDB, 'users', claims.user_id);
-          if(claims.parent) {
-            setUserId(claims.user_id)
-            return getDoc(userDocRef)
-          }
-        })
-        .then((docSnap) => {
-          if(docSnap.exists()) {
-            const userData = docSnap.data();
+        getUserDataAndClaims()
+          .then(({ claims, userData }) => {
             setFirstName(userData.name);
+            setUserId(claims.user_id);
             if(userData.groupIds?.length > 0) {
               setFamilyId(userData.groupIds[0]);
             } else {
               setFamilyId('');
               navigation.navigate("CreateGroup");
             }
-          }
-        })
+          })
       } else {
         setUserStatus(false);
         setUserId('');
         setFamilyId('');
         setFirstName('');
+        setFamilyMembers([]);
       }
     })
   }, [userStatus, familyId])
@@ -59,6 +52,7 @@ const HouseHoldScreen = ({ navigation }) => {
     return (
       <View>
         <Text>You in a family, well done</Text>
+        <Button title="Add a child to the account" />
       </View>
     );
   }

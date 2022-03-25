@@ -41,7 +41,7 @@ const ProfileScreen = ({ navigation }) => {
         setUserId('');
       }
     })
-  }, [userStatus])
+  }, [])
 
   if(!userStatus) {
     return userNotLoggedIn(navigation)

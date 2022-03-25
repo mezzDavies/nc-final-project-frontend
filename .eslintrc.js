@@ -13,4 +13,12 @@ module.exports = {
   },
   plugins: ["react"],
   rules: {},
+  overrides: [
+    {
+      files: ["api/createChildAccount.js"],
+      rules: {
+        "no-underscore-dangle": "off",
+      },
+    },
+  ],
 };
