@@ -1,32 +1,26 @@
 //IMPORTS - react
-import React, {useState} from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Text, View } from "react-native";
 import { useForm, Controller } from "react-hook-form";
-
-//IMPORTS - firebase
-import { auth, fireDB } from "../../firebase";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { fireFunctions } from "../../firebase";
-import { httpsCallable } from "firebase/functions";
-import { doc, setDoc } from "firebase/firestore";
 
 //IMPORTS - utils functions
 import { FormTextField } from "../FormTextField";
 import createChildAccount from "../../api/createChildAccount";
-import { useEffect } from "react/cjs/react.production.min";
+import getUserDataAndClaims from "../../utils/getUserDataAndClaims";
 
 //----------COMPONENT----------
-const AddChildrenScreen = ({ navigation, route }) => {
+const AddChildrenScreen = ({ navigation }) => {
     //-----Declarations-----
     const { control, handleSubmit, reset, formState: { errors } } = useForm();
     const [loadingMessage, setLoadingMessage] = useState('')
     const [familyId, setFamilyId] = useState('');
 
-    console.log(route)
-
-    // useEffect(() => {
-    //     return setFamilyId(route.params.familyId);
-    // }, [])
+    useEffect(() => {
+    getUserDataAndClaims()
+        .then(({ claims, userData }) => {
+        setFamilyId(userData.groupIds[0]);
+        })
+      }, [])
     
     const onSubmit = (data) => {
         const firstName = data.firstName;
@@ -66,6 +60,7 @@ const AddChildrenScreen = ({ navigation, route }) => {
                 name="firstName"
             />
             <Button title="Submit" onPress={handleSubmit(onSubmit)} />
+            <Text>{loadingMessage}</Text>
         </View>
     )
 };
