@@ -123,7 +123,7 @@ async function calculateShoppingList(recipeIds) {
       item.unit = i.get("unit");
       shoppingList.push(item);
     });
-    console.log(shoppingList);
+    // console.log(shoppingList);
   });
   return shoppingList;
 }
@@ -157,10 +157,11 @@ async function getMealPlan(familyId, selectionListId, mealPlanId) {
   );
   const docSnap = await getDoc(docRef);
   if (docSnap.exists()) {
-    console.log(
-      "Calculate votes: ",
-      await calculateVotes(familyId, selectionListId, mealPlanId)
-    );
+    const votes = await calculateVotes(familyId, selectionListId, mealPlanId);
+    const shoppingList = await calculateShoppingList(votes);
+
+    console.log("Calculate votes: ", votes);
+    console.log("shopping list: ", shoppingList);
     console.log("Document data:", docSnap.get("recipeIds"));
 
     return docSnap.data();

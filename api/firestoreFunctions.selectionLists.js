@@ -19,7 +19,6 @@ import { getFamily } from "./firestoreFunctions.families";
 import { addMealPlan } from "./firestoreFunctions.mealPlans";
 import { addShortList } from "./firestoreFunctions.shortLists";
 
-
 // import app from "../firebase";
 import { fireDB } from "../firebase";
 
