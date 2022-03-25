@@ -17,7 +17,7 @@ const AddChildrenScreen = ({ navigation }) => {
 
     useEffect(() => {
     getUserDataAndClaims()
-        .then(({ claims, userData }) => {
+        .then(({ claims, userData, newUserId }) => {
         setFamilyId(userData.groupIds[0]);
         })
       }, [])

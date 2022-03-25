@@ -19,9 +19,9 @@ const CreateGroupScreen = ({ navigation }) => {
   } = useForm();
 
   useEffect(() => {
-    getUserDataAndClaims().then(({ claims, userData }) => {
+    getUserDataAndClaims().then(({ claims, userData, newUserId }) => {
       if (claims.parent) {
-        setUserId(claims.user_id);
+        setUserId(newUserId);
         setFirstName(userData.name);
       }
     });

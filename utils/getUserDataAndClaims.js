@@ -5,13 +5,15 @@ const getUserDataAndClaims = () =>
   auth.currentUser
     .getIdTokenResult()
     .then(({ claims }) => {
-      const userDocRef = doc(fireDB, "users", claims.user_id);
-      return Promise.all([getDoc(userDocRef), claims]);
+      const newUserId = claims.parent ? claims.user_id : claims.child_id;
+      const userDocRef = doc(fireDB, "users", newUserId);
+      return Promise.all([getDoc(userDocRef), claims, newUserId]);
     })
-    .then(([docSnap, claims]) => {
+    .then(([docSnap, claims, newUserId]) => {
       if (docSnap.exists()) {
         const userData = docSnap.data();
-        return { claims, userData };
+        console.log(claims, userData, newUserId);
+        return { claims, userData, newUserId };
       }
       return { claims };
     })

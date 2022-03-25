@@ -3,8 +3,7 @@ import React, { useState, useEffect } from "react";
 import { View, Text, Button } from "react-native";
 
 //IMPORTS - firebase
-import { auth, fireDB } from "../../firebase";
-import { doc, getDoc } from "firebase/firestore";
+import { auth } from "../../firebase";
 
 //IMPORTS - utils functions
 import userNotLoggedIn from "../../utils/userNotLoggedIn";
@@ -25,9 +24,9 @@ const HouseHoldScreen = ({ navigation }) => {
       if(user) {
         setUserStatus(true);
         getUserDataAndClaims()
-          .then(({ claims, userData }) => {
+          .then(({ claims, userData, newUserId }) => {
             setFirstName(userData.name);
-            setUserId(claims.user_id);
+            setUserId(newUserId);
             if(userData.groupIds?.length > 0) {
               setFamilyId(userData.groupIds[0]);
             } else {
