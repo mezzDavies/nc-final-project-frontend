@@ -37,7 +37,7 @@ const JoinGroupScreen = ({ navigation }) => {
     //-----Use Effects-----
     useEffect(() => {
         getUserDataAndClaims()
-            .then(({ claims, userData }) => {
+            .then(({ claims, userData, userId }) => {
                 setUserId(claims.user_id);
                 setFirstName(userData.name);
                 if(claims.parent) {
