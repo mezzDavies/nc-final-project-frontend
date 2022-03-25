@@ -118,6 +118,7 @@ async function calculateShoppingList(recipeIds) {
   await querySnapshots.forEach((ingredient) => {
     ingredient.forEach((i) => {
       const item = {};
+      item.id = i.get("id");
       item.name = i.get("name");
       item.amount = i.get("amount");
       item.unit = i.get("unit");
