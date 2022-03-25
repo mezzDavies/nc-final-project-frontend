@@ -1,0 +1,104 @@
+import { React, useEffect, useState } from "react";
+import {
+  View,
+  Text,
+  Button,
+  Image,
+  StyleSheet,
+  ScrollView,
+} from "react-native";
+import {
+  addToSelectionList,
+  getRecipeById,
+} from "../../api/firestoreFunctions";
+
+const familyId = "yPRj8Q1cEgwJ465bec04";
+const selectionListId = "oeAuz0njIbYyPeLUqpUw";
+
+const RecipePage = ({ route }) => {
+  const [imageUrl, setImageUrl] = useState("");
+  const [ingredients, setIngredients] = useState([]);
+  const [recipeTitle, setRecipeTitle] = useState("");
+  const [cookTime, setCookTime] = useState("");
+  const [instructions, setInstructions] = useState("");
+  const [servings, setServings] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
+
+  const recipeId = route.params.id;
+  console.log(recipeId);
+
+  const styles = StyleSheet.create({
+    body: {
+      flex: 1,
+      flexDirection: "column",
+      alignItems: "center",
+      backgroundColor: "white",
+    },
+  });
+
+  useEffect(() => {
+    setIsLoading(true);
+    getRecipeById(recipeId)
+      .then(({ ingredients, summary: recipe }) => {
+        const { image, title, readyInMinutes, instructions, servings } = recipe;
+        setImageUrl(image);
+        setIngredients(ingredients);
+        setRecipeTitle(title);
+        setCookTime(readyInMinutes);
+        setInstructions(instructions);
+        setServings(servings);
+        setIsLoading(false);
+      })
+      .catch((err) => console.log("error in catch >>>", err));
+  }, []);
+
+  if (isLoading) return <Text>Loading...</Text>;
+
+  const addToSelectionPress = () => {
+    addToSelectionList(familyId, selectionListId, recipeId).catch(() => {
+      alert(
+        "Error: recipe not added. Please check your connection and click again to add recipe."
+      );
+    });
+  };
+
+  return (
+    <ScrollView>
+      <View style={styles.body}>
+        <Image
+          source={{
+            width: 556,
+            height: 370,
+            uri: `${imageUrl}`,
+          }}
+          style={{ resizeMode: "cover" }}
+        />
+
+        <View>
+          <View>
+            <Text style={styles.image_text}>{recipeTitle}</Text>
+            <Text style={styles.image_text}>{`${cookTime} mins`}</Text>
+          </View>
+          <View>
+            <Text>{`Ingredients - serves ${servings}`}</Text>
+            {ingredients.map((ingredient, index) => {
+              return (
+                <Text key={`${ingredient.id}`}>{ingredient.original}</Text>
+              );
+            })}
+          </View>
+          <View>
+            <Text>Instructions</Text>
+            <Text>{instructions}</Text>
+          </View>
+        </View>
+        <View style={styles.buttons}>
+          <Button title="Add to shortlist" onPress={addToSelectionPress} />
+          <Button title="Add to favourites" onPress={{}} />
+        </View>
+      </View>
+    </ScrollView>
+  );
+};
+
+export default RecipePage;

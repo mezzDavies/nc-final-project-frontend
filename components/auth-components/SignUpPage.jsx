@@ -1,21 +1,23 @@
+//IMPORTS - react
 import React from "react";
 import { useState } from 'react';
 import { Button, Text, View } from "react-native";
 import { useForm, Controller } from "react-hook-form";
-import { FormTextField } from "../FormTextField";
+
+//IMPORTS - firebase
 import { auth, fireDB } from "../../firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { fireFunctions } from "../../firebase";
 import { httpsCallable } from "firebase/functions";
 import { doc, setDoc } from "firebase/firestore";
 
+//IMPORTS - utils functions
+import { FormTextField } from "../FormTextField";
+
+// ----------COMPONENT----------
 const SignUpPage = ({ navigation }) => {
-  const {
-    control,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm();
+  //-----Declarations-----
+  const { control, handleSubmit, reset, formState: { errors } } = useForm();
   const [loadingMessage, setLoadingMessage] = useState('')
 
   const onSubmit = (data) => {
@@ -38,6 +40,7 @@ const SignUpPage = ({ navigation }) => {
       });
   };
 
+  //-----Rendering-----
   return (
     <View>
       <Text>
@@ -111,4 +114,5 @@ const SignUpPage = ({ navigation }) => {
   );
 };
 
+//EXPORTS
 export default SignUpPage;
