@@ -7,7 +7,13 @@ import {
   StyleSheet,
   ScrollView,
 } from "react-native";
-import { getRecipeById } from "../../api/firestoreFunctions";
+import {
+  addToSelectionList,
+  getRecipeById,
+} from "../../api/firestoreFunctions";
+
+const familyId = "yPRj8Q1cEgwJ465bec04";
+const selectionListId = "oeAuz0njIbYyPeLUqpUw";
 
 const RecipePage = ({ route }) => {
   const [imageUrl, setImageUrl] = useState("");
@@ -33,22 +39,28 @@ const RecipePage = ({ route }) => {
   useEffect(() => {
     setIsLoading(true);
     getRecipeById(recipeId)
-      .then((res) => {
-        // console.log("res >>>", res);
-        setImageUrl(res.summary.image);
-        setIngredients(res.ingredients);
-        setRecipeTitle(res.summary.title);
-        setCookTime(res.summary.readyInMinutes);
-        setInstructions(res.summary.instructions);
-        setServings(res.summary.servings);
+      .then(({ ingredients, summary: recipe }) => {
+        const { image, title, readyInMinutes, instructions, servings } = recipe;
+        setImageUrl(image);
+        setIngredients(ingredients);
+        setRecipeTitle(title);
+        setCookTime(readyInMinutes);
+        setInstructions(instructions);
+        setServings(servings);
         setIsLoading(false);
       })
-      .catch((err) => {
-        console.log("error in catch >>>", err);
-      });
+      .catch((err) => console.log("error in catch >>>", err));
   }, []);
 
   if (isLoading) return <Text>Loading...</Text>;
+
+  const addToSelectionPress = () => {
+    addToSelectionList(familyId, selectionListId, recipeId).catch(() => {
+      alert(
+        "Error: recipe not added. Please check your connection and click again to add recipe."
+      );
+    });
+  };
 
   return (
     <ScrollView>
@@ -81,7 +93,7 @@ const RecipePage = ({ route }) => {
           </View>
         </View>
         <View style={styles.buttons}>
-          <Button title="Add to shortlist" onPress={{}} />
+          <Button title="Add to shortlist" onPress={addToSelectionPress} />
           <Button title="Add to favourites" onPress={{}} />
         </View>
       </View>
