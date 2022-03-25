@@ -52,7 +52,7 @@ const HouseHoldScreen = ({ navigation }) => {
     return (
       <View>
         <Text>You in a family, well done</Text>
-        <Button title="Add a child to the account" />
+        <Button title="Add a child to the account" onPress={() => navigation.navigate("AddChildren")} />
       </View>
     );
   }
