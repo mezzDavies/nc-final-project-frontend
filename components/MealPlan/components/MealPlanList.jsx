@@ -1,7 +1,9 @@
-import { sum } from "lodash";
 import React, { useState, useEffect } from "react";
-import { Text, View } from "react-native";
-import { getMealPlan } from "../../../api/firestoreFunctions.mealPlans";
+import { Text, View, Button, ScrollView } from "react-native";
+import {
+  getMealPlan,
+  toggleMealPlanStatus,
+} from "../../../api/firestoreFunctions.mealPlans";
 import { getRecipeById } from "../../../api/firestoreFunctions.recipes";
 import MealPlanCard from "./MealPlanCard";
 
@@ -34,24 +36,44 @@ const MealPlanList = ({ navigation }) => {
       })
       .then((recipes) => {
         setMealPlan(recipes);
+        setIsLoading(false);
       })
       .catch((err) => console.log(err));
   }, []);
+
+  if (isLoading) return <Text>Is Loading...</Text>;
+
   return (
-    <View>
-      <Text>
-        Meal Plan contents:
-        {mealPlan.map((recipe, index) => {
-          return (
-            <MealPlanCard
-              recipe={recipe}
-              key={`${recipe.id} - ${index}`}
-              navigation={navigation}
-            />
-          );
-        })}
-      </Text>
-    </View>
+    <ScrollView>
+      <View>
+        <Text>
+          Meal Plan contents:
+          {mealPlan.map((recipe, index) => {
+            return (
+              <MealPlanCard
+                recipe={recipe}
+                key={`${recipe.id} - ${index}`}
+                navigation={navigation}
+              />
+            );
+          })}
+        </Text>
+        <Button
+          title={
+            mealPlanConfirmation
+              ? "Meal Plan Already Confirmed"
+              : "Confirm Your Meal Plan"
+          }
+          onPress={() => {
+            toggleMealPlanStatus(familyId, selectionListId, mealPlanId);
+            setMealPlanConfirmation((currentMealPlanConfirmation) => {
+              return !currentMealPlanConfirmation;
+            });
+          }}
+          disabled={mealPlanConfirmation}
+        />
+      </View>
+    </ScrollView>
   );
 };
 
