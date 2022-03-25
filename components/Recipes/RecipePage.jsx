@@ -10,7 +10,7 @@ import {
 import {
   addToSelectionList,
   getRecipeById,
-} from "../../api/firestoreFunctions";
+} from "../../api/firestoreFunctions.recipes";
 
 const familyId = "yPRj8Q1cEgwJ465bec04";
 const selectionListId = "oeAuz0njIbYyPeLUqpUw";

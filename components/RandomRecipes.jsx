@@ -6,7 +6,7 @@ import {
   Text,
   TouchableHighlight,
 } from "react-native";
-import { getRecipes } from "../api/firestoreFunctions";
+import { getRecipes } from "../api/firestoreFunctions.recipes";
 
 export default function RandomRecipes({ navigation }) {
   const [recipes, setRecipes] = useState([]);
