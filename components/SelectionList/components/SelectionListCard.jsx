@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Text, View, Image, TouchableHighlight } from "react-native";
 import { getRecipeById } from "../../../api/firestoreFunctions.recipes";
+import AddToShortList from "./AddToShortlist";
 import DeleteRecipeFromList from "./DeleteRecipeFromList";
 
 const SelectionListCard = ({
@@ -37,6 +38,12 @@ const SelectionListCard = ({
         <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
       </TouchableHighlight>
       <Text>{`${title}`}</Text>
+      <AddToShortList
+        familyId={familyId}
+        recipeId={recipeId}
+        navigation={navigation}
+        selectionListId={selectionListId}
+      />
       <DeleteRecipeFromList
         recipeId={recipeId}
         selectionListId={selectionListId}
