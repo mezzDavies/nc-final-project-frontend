@@ -9,10 +9,16 @@ import {
   deleteDoc,
   doc,
   getDoc,
+  getDocs,
   onSnapshot,
+  runTransaction,
   Timestamp,
   updateDoc,
 } from "firebase/firestore";
+import { getFamily } from "./firestoreFunctions.families";
+import { addMealPlan } from "./firestoreFunctions.mealPlans";
+import { addShortList } from "./firestoreFunctions.shortLists";
+
 
 // import app from "../firebase";
 import { fireDB } from "../firebase";
@@ -54,6 +60,22 @@ async function addSelectionList(familyId) {
   );
   console.log("scranPlan: ", docRef.id, "familyId ", familyId);
   return docRef.id;
+}
+
+async function addScranPlan(familyId) {
+  try {
+    await runTransaction(fireDB, async () => {
+      const familyDoc = await getFamily(familyId);
+      const selectionListRef = await addSelectionList(familyId);
+      const mealPlanRef = await addMealPlan(familyId, selectionListRef);
+      await familyDoc.family.familyMembers.forEach((member) => {
+        addShortList(member, familyId, selectionListRef, mealPlanRef);
+      });
+      console.log("did it work!");
+    });
+  } catch (e) {
+    console.error(e);
+  }
 }
 
 async function updateSelectionListName(familyId, selectionListId, newListName) {
@@ -119,6 +141,26 @@ async function deleteSelectionList(familyId, selectionListId) {
     doc(fireDB, `families/${familyId}/selectionLists`, selectionListId)
   );
   console.log("selection list removed: ", selectionListId);
+}
+
+// Get all selectionLists for a family
+
+async function getSelectionLists(familyId) {
+  const collectionRef = collection(
+    fireDB,
+    `families/${familyId}/selectionLists`
+  );
+
+  const querySnapshot = await getDocs(collectionRef);
+  querySnapshot.forEach((selectionList) => {
+    console.log(
+      selectionList.id,
+      " => ",
+      selectionList.get("listName"),
+      ": ",
+      selectionList.get("startDate").toDate()
+    );
+  });
 }
 
 // View the current RecipeRefs in a selectionList
@@ -191,6 +233,7 @@ async function deleteFromSelectionList(familyId, selectionListId, recipeId) {
 }
 
 export {
+  addScranPlan,
   updateSelectionListName,
   updateSelectionListSchedule,
   addSelectionList,
@@ -198,6 +241,7 @@ export {
   deleteSelectionList,
   deleteFromSelectionList,
   getSelectionList,
+  getSelectionLists,
   listenSelectionList,
   toggleSelectionListStatus,
 };

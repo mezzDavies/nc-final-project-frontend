@@ -9,8 +9,11 @@ import {
   deleteDoc,
   doc,
   getDoc,
+  getDocs,
+  query,
   Timestamp,
   updateDoc,
+  where,
 } from "firebase/firestore";
 
 // import app from "../firebase";
@@ -40,6 +43,7 @@ async function addShortList(userId, familyId, selectionListId, mealPlanId) {
 }
 
 async function deleteShortList(
+  userId,
   familyId,
   selectionListId,
   mealPlanId,
@@ -53,6 +57,21 @@ async function deleteShortList(
     )
   );
   console.log("short list removed: ", shortListId);
+}
+
+async function getShortLists(userId, familyId, selectionListId, mealPlanId) {
+  const q = query(
+    collection(
+      fireDB,
+      `/families/${familyId}/selectionLists/${selectionListId}/mealPlans/${mealPlanId}/shortLists`
+    ),
+    where("userId", "==", userId)
+  );
+
+  const querySnapshot = await getDocs(q);
+  querySnapshot.forEach((shortList) => {
+    console.log("shortListId: ", shortList.id);
+  });
 }
 
 // View the current RecipeIds in a shortList
@@ -157,5 +176,6 @@ export {
   deleteFromShortList,
   deleteShortList,
   getShortList,
+  getShortLists,
   orderShortList,
 };

@@ -10,8 +10,10 @@ import {
   getDoc,
   getDocs,
   onSnapshot,
+  query,
   Timestamp,
   updateDoc,
+  where,
 } from "firebase/firestore";
 
 // import app from "../firebase";
@@ -40,6 +42,20 @@ async function updateFamilyName(familyId, newGroupName) {
   });
 
   return docRef.id;
+}
+
+// Find out which families as user is in:
+
+async function getFamilies(userId) {
+  const q = query(
+    collection(fireDB, "families"),
+    where("familyMembers", "array-contains", userId)
+  );
+
+  const querySnapshot = await getDocs(q);
+  querySnapshot.forEach((family) => {
+    console.log(family.id, " => ", family.get("groupName"));
+  });
 }
 
 async function getFamily(familyId) {
@@ -122,6 +138,7 @@ export {
   addFamily,
   updateFamilyName,
   addUserToFamily,
+  getFamilies,
   getFamily,
   listenFamily,
   removeUserFromFamily,

@@ -74,27 +74,8 @@ async function toggleMealPlanStatus(familyId, selectionListId, mealPlanId) {
   return !currIsConfirmed;
 }
 
-// View a meal plan
-// You can then call getRecipesById to view recipe details
-
-async function getMealPlan(familyId, selectionListId, mealPlanId) {
-  const docRef = doc(
-    fireDB,
-    `families/${familyId}/selectionLists/${selectionListId}/mealPlans`,
-    mealPlanId
-  );
-  const docSnap = await getDoc(docRef);
-  if (docSnap.exists()) {
-    console.log("Document data:", docSnap.get("recipeIds"));
-    return docSnap.data();
-  }
-  // doc.data() will be undefined in this case
-  console.log("No such document!");
-  return undefined;
-}
-
 async function calculateVotes(familyId, selectionListId, mealPlanId) {
-  const allUsersVotes = [];
+  const votes = {};
 
   const querySnapshot = await getDocs(
     collection(
@@ -104,18 +85,25 @@ async function calculateVotes(familyId, selectionListId, mealPlanId) {
   );
 
   await querySnapshot.forEach((shortList) => {
-    const votes = [];
-    if (shortList.isConfirmed) {
-      shortList.recipeIds.forEach((recipeId, index) => {
-        const item = { [recipeId]: index };
-        votes.push(item);
+    const points = shortList.data().recipeIds.length;
+
+    if (shortList.data().isConfirmed) {
+      shortList.data().recipeIds.forEach((recipeId, index) => {
+        if (Object.keys(votes).includes(recipeId.toString())) {
+          votes[recipeId] += points - index;
+        } else {
+          votes[recipeId] = points - index;
+        }
       });
     }
-    const usersVotes = { [shortList.shortListId]: votes };
-    allUsersVotes.push(usersVotes);
   });
 
-  return allUsersVotes;
+  function getTopValues(obj, n) {
+    const sortedEntries = Object.entries(obj).sort((a, b) => b[1] - a[1]);
+    return sortedEntries.map((i) => i[0]).splice(0, n);
+  }
+
+  return getTopValues(votes, 7);
 }
 
 async function calculateShoppingList(recipeIds) {
@@ -127,18 +115,59 @@ async function calculateShoppingList(recipeIds) {
 
   const querySnapshots = await Promise.all(results);
 
-  await querySnapshots.forEach((ings) => {
-    ings.forEach((ing) => {
+  await querySnapshots.forEach((ingredient) => {
+    ingredient.forEach((i) => {
       const item = {};
-      item.name = ing.get("name");
-      item.amount = ing.get("amount");
-      item.unit = ing.get("unit");
+      item.name = i.get("name");
+      item.amount = i.get("amount");
+      item.unit = i.get("unit");
       shoppingList.push(item);
     });
     console.log(shoppingList);
   });
   return shoppingList;
-  // const q = query(collection(fireDB, "recipes"), where("id", "in", recipeIds));
+}
+
+// View all meal plans for a family
+async function getMealPlans(familyId, selectionListId) {
+  const collectionRef = collection(
+    fireDB,
+    `families/${familyId}/selectionLists/${selectionListId}/mealPlans`
+  );
+
+  const querySnapshot = await getDocs(collectionRef);
+  querySnapshot.forEach((mealPlan) => {
+    console.log(
+      "Meal plan id: ",
+      mealPlan.id,
+      "isConfirmed: ",
+      mealPlan.get("isConfirmed")
+    );
+  });
+}
+
+// View a meal plan
+// You can then call getRecipesById to view recipe details
+
+async function getMealPlan(familyId, selectionListId, mealPlanId) {
+  const docRef = doc(
+    fireDB,
+    `families/${familyId}/selectionLists/${selectionListId}/mealPlans`,
+    mealPlanId
+  );
+  const docSnap = await getDoc(docRef);
+  if (docSnap.exists()) {
+    console.log(
+      "Calculate votes: ",
+      await calculateVotes(familyId, selectionListId, mealPlanId)
+    );
+    console.log("Document data:", docSnap.get("recipeIds"));
+
+    return docSnap.data();
+  }
+  // doc.data() will be undefined in this case
+  console.log("No such document!");
+  return undefined;
 }
 
 export {
@@ -147,5 +176,6 @@ export {
   calculateVotes,
   deleteMealPlan,
   getMealPlan,
+  getMealPlans,
   toggleMealPlanStatus,
 };
