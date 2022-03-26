@@ -1,9 +1,8 @@
-import { Text, View, ScrollView } from "react-native";
-import React, { useState } from "react";
-import RecipesList from "./RecipesList";
+import { ScrollView } from "react-native";
+import React from "react";
+import RecipesList from "./components/RecipesList";
 
 const RecipesAll = () => {
-  const [searchTerm, setSearchTerm] = useState("");
   return (
     <ScrollView>
       <RecipesList />
