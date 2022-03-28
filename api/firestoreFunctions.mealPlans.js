@@ -75,6 +75,30 @@ async function toggleMealPlanStatus(familyId, selectionListId, mealPlanId) {
   return !currIsConfirmed;
 }
 
+// async function calculateVotes(familyId, selectionListId, mealPlanId) {
+//   const votes = {};
+
+//   const querySnapshot = await getDocs(
+//     collection(
+//       fireDB,
+//       `families/${familyId}/selectionLists/${selectionListId}/mealPlans/${mealPlanId}/shortLists`
+//     )
+//   );
+
+//   await querySnapshot.forEach((shortList) => {
+//     const points = shortList.data().recipeIds.length;
+
+//     if (shortList.data().isConfirmed) {
+//       shortList.data().recipeIds.forEach((recipeId, index) => {
+//         if (Object.keys(votes).includes(recipeId.toString())) {
+//           votes[recipeId] += points - index;
+//         } else {
+//           votes[recipeId] = points - index;
+//         }
+//       });
+//     }
+//   });
+
 async function calculateVotes(familyId, selectionListId, mealPlanId) {
   const votes = {};
 
@@ -86,14 +110,12 @@ async function calculateVotes(familyId, selectionListId, mealPlanId) {
   );
 
   await querySnapshot.forEach((shortList) => {
-    const points = shortList.data().recipeIds.length;
-
     if (shortList.data().isConfirmed) {
-      shortList.data().recipeIds.forEach((recipeId, index) => {
+      shortList.data().recipeIds.forEach((recipeId) => {
         if (Object.keys(votes).includes(recipeId.toString())) {
-          votes[recipeId] += points - index;
+          votes[recipeId] += 1;
         } else {
-          votes[recipeId] = points - index;
+          votes[recipeId] = 1;
         }
       });
     }

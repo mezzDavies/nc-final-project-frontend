@@ -16,101 +16,122 @@ import CreateGroupScreen from "./CreateGroupScreen";
 //----------COMPONENT----------
 const HouseHoldScreen = ({ navigation }) => {
   //-----Declarations-----
-  const [userId, setUserId] = useState('');
+  const [userId, setUserId] = useState("");
   const [userStatus, setUserStatus] = useState(false);
   const [parentStatus, setParentStatus] = useState(false);
-  const [familyId, setFamilyId] = useState('');
+  const [familyId, setFamilyId] = useState("");
   const [familyMembers, setFamilyMembers] = useState([]);
-  const [familyName, setFamilyName] = useState('');
+  const [familyName, setFamilyName] = useState("");
   const [familyStatus, setFamilyStatus] = useState(false);
-  const [firstName, setFirstName] = useState('');
-  const [loadingMessage, setLoadingMessage] = useState('');
+  const [firstName, setFirstName] = useState("");
+  const [loadingMessage, setLoadingMessage] = useState("");
 
   const switchToUserParentAccount = () => {
-    setLoadingMessage(`We're just loading the parent account again...`)
-    const switchtoParentAccount = httpsCallable(fireFunctions, "switchToParentAccount");
+    setLoadingMessage(`We're just loading the parent account again...`);
+    const switchtoParentAccount = httpsCallable(
+      fireFunctions,
+      "switchToParentAccount"
+    );
     switchtoParentAccount()
       .then(() => {
         return auth.currentUser.getIdToken(true);
       })
       .then(() => {
-        return auth.currentUser.getIdTokenResult()
+        return auth.currentUser.getIdTokenResult();
       })
       .then(({ claims }) => {
-        setUserId(claims.user_id)
-        setLoadingMessage('');
-      })
-  }
+        setUserId(claims.user_id);
+        setLoadingMessage("");
+      });
+  };
 
   //-----Use Effects-----
   useEffect(() => {
-    auth.onAuthStateChanged(function(user) {
-      if(user) {
+    auth.onAuthStateChanged(function (user) {
+      if (user) {
         setUserStatus(true);
-        getUserDataAndClaims()
-          .then(({ claims, userData, newUserId }) => {
-            setFirstName(userData.name);
-            setParentStatus(claims.parent)
-            if(userData.groupIds?.length > 0) {
-              setFamilyId(userData.groupIds[0]);
-            } else {
-              setFamilyId('');
-              setFamilyStatus(false);
-            }
-          })
+        getUserDataAndClaims().then(({ claims, userData, newUserId }) => {
+          setFirstName(userData.name);
+          setParentStatus(claims.parent);
+          if (userData.groupIds?.length > 0) {
+            setFamilyId(userData.groupIds[0]);
+            setFamilyStatus(true);
+          } else {
+            setFamilyId("");
+            setFamilyStatus(false);
+          }
+        });
       } else {
         setUserStatus(false);
-        setFamilyId('');
-        setFirstName('');
+        setFamilyId("");
+        setFirstName("");
         setFamilyMembers([]);
       }
-    })
-  }, [userId, familyStatus])
+    });
+  }, [userId, familyStatus]);
 
   useEffect(() => {
-    if(familyId) {
-      getFamily(familyId)
-      .then(({ family }) => {
+    if (familyId) {
+      getFamily(familyId).then(({ family }) => {
         setFamilyName(family.groupName);
         setFamilyMembers(family.familyMembers);
-      })
+      });
     }
-  }, [familyId, familyStatus])
+  }, [familyId, familyStatus]);
 
   //------Rendering------
-  if(!userStatus) {
+  if (!userStatus) {
+    return <UserNotLoggedIn setUserStatus={setUserStatus} />;
+  } else if (!familyStatus) {
     return (
-        <UserNotLoggedIn setUserStatus={setUserStatus} />
-    )
-  } else if(!familyStatus) {
-    return (
-      <CreateGroupScreen setFamilyStatus={setFamilyStatus} navigation={navigation} />
-    )
+      <CreateGroupScreen
+        setFamilyStatus={setFamilyStatus}
+        navigation={navigation}
+      />
+    );
   } else {
     return (
       <ScrollView>
-      <View>
-        <Text>{loadingMessage}</Text>
-        <Text>Hello {firstName}, and welcome to the {familyName} group!</Text>
-        {!parentStatus ? <Button title="Switch back to parent account" onPress={switchToUserParentAccount} color="#859cc7" /> : <Text>Want to invite others to join the group? Your invite code is: {familyId}</Text> }
-        <Text>Group Members:</Text>
-        {familyMembers.map((familyMember, index) => {
-          return (
-            <FamilyMemberCard
-              familyMember={familyMember}
-              setLoadingMessage={setLoadingMessage}
-              loadingMessage={loadingMessage}
-              key={`${familyId} - ${index}`}
-              setUserId={setUserId}
-              parentStatus={parentStatus}
+        <View>
+          <Text>{loadingMessage}</Text>
+          <Text>
+            Hello {firstName}, and welcome to the {familyName} group!
+          </Text>
+          {!parentStatus ? (
+            <Button
+              title="Switch back to parent account"
+              onPress={switchToUserParentAccount}
+              color="#859cc7"
             />
-          );
-        })}
-        {parentStatus ? <Button title="Add a child to the account" onPress={() => navigation.navigate("AddChildren")} /> : null}
-      </View>
+          ) : (
+            <Text>
+              Want to invite others to join the group? Your invite code is:{" "}
+              {familyId}
+            </Text>
+          )}
+          <Text>Group Members:</Text>
+          {familyMembers.map((familyMember, index) => {
+            return (
+              <FamilyMemberCard
+                familyMember={familyMember}
+                setLoadingMessage={setLoadingMessage}
+                loadingMessage={loadingMessage}
+                key={`${familyId} - ${index}`}
+                setUserId={setUserId}
+                parentStatus={parentStatus}
+              />
+            );
+          })}
+          {parentStatus ? (
+            <Button
+              title="Add a child to the account"
+              onPress={() => navigation.navigate("AddChildren")}
+            />
+          ) : null}
+        </View>
       </ScrollView>
     );
-  } 
+  }
 };
 
 //EXPORTS
