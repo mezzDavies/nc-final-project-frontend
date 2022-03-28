@@ -24,16 +24,6 @@ const RecipePage = ({ route }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   const recipeId = route.params.id;
-  console.log(recipeId);
-
-  const styles = StyleSheet.create({
-    body: {
-      flex: 1,
-      flexDirection: "column",
-      alignItems: "center",
-      backgroundColor: "white",
-    },
-  });
 
   useEffect(() => {
     setIsLoading(true);
@@ -51,6 +41,60 @@ const RecipePage = ({ route }) => {
       .catch((err) => console.log("error in catch >>>", err));
   }, []);
 
+  const styles = StyleSheet.create({
+    image: {
+      width: 300,
+      height: 200,
+      alignContent: "center",
+      marginLeft: 25,
+      marginRight: 25,
+      borderRadius: 10,
+    },
+    instructTitle: {
+      alignContent: "center",
+      fontSize: 20,
+      paddingTop: 10,
+      fontFamily: "Bangers_400Regular",
+    },
+    instructions: {
+      alignContent: "center",
+      padding: 20,
+      borderStyle: "solid",
+      borderColor: "black",
+      borderWidth: 2,
+      borderRadius: 5,
+      marginLeft: 8,
+      marginRight: 8,
+      marginBottom: 8,
+    },
+    mealTitle: {
+      alignContent: "center",
+      paddingLeft: 20,
+      paddingRight: 20,
+      paddingTop: 10,
+      fontFamily: "Bangers_400Regular",
+      fontSize: 25,
+    },
+    ingredientsTitle: {
+      fontSize: 20,
+      fontFamily: "Bangers_400Regular",
+    },
+    ingredients: {
+      alignContent: "center",
+      paddingLeft: 20,
+      paddingRight: 20,
+      borderStyle: "solid",
+      borderColor: "grey",
+      borderWidth: 2,
+      borderRadius: 5,
+      marginLeft: 8,
+      marginRight: 8,
+    },
+    mins: {
+      alignContent: "center",
+    },
+  });
+
   if (isLoading) return <Text>Loading...</Text>;
 
   const addToSelectionPress = () => {
@@ -63,32 +107,37 @@ const RecipePage = ({ route }) => {
 
   return (
     <ScrollView>
-      <View style={styles.body}>
+      <View>
         <Image
           source={{
             width: 556,
             height: 370,
             uri: `${imageUrl}`,
           }}
-          style={{ resizeMode: "cover" }}
+          style={styles.image}
         />
-
         <View>
           <View>
-            <Text style={styles.image_text}>{recipeTitle}</Text>
-            <Text style={styles.image_text}>{`${cookTime} mins`}</Text>
+            <Text style={styles.mealTitle}>{recipeTitle}</Text>
+            <Text style={styles.mins}>{`${cookTime} mins`}</Text>
           </View>
+
           <View>
-            <Text>{`Ingredients - serves ${servings}`}</Text>
+            <Text
+              style={styles.ingredientsTitle}
+            >{`Ingredients - serves ${servings}`}</Text>
             {ingredients.map((ingredient, index) => {
               return (
-                <Text key={`${ingredient.id}`}>{ingredient.original}</Text>
+                <Text key={`${ingredient.id}`} style={styles.ingredients}>
+                  {ingredient.original}
+                </Text>
               );
             })}
           </View>
+
           <View>
-            <Text>Instructions</Text>
-            <Text>{instructions}</Text>
+            <Text style={styles.instructTitle}>Instructions</Text>
+            <Text style={styles.instructions}>{instructions}</Text>
           </View>
         </View>
         <View style={styles.buttons}>
