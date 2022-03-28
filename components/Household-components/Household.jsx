@@ -84,7 +84,7 @@ const HouseHoldScreen = ({ navigation }) => {
     )
   } else if(!familyStatus) {
     return (
-      <CreateGroupScreen setFamilyStatus={setFamilyStatus} />
+      <CreateGroupScreen setFamilyStatus={setFamilyStatus} navigation={navigation} />
     )
   } else {
     return (

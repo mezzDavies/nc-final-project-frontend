@@ -2,9 +2,11 @@ import React, { useState, useEffect } from "react";
 import { Button, View, Text, ScrollView } from "react-native";
 import { auth } from "../firebase";
 import RandomRecipes from "./RandomRecipes";
+import getUserDataAndClaims from "../utils/getUserDataAndClaims";
 
 const Homepage = ({ navigation }) => {
   const [userStatus, setUserStatus] = useState(false);
+  const [firstName, setFirstName] = useState('');
 
   useEffect(() => {
     auth.onAuthStateChanged(function (user) {

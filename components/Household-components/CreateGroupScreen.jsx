@@ -7,7 +7,7 @@ import { FormTextField } from "../FormTextField";
 import { addFamily } from "../../api/firestoreFunctions.families";
 import getUserDataAndClaims from "../../utils/getUserDataAndClaims";
 
-const CreateGroupScreen = ({ setFamilyStatus }) => {
+const CreateGroupScreen = ({ setFamilyStatus, navigation }) => {
   const [loadingMessage, setLoadingMessage] = useState("");
   const [userId, setUserId] = useState("");
   const [firstName, setFirstName] = useState("");
