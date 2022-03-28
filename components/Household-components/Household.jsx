@@ -1,6 +1,6 @@
 //IMPORTS - react
 import React, { useState, useEffect } from "react";
-import { View, Text, Button, ScrollView } from "react-native";
+import { View, Text, Button, ScrollView, Modal, Pressable, StyleSheet } from "react-native";
 
 //IMPORTS - firebase
 import { auth, fireFunctions } from "../../firebase";
@@ -12,6 +12,53 @@ import { getFamily } from "../../api/firestoreFunctions.families";
 import { httpsCallable } from "firebase/functions";
 import UserNotLoggedIn from "../UserNotLoggedIn";
 import CreateGroupScreen from "./CreateGroupScreen";
+import AddChildrenScreen from "./AddChildrenScreen";
+
+
+//STYLING - for modal
+const styles = StyleSheet.create({
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2
+  },
+  buttonOpen: {
+    backgroundColor: "#F194FF",
+  },
+  buttonClose: {
+    backgroundColor: "#2196F3",
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center"
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center"
+  }
+});
 
 //----------COMPONENT----------
 const HouseHoldScreen = ({ navigation }) => {
@@ -25,6 +72,7 @@ const HouseHoldScreen = ({ navigation }) => {
   const [familyStatus, setFamilyStatus] = useState(false);
   const [firstName, setFirstName] = useState('');
   const [loadingMessage, setLoadingMessage] = useState('');
+  const [modalVisible, setModalVisible] = useState(false);
 
   const switchToUserParentAccount = () => {
     setLoadingMessage(`We're just loading the parent account again...`)
@@ -53,6 +101,7 @@ const HouseHoldScreen = ({ navigation }) => {
             setParentStatus(claims.parent)
             if(userData.groupIds?.length > 0) {
               setFamilyId(userData.groupIds[0]);
+              setFamilyStatus(true);
             } else {
               setFamilyId('');
               setFamilyStatus(false);
@@ -65,7 +114,7 @@ const HouseHoldScreen = ({ navigation }) => {
         setFamilyMembers([]);
       }
     })
-  }, [userId, familyStatus])
+  }, [userId, familyStatus, familyMembers])
 
   useEffect(() => {
     if(familyId) {
@@ -106,7 +155,24 @@ const HouseHoldScreen = ({ navigation }) => {
             />
           );
         })}
-        {parentStatus ? <Button title="Add a child to the account" onPress={() => navigation.navigate("AddChildren")} /> : null}
+        {parentStatus ? <Button title="Add a child to the account" onPress={() => setModalVisible(true)} /> : null}
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            setModalVisible(false);
+          }}
+        >
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <AddChildrenScreen setFamilyMembers={setFamilyMembers} />
+              <Pressable style={[styles.button, styles.buttonClose]} onPress={() => setModalVisible(false)}>
+                <Text style={styles.textStyle}>Close Pop Up</Text>
+              </Pressable>
+            </View>
+          </View>
+        </Modal>
       </View>
       </ScrollView>
     );

@@ -9,7 +9,7 @@ import { createChildAccount } from "../../api/firestoreFunctions.users";
 import getUserDataAndClaims from "../../utils/getUserDataAndClaims";
 
 //----------COMPONENT----------
-const AddChildrenScreen = ({ navigation }) => {
+const AddChildrenScreen = ({ setFamilyMembers }) => {
     //-----Declarations-----
     const { control, handleSubmit, reset, formState: { errors } } = useForm();
     const [loadingMessage, setLoadingMessage] = useState('')
@@ -27,9 +27,12 @@ const AddChildrenScreen = ({ navigation }) => {
 
         setLoadingMessage(`We're just creating your child's account for you now...`)
         createChildAccount(familyId, firstName)
-            .then(() => {
+            .then((childRef) => {
                 reset();
-                navigation.navigate("Household");
+                setFamilyMembers((currFamilyMembers) => {
+                    const newFamilyMembers = [...currFamilyMembers, childRef]
+                    return newFamilyMembers;
+                })
             })
             .catch((err) => {
                 return err
@@ -39,6 +42,7 @@ const AddChildrenScreen = ({ navigation }) => {
     //-----Rendering-----
     return (
         <View>
+            <Text>What is your child's first name?</Text>
             <Controller
                 defaultValue=""
                 control={control}
