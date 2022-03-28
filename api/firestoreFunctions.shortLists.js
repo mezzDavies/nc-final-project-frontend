@@ -14,6 +14,7 @@ import {
   Timestamp,
   updateDoc,
   where,
+  runTransaction,
 } from "firebase/firestore";
 
 // import app from "../firebase";
@@ -59,7 +60,32 @@ async function deleteShortList(
   console.log("short list removed: ", shortListId);
 }
 
-async function getShortLists(userId, familyId, selectionListId, mealPlanId) {
+async function getShortLists(familyId, selectionListId, mealPlanId) {
+  const querySnapshot = await getDocs(
+    collection(
+      fireDB,
+      `/families/${familyId}/selectionLists/${selectionListId}/mealPlans/${mealPlanId}/shortLists`
+    )
+  );
+  const result = [];
+  querySnapshot.forEach((shortList) => {
+    result.push({
+      shortListId: shortList.id,
+      isConfirmed: shortList.get("isConfirmed"),
+    });
+  });
+  return result;
+}
+
+// When you don't know the users shortListId you can use this function
+// You can then call getRecipesById to view recipe details
+
+async function getShortListFromCollection(
+  userId,
+  familyId,
+  selectionListId,
+  mealPlanId
+) {
   const q = query(
     collection(
       fireDB,
@@ -68,10 +94,12 @@ async function getShortLists(userId, familyId, selectionListId, mealPlanId) {
     where("userId", "==", userId)
   );
 
+  const result = [];
   const querySnapshot = await getDocs(q);
   querySnapshot.forEach((shortList) => {
-    console.log("shortListId: ", shortList.id);
+    result.push(shortList.id);
   });
+  return result;
 }
 
 // View the current RecipeIds in a shortList
@@ -100,7 +128,30 @@ async function getShortList(
 }
 
 // Adds a recipeId to a shortList
-// this should be limited to 7 recipes
+
+// async function addToShortList(
+//   userId,
+//   familyId,
+//   selectionListId,
+//   mealPlanId,
+//   shortListId,
+//   recipeId
+// ) {
+//   const docRef = doc(
+//     fireDB,
+//     `/families/${familyId}/selectionLists/${selectionListId}/mealPlans/${mealPlanId}/shortLists`,
+//     shortListId
+//   );
+
+//   await updateDoc(docRef, {
+//     recipeIds: arrayUnion(recipeId),
+//   });
+//   console.log("Added - shortList: ", docRef.id, "recipeId: ", recipeId);
+
+//   return docRef.id;
+// }
+
+// This version limits recipeIds to 7 and userIds must match
 async function addToShortList(
   userId,
   familyId,
@@ -109,18 +160,40 @@ async function addToShortList(
   shortListId,
   recipeId
 ) {
-  const docRef = doc(
+  const shortListRef = doc(
     fireDB,
     `/families/${familyId}/selectionLists/${selectionListId}/mealPlans/${mealPlanId}/shortLists`,
     shortListId
   );
 
-  await updateDoc(docRef, {
-    recipeIds: arrayUnion(recipeId),
-  });
-  console.log("Added - shortList: ", docRef.id, "recipeId: ", recipeId);
+  try {
+    await runTransaction(fireDB, async (transaction) => {
+      const shortListDoc = await transaction.get(shortListRef);
+      if (!shortListDoc.exists()) {
+        throw new Error("Document does not exist!");
+      }
 
-  return docRef.id;
+      if (userId !== shortListDoc.data().userId) {
+        throw new Error("User is not permitted to edit this shortList");
+      }
+      if (shortListDoc.data().recipeIds.length >= 7) {
+        throw new Error("Short List is full. Remove items firs");
+      }
+
+      transaction.update(shortListRef, {
+        recipeIds: arrayUnion(recipeId),
+      });
+      console.log(
+        "Added - shortList: ",
+        shortListRef.id,
+        "recipeId: ",
+        recipeId
+      );
+      return shortListRef.id;
+    });
+  } catch (e) {
+    console.log(e);
+  }
 }
 
 // Deletes a recipeId from a shortList
@@ -176,6 +249,7 @@ export {
   deleteFromShortList,
   deleteShortList,
   getShortList,
+  getShortListFromCollection,
   getShortLists,
   orderShortList,
 };
