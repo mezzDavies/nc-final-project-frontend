@@ -140,15 +140,54 @@ async function calculateShoppingList(recipeIds) {
 
   await querySnapshots.forEach((ingredient) => {
     ingredient.forEach((i) => {
+      const data = i.data();
       const item = {};
-      item.id = i.get("id");
-      item.name = i.get("name");
-      item.amount = i.get("amount");
-      item.unit = i.get("unit");
+      item.id = data.id;
+      item.name = data.name;
+      item.amount = data.measures.metric.amount;
+      item.unit = data.measures.metric.unitLong;
       shoppingList.push(item);
     });
-    // console.log(shoppingList);
   });
+
+  function groupBy(objectArray, property) {
+    return objectArray.reduce(function (acc, obj) {
+      let key = obj[property];
+      if (!acc[key]) {
+        acc[key] = [];
+      }
+      acc[key].push(obj);
+      return acc;
+    }, {});
+  }
+
+  let listGrouped = groupBy(shoppingList, "id");
+  let listGroupedTotalled = { ...listGrouped };
+
+  for (const key in listGroupedTotalled) {
+    const subGrouped = groupBy(listGroupedTotalled[key], "unit");
+    listGroupedTotalled[key] = subGrouped;
+    for (const prop in subGrouped) {
+      const items = subGrouped[prop].length;
+      const amount = subGrouped[prop].reduce((a, b) => a + b.amount, 0);
+      const totalled = {
+        ...subGrouped[prop][0],
+        amount: amount,
+        NumOfItems: items,
+      };
+      listGroupedTotalled[key][prop] = totalled;
+    }
+  }
+
+  const listGroupedTotalledFlat = Object.keys(listGroupedTotalled).map(
+    (key) => listGroupedTotalled[key]
+  );
+
+  console.log(shoppingList);
+  console.log(listGrouped);
+  console.log(listGroupedTotalled);
+  console.log(listGroupedTotalledFlat);
+
   return shoppingList;
 }
 
