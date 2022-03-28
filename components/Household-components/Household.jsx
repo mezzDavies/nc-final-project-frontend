@@ -7,10 +7,11 @@ import { auth, fireFunctions } from "../../firebase";
 
 //IMPORTS - utils functions and components
 import FamilyMemberCard from "./FamilyMemberCard";
-import userNotLoggedIn from "../../utils/userNotLoggedIn";
 import getUserDataAndClaims from "../../utils/getUserDataAndClaims";
 import { getFamily } from "../../api/firestoreFunctions.families";
 import { httpsCallable } from "firebase/functions";
+import UserNotLoggedIn from "../UserNotLoggedIn";
+import CreateGroupScreen from "./CreateGroupScreen";
 
 //----------COMPONENT----------
 const HouseHoldScreen = ({ navigation }) => {
@@ -21,14 +22,15 @@ const HouseHoldScreen = ({ navigation }) => {
   const [familyId, setFamilyId] = useState('');
   const [familyMembers, setFamilyMembers] = useState([]);
   const [familyName, setFamilyName] = useState('');
+  const [familyStatus, setFamilyStatus] = useState(false);
   const [firstName, setFirstName] = useState('');
   const [loadingMessage, setLoadingMessage] = useState('');
 
   const switchToUserParentAccount = () => {
+    setLoadingMessage(`We're just loading the parent account again...`)
     const switchtoParentAccount = httpsCallable(fireFunctions, "switchToParentAccount");
     switchtoParentAccount()
       .then(() => {
-        setLoadingMessage(`We're just loading the parent account again...`)
         return auth.currentUser.getIdToken(true);
       })
       .then(() => {
@@ -53,7 +55,7 @@ const HouseHoldScreen = ({ navigation }) => {
               setFamilyId(userData.groupIds[0]);
             } else {
               setFamilyId('');
-              navigation.navigate("CreateGroup");
+              setFamilyStatus(false);
             }
           })
       } else {
@@ -63,7 +65,7 @@ const HouseHoldScreen = ({ navigation }) => {
         setFamilyMembers([]);
       }
     })
-  }, [userId])
+  }, [userId, familyStatus])
 
   useEffect(() => {
     if(familyId) {
@@ -73,11 +75,17 @@ const HouseHoldScreen = ({ navigation }) => {
         setFamilyMembers(family.familyMembers);
       })
     }
-  }, [familyId])
+  }, [familyId, familyStatus])
 
   //------Rendering------
   if(!userStatus) {
-    return userNotLoggedIn(navigation);
+    return (
+        <UserNotLoggedIn setUserStatus={setUserStatus} />
+    )
+  } else if(!familyStatus) {
+    return (
+      <CreateGroupScreen setFamilyStatus={setFamilyStatus} />
+    )
   } else {
     return (
       <ScrollView>

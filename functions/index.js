@@ -12,14 +12,18 @@ admin.initializeApp();
 // Return function, invoked with an object containing correct keys. E.G 'addParentClaim' accesses 'data.email' so the object needs to contain a key-value pair with key 'email' and value of the user's email.
 // Code example: return addParentClaim({ email: (users-email-string) });
 
-exports.addParentClaim = functions.https.onCall((data) => admin
-    .auth()
-    .getUserByEmail(data.email)
-    .then((user) => admin.auth().setCustomUserClaims(user.uid, { parent: true }))
-    .then(() => ({
+exports.addParentClaim = functions.https.onCall((data) => {
+  return admin.auth().getUserByEmail(data.email)
+    .then((user) => {
+      return admin.auth().setCustomUserClaims(user.uid, { parent: true })
+    })
+    .then(() => {
+      return {
         message: `Successfully added user as a parent`,
-      }))
-    .catch((err) => err));
+      }
+    })
+    .catch((err) => err);
+})
 
 exports.switchToChildAccount = functions.https.onCall((data, context) => {
   const {uid} = context.auth;

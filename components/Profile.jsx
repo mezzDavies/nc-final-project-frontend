@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, Button } from "react-native";
 import { auth } from "../firebase";
-import userNotLoggedIn from "../utils/userNotLoggedIn";
+import UserNotLoggedIn from "./UserNotLoggedIn";
 import getUserDataAndClaims from "../utils/getUserDataAndClaims";
 
 const ProfileScreen = ({ navigation }) => {
@@ -17,23 +17,21 @@ const ProfileScreen = ({ navigation }) => {
   }
 
   useEffect(() => {
-    auth.onAuthStateChanged(function(user) {
-      if(user) {
-        setUserStatus(true);
-        getUserDataAndClaims()
-          .then(({ claims, userData, userId }) => {
-            setFirstName(userData.name);
-            userData.groupIds?.length > 0 ? setFamilyStatus(true) : setFamilyStatus(false);
-          })
-      } else {
-        setUserStatus(false);
-        setFirstName('');
-      }
-    })
-  }, [])
+    if(auth.currentUser) {
+      setUserStatus(true);
+      getUserDataAndClaims()
+        .then(({ claims, userData, userId }) => {
+          setFirstName(userData.name);
+          userData.groupIds?.length > 0 ? setFamilyStatus(true) : setFamilyStatus(false);
+        })
+    } else {
+      setUserStatus(false);
+      setFirstName('');
+    }
+  }, [userStatus])
 
   if(!userStatus) {
-    return userNotLoggedIn(navigation)
+    return <UserNotLoggedIn setUserStatus={setUserStatus} />
   } else {
     return (
       <View>
