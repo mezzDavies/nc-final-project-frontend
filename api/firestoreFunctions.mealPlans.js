@@ -8,6 +8,7 @@ import {
   doc,
   getDoc,
   getDocs,
+  runTransaction,
   Timestamp,
   updateDoc,
 } from "firebase/firestore";
@@ -136,15 +137,16 @@ async function getMealPlans(familyId, selectionListId) {
     `families/${familyId}/selectionLists/${selectionListId}/mealPlans`
   );
 
+  const result = [];
   const querySnapshot = await getDocs(collectionRef);
   querySnapshot.forEach((mealPlan) => {
-    console.log(
-      "Meal plan id: ",
-      mealPlan.id,
-      "isConfirmed: ",
-      mealPlan.get("isConfirmed")
-    );
+    result.push({
+      mealPlanId: mealPlan.id,
+      isConfirmed: mealPlan.get("isConfirmed"),
+    });
   });
+
+  return result;
 }
 
 // View a meal plan
@@ -156,15 +158,31 @@ async function getMealPlan(familyId, selectionListId, mealPlanId) {
     `families/${familyId}/selectionLists/${selectionListId}/mealPlans`,
     mealPlanId
   );
+
+  try {
+    await runTransaction(fireDB, async (transaction) => {
+      const docSnap = await transaction.get(docRef);
+      if (!docSnap.exists()) {
+        console.log("No such document!");
+      } else if (!docSnap.get("isConfirmed")) {
+        const recipeIds = await calculateVotes(
+          familyId,
+          selectionListId,
+          mealPlanId
+        );
+        const shoppingList = await calculateShoppingList(recipeIds);
+        transaction.update(docRef, {
+          recipeIds,
+          shoppingList,
+        });
+      }
+    });
+  } catch (e) {
+    console.error(e);
+  }
+
   const docSnap = await getDoc(docRef);
   if (docSnap.exists()) {
-    const votes = await calculateVotes(familyId, selectionListId, mealPlanId);
-    const shoppingList = await calculateShoppingList(votes);
-
-    console.log("Calculate votes: ", votes);
-    console.log("shopping list: ", shoppingList);
-    console.log("Document data:", docSnap.get("recipeIds"));
-
     return docSnap.data();
   }
   // doc.data() will be undefined in this case
