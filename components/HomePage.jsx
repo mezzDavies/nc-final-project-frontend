@@ -6,7 +6,7 @@ import getUserDataAndClaims from "../utils/getUserDataAndClaims";
 
 const Homepage = ({ navigation }) => {
   const [userStatus, setUserStatus] = useState(false);
-  const [firstName, setFirstName] = useState("");
+  const [firstName, setFirstName] = useState('');
 
   useEffect(() => {
     auth.onAuthStateChanged(function (user) {
@@ -17,7 +17,6 @@ const Homepage = ({ navigation }) => {
         });
       } else {
         setUserStatus(false);
-        setFirstName("");
       }
     });
   }, []);

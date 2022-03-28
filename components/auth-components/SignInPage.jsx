@@ -5,7 +5,7 @@ import { FormTextField } from "../FormTextField";
 import { auth } from "../../firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 
-const SignInPage = ({ navigation }) => {
+const SignInPage = ({ setUserStatus }) => {
   const {
     control,
     handleSubmit,
@@ -22,14 +22,14 @@ const SignInPage = ({ navigation }) => {
     signInWithEmailAndPassword(auth, email, password)
       .then((cred) => {
         reset();
-        navigation.navigate("Profile");
+        setUserStatus(true)
       });
   };
 
   useEffect(() => {
     auth.onAuthStateChanged(function(user) {
       if(user) {
-        navigation.navigate("Profile");
+        setUserStatus(true);
       }
     })
   }, []);

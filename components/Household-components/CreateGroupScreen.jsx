@@ -7,7 +7,7 @@ import { FormTextField } from "../FormTextField";
 import { addFamily } from "../../api/firestoreFunctions.families";
 import getUserDataAndClaims from "../../utils/getUserDataAndClaims";
 
-const CreateGroupScreen = ({ navigation }) => {
+const CreateGroupScreen = ({ setFamilyStatus, navigation }) => {
   const [loadingMessage, setLoadingMessage] = useState("");
   const [userId, setUserId] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -33,7 +33,7 @@ const CreateGroupScreen = ({ navigation }) => {
     setLoadingMessage(`We're just creating your household for you...`);
     addFamily(userId, groupName).then(() => {
       reset();
-      navigation.navigate("Household");
+      setFamilyStatus(true);
     });
   };
 

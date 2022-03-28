@@ -11,38 +11,29 @@ import {
   getDoc,
   getDocs,
   onSnapshot,
-  runTransaction,
   Timestamp,
   updateDoc,
 } from "firebase/firestore";
-import { getFamily } from "./firestoreFunctions.families";
-import { addMealPlan } from "./firestoreFunctions.mealPlans";
-import { addShortList } from "./firestoreFunctions.shortLists";
 
 // import app from "../firebase";
 import { fireDB } from "../firebase";
 
-// Might be more descriptive to change selectionList to scranPlan then add selectionList as a field
-// Creates a new selectionList for a family
-// At the moment we should only allow one per family
-// This could be created automatically when a user creates the family
+// Creates a new selectionList document for a family
+// Don't use this function directly.
+// It is used by addScranPlan() as part of a transaction.
 
 async function addSelectionList(familyId) {
-  // this needs to get made into a utility
-  const start = new Date();
-  start.setDate(start.getDate() + ((((7 - start.getDay()) % 7) + 1) % 7));
-  start.setHours(0);
-  start.setMinutes(0);
-  start.setSeconds(0);
+  // Uses the current local time to set the scran plan start date to 0000 on the next Monday.
+  function setStartDate() {
+    const start = new Date();
+    start.setDate(start.getDate() + ((((7 - start.getDay()) % 7) + 1) % 7));
+    start.setHours(0);
+    start.setMinutes(0);
+    start.setSeconds(0);
+    return start;
+  }
 
-  // const end = new Date();
-  // end.setDate(start.getDate() + 7);
-
-  // const open = new Date();
-  // open.setDate(start.getDate() - 7);
-
-  // const close = new Date();
-  // close.setDate(start.getDate() - 2);
+  const start = setStartDate();
 
   const docRef = await addDoc(
     collection(fireDB, `families/${familyId}/selectionLists`),
@@ -50,31 +41,14 @@ async function addSelectionList(familyId) {
       createdAt: Timestamp.fromDate(new Date()),
       listName: "Dinner",
       isActive: true,
-      startDate: start,
+      startDate: Timestamp.fromDate(start),
       planLength: 7,
       planOpen: -7,
       planConfirm: -2,
       recipeIds: [],
     }
   );
-  console.log("scranPlan: ", docRef.id, "familyId ", familyId);
   return docRef.id;
-}
-
-async function addScranPlan(familyId) {
-  try {
-    await runTransaction(fireDB, async () => {
-      const familyDoc = await getFamily(familyId);
-      const selectionListRef = await addSelectionList(familyId);
-      const mealPlanRef = await addMealPlan(familyId, selectionListRef);
-      await familyDoc.family.familyMembers.forEach((member) => {
-        addShortList(member, familyId, selectionListRef, mealPlanRef);
-      });
-      console.log("did it work!");
-    });
-  } catch (e) {
-    console.error(e);
-  }
 }
 
 async function updateSelectionListName(familyId, selectionListId, newListName) {
@@ -109,7 +83,11 @@ async function toggleSelectionListStatus(familyId, selectionListId) {
   return !currIsActive;
 }
 
-// I need to check the format to submit a new start date
+// Update the schedule fields of a scranPlan
+// startDate needs to be in a recognized javascript format e.g. date object
+// pass null or undefined to any field that doesn't need to be updated
+// the _.pickBy function should then strip it out from the final request.
+
 async function updateSelectionListSchedule(
   familyId,
   selectionListId,
@@ -123,6 +101,10 @@ async function updateSelectionListSchedule(
     (value) => !!value
   );
 
+  if (params.startDate) {
+    params.startDate = Timestamp.fromDate(startDate);
+  }
+
   const docRef = doc(
     fireDB,
     `families/${familyId}/selectionLists`,
@@ -134,7 +116,8 @@ async function updateSelectionListSchedule(
   return docRef.id;
 }
 
-// Admin function only
+// Admin function only - will be removed
+// set isActive: false instead using toggleSelectionListStatus()
 async function deleteSelectionList(familyId, selectionListId) {
   await deleteDoc(
     doc(fireDB, `families/${familyId}/selectionLists`, selectionListId)
@@ -149,16 +132,12 @@ async function getSelectionLists(familyId) {
     fireDB,
     `families/${familyId}/selectionLists`
   );
-
+  const selectionLists = [];
   const querySnapshot = await getDocs(collectionRef);
   querySnapshot.forEach((selectionList) => {
-    console.log(
-      selectionList.id,
-      " => ",
-      selectionList.get("listName"),
-      ": ",
-      selectionList.get("startDate").toDate()
-    );
+    if (selectionList.get("isActive") === true) {
+      selectionLists.push(selectionList.id);
+    }
   });
 }
 
@@ -173,9 +152,7 @@ async function getSelectionList(familyId, selectionListId) {
   );
   const docSnap = await getDoc(docRef);
   if (docSnap.exists()) {
-    console.log("Scran plan selection list: ", docSnap.get("recipeIds"));
-    console.log("Scran plan: ", docSnap.data());
-    return docSnap.data();
+    return docSnap.get("recipeIds");
   }
   // doc.data() will be undefined in this case
   console.log("No such document!");
@@ -232,9 +209,6 @@ async function deleteFromSelectionList(familyId, selectionListId, recipeId) {
 }
 
 export {
-  addScranPlan,
-  updateSelectionListName,
-  updateSelectionListSchedule,
   addSelectionList,
   addToSelectionList,
   deleteSelectionList,
@@ -243,4 +217,6 @@ export {
   getSelectionLists,
   listenSelectionList,
   toggleSelectionListStatus,
+  updateSelectionListName,
+  updateSelectionListSchedule,
 };

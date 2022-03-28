@@ -7,9 +7,11 @@ import {
   StyleSheet,
   ScrollView,
 } from "react-native";
-import { getRecipeById } from "../../api/firestoreFunctions.recipes";
 
+import { getRecipeById } from "../../api/firestoreFunctions.recipes";
 import { addToSelectionList } from "../../api/firestoreFunctions.selectionLists";
+
+import CustomButton from "../reusables/CustomButton";
 
 const familyId = "yPRj8Q1cEgwJ465bec04";
 const selectionListId = "oeAuz0njIbYyPeLUqpUw";
@@ -107,7 +109,9 @@ const RecipePage = ({ route }) => {
 
   return (
     <ScrollView>
+
       <View>
+
         <Image
           source={{
             width: 556,
@@ -141,6 +145,7 @@ const RecipePage = ({ route }) => {
           </View>
         </View>
         <View style={styles.buttons}>
+          <CustomButton text="test button" />
           <Button title="Add to shortlist" onPress={addToSelectionPress} />
           <Button title="Add to favourites" onPress={{}} />
         </View>
