@@ -12,41 +12,37 @@ import { doc, setDoc } from "firebase/firestore";
 
 //IMPORTS - utils functions
 import { FormTextField } from "../FormTextField";
+import getUserDataAndClaims from "../../utils/getUserDataAndClaims";
 
 // ----------COMPONENT----------
-const SignUpPage = ({ navigation }) => {
+const SignUpPage = ({ navigation, setUserStatus }) => {
   //-----Declarations-----
   const { control, handleSubmit, reset, formState: { errors } } = useForm();
   const [loadingMessage, setLoadingMessage] = useState('')
 
-  const onSubmit = (data) => {
-    const firstName = data.firstName;
-    const email = data.email;
-    const password = data.password;
+  const onSubmit = async (data, e) => {
+    try {
+      e.preventDefault();
+      console.log(e)
+    
+      const firstName = data.firstName;
+      const email = data.email;
+      const password = data.password;
 
-    setLoadingMessage(`We're just creating your account for you now...`)
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((cred) => {
-        const createDoc =  setDoc(doc(fireDB, "users", cred.user.uid), {
-          name: firstName,
-          isParent: true
-        });
-        return Promise.all([cred, createDoc])
-      })
-      .then(([cred, docResult]) => {
-        const addParentClaim = httpsCallable(fireFunctions, "addParentClaim");
-        return addParentClaim({ email: cred.user.email });
-      })
-      .then(() => {
-        return auth.currentUser.getIdToken(true);
-      })
-      .then(() => {
-        reset();
-        navigation.navigate("Profile");
-      })
-      .catch((err) => {
-        return err
-      })
+      setLoadingMessage(`We're just creating your account for you now...`)
+      const cred = await createUserWithEmailAndPassword(auth, email, password)
+      await setDoc(doc(fireDB, "users", cred.user.uid), {
+        name: firstName,
+        isParent: true
+      });
+      const addParentClaim = await httpsCallable(fireFunctions, "addParentClaim");
+      await addParentClaim({ email: cred.user.email });
+      await auth.currentUser.getIdToken(true);
+      const { claims, userData, newUserId } = await getUserDataAndClaims()
+      console.log(claims)
+    } catch(err) {
+      console.log(err)
+    }
   };
 
   //-----Rendering-----

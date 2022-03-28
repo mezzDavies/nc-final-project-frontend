@@ -31,6 +31,12 @@ async function addFamily(userId, groupName) {
     createdAt: Timestamp.fromDate(new Date()),
   });
 
+  const userDocRef = doc(fireDB, "users", userId);
+
+  await updateDoc(userDocRef, {
+    groupIds: arrayUnion(docRef.id)
+  })
+
   return docRef.id;
 }
 
