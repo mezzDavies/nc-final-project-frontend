@@ -13,12 +13,16 @@ export default function RandomRecipes({ navigation }) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    let mounted = true;
     setIsLoading(true);
     getRecipes().then(({ recipeCards }) => {
-      const shuffled = [...recipeCards].sort(() => 0.5 - Math.random());
-      setRecipes(shuffled.slice(0, 3));
-      setIsLoading(false);
+      if (mounted) {
+        const shuffled = [...recipeCards].sort(() => 0.5 - Math.random());
+        setRecipes(shuffled.slice(0, 3));
+        setIsLoading(false);
+      }
     });
+    return () => (mounted = false);
   }, []);
 
   const imageStyles = StyleSheet.create({

@@ -10,6 +10,9 @@ const Homepage = ({ navigation }) => {
     auth.onAuthStateChanged(function (user) {
       if (user) {
         setUserStatus(true);
+        getUserDataAndClaims().then(({ claims, userData, userId }) => {
+          setFirstName(userData.name);
+        });
       } else {
         setUserStatus(false);
       }
@@ -20,6 +23,10 @@ const Homepage = ({ navigation }) => {
     return (
       <ScrollView>
         <View>
+          <Button
+            title="View all Recipes..."
+            onPress={() => navigation.navigate("RecipesAll")}
+          />
           <RandomRecipes navigation={navigation} />
           <Button
             title="Go to Testing..."
