@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, Button, ScrollView } from "react-native";
+import { Text, View, Button } from "react-native";
 import {
   getMealPlan,
   toggleMealPlanStatus,
@@ -55,38 +55,36 @@ const MealPlanList = ({ navigation }) => {
   if (isLoading) return <Text>Is Loading...</Text>;
 
   return (
-    <ScrollView>
-      <View>
-        <Text>
-          Meal Plan contents:
-          {mealPlan.map((recipe, index) => {
-            return (
-              <MealPlanCard
-                recipe={recipe}
-                key={`${recipe.id} - ${index}`}
-                navigation={navigation}
-              />
-            );
-          })}
-        </Text>
-        <Button
-          title={
-            isChild
-              ? "Only adult user can confirm Meal Plans"
-              : mealPlanConfirmation
-              ? "Meal Plan Already Confirmed"
-              : "Confirm Your Meal Plan"
-          }
-          onPress={() => {
-            toggleMealPlanStatus(familyId, selectionListId, mealPlanId);
-            setMealPlanConfirmation((currentMealPlanConfirmation) => {
-              return !currentMealPlanConfirmation;
-            });
-          }}
-          disabled={isChild ? true : mealPlanConfirmation}
-        />
-      </View>
-    </ScrollView>
+    <View>
+      <Text>
+        Meal Plan contents:
+        {mealPlan.map((recipe, index) => {
+          return (
+            <MealPlanCard
+              recipe={recipe}
+              key={`${recipe.id} - ${index}`}
+              navigation={navigation}
+            />
+          );
+        })}
+      </Text>
+      <Button
+        title={
+          isChild
+            ? "Only adult user can confirm Meal Plans"
+            : mealPlanConfirmation
+            ? "Meal Plan Already Confirmed"
+            : "Confirm Your Meal Plan"
+        }
+        onPress={() => {
+          toggleMealPlanStatus(familyId, selectionListId, mealPlanId);
+          setMealPlanConfirmation((currentMealPlanConfirmation) => {
+            return !currentMealPlanConfirmation;
+          });
+        }}
+        disabled={isChild ? true : mealPlanConfirmation}
+      />
+    </View>
   );
 };
 

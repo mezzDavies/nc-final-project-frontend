@@ -5,6 +5,8 @@ import AddToShortList from "./AddToShortlist";
 import DeleteRecipeFromList from "./DeleteRecipeFromList";
 
 const SelectionListCard = ({
+  idArray,
+  setIdArray,
   navigation,
   recipeId,
   familyId,
@@ -39,6 +41,8 @@ const SelectionListCard = ({
       </TouchableHighlight>
       <Text>{`${title}`}</Text>
       <AddToShortList
+        idArray={idArray}
+        setIdArray={setIdArray}
         familyId={familyId}
         recipeId={recipeId}
         navigation={navigation}

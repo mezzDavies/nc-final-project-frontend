@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Button, View, Text, ScrollView } from "react-native";
 import { auth } from "../firebase";
-import { fireDB } from "../firebase";
-import { doc, getDoc } from "firebase/firestore";
 import RandomRecipes from "./RandomRecipes";
+import getUserDataAndClaims from "../utils/getUserDataAndClaims";
 
 const Homepage = ({ navigation }) => {
   const [userStatus, setUserStatus] = useState(false);
@@ -13,29 +12,24 @@ const Homepage = ({ navigation }) => {
     auth.onAuthStateChanged(function (user) {
       if (user) {
         setUserStatus(true);
-        auth.currentUser
-          .getIdTokenResult()
-          .then(({ claims }) => {
-            const userDocRef = doc(fireDB, "users", claims.user_id);
-            return getDoc(userDocRef);
-          })
-          .then((docSnap) => {
-            if (docSnap.exists()) {
-              const userData = docSnap.data();
-              setFirstName(userData.name);
-            }
-          });
+        getUserDataAndClaims().then(({ claims, userData, userId }) => {
+          setFirstName(userData.name);
+        });
       } else {
         setUserStatus(false);
         setFirstName("");
       }
     });
-  }, [userStatus]);
+  }, []);
 
   if (userStatus) {
     return (
       <ScrollView>
         <View>
+          <Button
+            title="View all Recipes..."
+            onPress={() => navigation.navigate("RecipesAll")}
+          />
           <RandomRecipes navigation={navigation} />
           <Button
             title="Go to Testing..."
