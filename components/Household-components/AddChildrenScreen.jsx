@@ -5,7 +5,7 @@ import { useForm, Controller } from "react-hook-form";
 
 //IMPORTS - utils functions
 import { FormTextField } from "../FormTextField";
-import createChildAccount from "../../api/createChildAccount";
+import { createChildAccount } from "../../api/firestoreFunctions.users";
 import getUserDataAndClaims from "../../utils/getUserDataAndClaims";
 
 //----------COMPONENT----------
