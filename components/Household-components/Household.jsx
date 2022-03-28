@@ -84,7 +84,7 @@ const HouseHoldScreen = ({ navigation }) => {
       <View>
         <Text>{loadingMessage}</Text>
         <Text>Hello {firstName}, and welcome to the {familyName} group!</Text>
-        {!parentStatus ? <Button title="Switch back to parent account" onPress={switchToUserParentAccount} color="#859cc7" /> : null }
+        {!parentStatus ? <Button title="Switch back to parent account" onPress={switchToUserParentAccount} color="#859cc7" /> : <Text>Want to invite others to join the group? Your invite code is: {familyId}</Text> }
         <Text>Group Members:</Text>
         {familyMembers.map((familyMember, index) => {
           return (
