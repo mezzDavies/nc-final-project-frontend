@@ -39,9 +39,10 @@ const styles = StyleSheet.create({
     elevation: 5
   },
   button: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2
+    borderRadius: 15,
+    padding: 5,
+    elevation: 2,
+    marginTop: 5
   },
   buttonOpen: {
     backgroundColor: "#F194FF",
@@ -168,7 +169,7 @@ const HouseHoldScreen = ({ navigation }) => {
             <View style={styles.modalView}>
               <AddChildrenScreen setFamilyMembers={setFamilyMembers} />
               <Pressable style={[styles.button, styles.buttonClose]} onPress={() => setModalVisible(false)}>
-                <Text style={styles.textStyle}>Close Pop Up</Text>
+                <Text style={styles.textStyle}>Close This Pop Up</Text>
               </Pressable>
             </View>
           </View>

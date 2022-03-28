@@ -12,7 +12,7 @@ const Homepage = ({ navigation }) => {
     auth.onAuthStateChanged(function (user) {
       if (user) {
         setUserStatus(true);
-        getUserDataAndClaims().then(({ claims, userData, userId }) => {
+        getUserDataAndClaims().then(({ claims, userData, newUserId }) => {
           setFirstName(userData.name);
         });
       } else {
