@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
   },
   modalView: {
     margin: 20,
-    backgroundColor: "white",
+    backgroundColor: "#f0f0e4",
     borderRadius: 20,
     padding: 35,
     alignItems: "center",
@@ -46,10 +46,10 @@ const styles = StyleSheet.create({
     marginTop: 5
   },
   buttonOpen: {
-    backgroundColor: "#F194FF",
+    backgroundColor: "#384e9c",
   },
   buttonClose: {
-    backgroundColor: "#2196F3",
+    backgroundColor: "#384e9c",
   },
   textStyle: {
     color: "white",
@@ -146,6 +146,10 @@ const HouseHoldScreen = ({ navigation }) => {
     return (
       <CreateGroupScreen
         setFamilyStatus={setFamilyStatus}
+        userId={userId}
+        setUserId={setUserId}
+        firstName={firstName}
+        setFirstName={setFirstName}
         navigation={navigation}
       />
     );

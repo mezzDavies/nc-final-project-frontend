@@ -1,6 +1,7 @@
-// lodash
+//IMPORTS - lodash
 import _ from "lodash";
 
+//IMPORTS - firebase
 import {
   arrayRemove,
   arrayUnion,
@@ -16,8 +17,6 @@ import {
   where,
   runTransaction,
 } from "firebase/firestore";
-
-// import app from "../firebase";
 import { fireDB } from "../firebase";
 
 // Create a new shortList for the current user

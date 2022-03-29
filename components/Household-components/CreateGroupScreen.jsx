@@ -5,27 +5,15 @@ import { useForm, Controller } from "react-hook-form";
 import { FormTextField } from "../FormTextField";
 
 import { addFamily } from "../../api/firestoreFunctions.families";
-import getUserDataAndClaims from "../../utils/getUserDataAndClaims";
 
-const CreateGroupScreen = ({ setFamilyStatus, navigation }) => {
+const CreateGroupScreen = ({ setFamilyStatus, userId, setUserId, firstName, setFirstName, navigation }) => {
   const [loadingMessage, setLoadingMessage] = useState("");
-  const [userId, setUserId] = useState("");
-  const [firstName, setFirstName] = useState("");
   const {
     control,
     handleSubmit,
     reset,
     formState: { errors },
   } = useForm();
-
-  useEffect(() => {
-    getUserDataAndClaims().then(({ claims, userData, newUserId }) => {
-      if (claims.parent) {
-        setUserId(newUserId);
-        setFirstName(userData.name);
-      }
-    });
-  }, []);
 
   const onSubmit = (data) => {
     const groupName = data.groupName;
