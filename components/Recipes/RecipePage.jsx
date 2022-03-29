@@ -10,11 +10,11 @@ import {
 
 import { getRecipeById } from "../../api/firestoreFunctions.recipes";
 import { addToSelectionList } from "../../api/firestoreFunctions.selectionLists";
+import { getFamilies } from "../../api/firestoreFunctions.families";
+import getUserDataAndClaims from "../../utils/getUserDataAndClaims";
+import { getSelectionLists } from "../../api/firestoreFunctions.selectionLists";
 
 import CustomButton from "../reusables/CustomButton";
-
-const familyId = "yPRj8Q1cEgwJ465bec04";
-const selectionListId = "oeAuz0njIbYyPeLUqpUw";
 
 const RecipePage = ({ route }) => {
   const [imageUrl, setImageUrl] = useState("");
@@ -24,8 +24,32 @@ const RecipePage = ({ route }) => {
   const [instructions, setInstructions] = useState("");
   const [servings, setServings] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const [familyId, setFamilyId] = useState([]);
+  const [userId, setUserId] = useState([]);
+  const [selectionListId, setSelectionListId] = useState([]);
 
-  const recipeId = route.params.id;
+  const recipeId = route.params.id
+
+  useEffect(() => {
+    getUserDataAndClaims()
+      .then(({ claims, userData, newUserId }) => {
+        setUserId(newUserId);
+        return newUserId;
+      })
+      .then((userId) => {
+        return getFamilies(userId)
+          .then((familyId) => {
+            setFamilyId(familyId[0]);
+            return familyId;
+          })
+          .then((res) => {
+            console.log(res);
+            getSelectionLists(res).then((selectionId) => {
+              setSelectionListId(selectionId[0]);
+            });
+          });
+      });
+  }, []);
 
   useEffect(() => {
     setIsLoading(true);
@@ -147,7 +171,6 @@ const RecipePage = ({ route }) => {
         <View style={styles.buttons}>
           <CustomButton text="test button" />
           <Button title="Add to shortlist" onPress={addToSelectionPress} />
-          <Button title="Add to favourites" onPress={{}} />
         </View>
       </View>
     </ScrollView>
