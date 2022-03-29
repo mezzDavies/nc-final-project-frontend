@@ -1,7 +1,14 @@
 // lodash
 // import _ from "lodash";
 
-import { collection, doc, getDoc, getDocs } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  where,
+} from "firebase/firestore";
 
 // import app from "../firebase";
 import { fireDB } from "../firebase";
@@ -13,6 +20,40 @@ async function getRecipes() {
 
   querySnapshot.forEach((recipe) => {
     result.recipeCards.push(recipe.data());
+  });
+
+  return result;
+}
+
+// Get and individual recipe for use with selectionList recipeCards
+async function getRecipeCardById(recipeId) {
+  const recipeIdAsStr = recipeId.toString();
+  const docRef = doc(fireDB, "recipes", recipeIdAsStr);
+
+  const docSnap = await getDoc(docRef);
+
+  if (!docSnap.exists()) {
+    console.log("No such document!");
+    return undefined;
+  }
+
+  return docSnap.data();
+}
+
+// Perhaps this might be a more efficient query than multiple queries to getRecipeCardById()
+// pass it an array of recipeIds
+
+async function getRecipeCardsById(arrOfRecipeIds) {
+  const collectionRef = collection(fireDB, `recipes/`);
+
+  const q = query(collectionRef, where("id", "in", arrOfRecipeIds));
+
+  const querySnapshot = await getDocs(q);
+
+  const result = [];
+
+  querySnapshot.forEach((recipe) => {
+    result.push(recipe.data());
   });
 
   return result;
@@ -45,4 +86,4 @@ async function getRecipeById(recipeId) {
   return result;
 }
 
-export { getRecipes, getRecipeById };
+export { getRecipes, getRecipeCardById, getRecipeCardsById, getRecipeById };
