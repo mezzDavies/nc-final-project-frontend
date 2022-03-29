@@ -91,45 +91,15 @@ const MealPlanList = ({ navigation }) => {
       });
   }, []);
 
-  // useEffect(() => {
-  //   getRecipeCardsById(mealPlan).then((res) => {
-  //     console.log(res);
-  //   });
-  // }, [mealPlan]);
-
-  // useEffect(() => {
-  //   getMealPlan(familyId, selectionListId, mealPlanId)
-  //     .then(({ isConfirmed, recipeIds }) => {
-  //       setMealPlanConfirmation(isConfirmed);
-  //       return recipeIds;
-  //     })
-  //     .then((recipeIds) => {
-  //       const recipes = recipeIds.map((id) => {
-  //         return getRecipeById(id);
-  //       });
-  //       return Promise.all(recipes);
-  //     })
-  //     .then((recipes) => {
-  //       return recipes.map((recipe) => {
-  //         const { summary } = recipe;
-  //         return summary;
-  //       });
-  //     })
-  //     .then((recipes) => {
-  //       setMealPlan(recipes);
-  //       setIsLoading(false);
-  //     })
-  //     .catch((err) => console.log(err));
-  // }, []);
-
-  // useEffect(() => {
-  //   getUserDataAndClaims()
-  //     .then(({ claims, useData }) => {
-  //       if (claims.parent) setIsChild(false);
-  //       else setIsChild(true);
-  //     })
-  //     .catch((err) => console.log(err));
-  // }, []);
+  useEffect(() => {
+    getUserDataAndClaims()
+      .then(({ claims, useData }) => {
+        console.log(claims.parent);
+        if (claims.parent) setIsChild(false);
+        else setIsChild(true);
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
   if (isLoading) return <Text>Is Loading...</Text>;
 
@@ -140,6 +110,9 @@ const MealPlanList = ({ navigation }) => {
         {recipeCards.map((recipe, index) => {
           return (
             <MealPlanCard
+              mealPlan={mealPlan}
+              setMealPlan={setMealPlan}
+              index={index}
               recipe={recipe}
               key={`${recipe.id} - ${index}`}
               navigation={navigation}
@@ -147,7 +120,7 @@ const MealPlanList = ({ navigation }) => {
           );
         })}
       </Text>
-      {/* <Button
+      <Button
         title={
           isChild
             ? "Only adult user can confirm Meal Plans"
@@ -162,7 +135,7 @@ const MealPlanList = ({ navigation }) => {
           });
         }}
         disabled={isChild ? true : mealPlanConfirmation}
-      /> */}
+      />
     </View>
   );
 };
