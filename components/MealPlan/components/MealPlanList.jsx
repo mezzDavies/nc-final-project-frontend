@@ -168,3 +168,8 @@ const MealPlanList = ({ navigation }) => {
 };
 
 export default MealPlanList;
+
+//a button which changes the isConfirmed to true
+// then can edit order of list depending on days
+
+//function = toggleMealPlanStatus(familyId, selectionListId, mealPlanId)
