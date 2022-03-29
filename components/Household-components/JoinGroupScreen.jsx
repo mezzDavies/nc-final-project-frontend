@@ -13,12 +13,9 @@ import getUserDataAndClaims from "../../utils/getUserDataAndClaims";
 import { addUserToFamily } from "../../api/firestoreFunctions.families";
 
 //----------COMPONENT----------
-const JoinGroupScreen = ({ navigation }) => {
+const JoinGroupScreen = ({ userId, firstName, setFamilyStatus, setModalVisible }) => {
   //-----Declarations-----
   const [loadingMessage, setLoadingMessage] = useState("");
-  const [userId, setUserId] = useState("");
-  const [parentStatus, setParentStatus] = useState(false);
-  const [firstName, setFirstName] = useState("");
   const {
     control,
     handleSubmit,
@@ -32,20 +29,10 @@ const JoinGroupScreen = ({ navigation }) => {
     setLoadingMessage(`We're just loading up the group now...`);
     addUserToFamily(userId, inviteCode).then(() => {
       reset();
-      navigation.navigate("Account", { screen: "Household" });
+      setFamilyStatus(true);
+      setModalVisible(false);
     });
   };
-
-  //-----Use Effects-----
-  useEffect(() => {
-    getUserDataAndClaims().then(({ claims, userData, userId }) => {
-      setUserId(claims.user_id);
-      setFirstName(userData.name);
-      if (claims.parent) {
-        setParentStatus(true);
-      }
-    });
-  }, []);
 
   //-----Rendering-----
   return (

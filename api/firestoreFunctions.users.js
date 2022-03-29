@@ -5,7 +5,10 @@ import {
   collection,
   doc,
   getDoc,
+  getDocs
 } from "firebase/firestore";
+
+import { addShortList } from "./firestoreFunctions.shortLists";
 
 import { fireDB } from "../firebase";
 
@@ -57,6 +60,20 @@ async function createChildAccount(familyId, firstName) {
     await updateDoc(familyRef, {
       familyMembers: arrayUnion(childDocRef.id),
     });
+
+    const selectionListIds = [];
+    const selectionQuerySnap = await getDocs(collection(fireDB, `families/${familyId}/selectionLists`));
+    selectionQuerySnap.forEach((doc) => {
+      selectionListIds.push(doc.id);
+    });
+
+    const mealPlanIds = [];
+    const mealPlanQuerySnap = await getDocs(collection(fireDB, `families/${familyId}/selectionLists/${selectionListIds[0]}/mealPlans`));
+    mealPlanQuerySnap.forEach((doc) => {
+      mealPlanIds.push(doc.id);
+    });
+
+    await addShortList(childDocRef.id, familyId, selectionListIds[0], mealPlanIds[0])
 
     return childDocRef.id;
   } catch (err) {

@@ -9,19 +9,11 @@ import { createChildAccount } from "../../api/firestoreFunctions.users";
 import getUserDataAndClaims from "../../utils/getUserDataAndClaims";
 
 //----------COMPONENT----------
-const AddChildrenScreen = ({ setFamilyMembers }) => {
+const AddChildrenScreen = ({ setFamilyMembers, setModalVisible, familyId }) => {
     //-----Declarations-----
     const { control, handleSubmit, reset, formState: { errors } } = useForm();
     const [loadingMessage, setLoadingMessage] = useState('')
-    const [familyId, setFamilyId] = useState('');
-
-    useEffect(() => {
-    getUserDataAndClaims()
-        .then(({ claims, userData, newUserId }) => {
-        setFamilyId(userData.groupIds[0]);
-        })
-      }, [])
-    
+        
     const onSubmit = (data) => {
         const firstName = data.firstName;
 
@@ -33,6 +25,7 @@ const AddChildrenScreen = ({ setFamilyMembers }) => {
                     const newFamilyMembers = [...currFamilyMembers, childRef]
                     return newFamilyMembers;
                 })
+                setModalVisible(false);
             })
             .catch((err) => {
                 return err

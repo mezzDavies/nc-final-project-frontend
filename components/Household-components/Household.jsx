@@ -15,7 +15,6 @@ import CreateGroupScreen from "./CreateGroupScreen";
 import AddChildrenScreen from "./AddChildrenScreen";
 import LeavingGroupModal from "./LeavingGroupModal";
 
-
 //STYLING - for modal
 const styles = StyleSheet.create({
   centeredView: {
@@ -126,7 +125,7 @@ const HouseHoldScreen = ({ navigation }) => {
         setFamilyMembers([]);
       }
     })
-  }, [userId, familyStatus, familyMembers])
+  }, [userId, familyStatus, familyMembers]);
 
 
   useEffect(() => {
@@ -201,7 +200,7 @@ const HouseHoldScreen = ({ navigation }) => {
         >
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
-              <AddChildrenScreen setFamilyMembers={setFamilyMembers} />
+              <AddChildrenScreen setFamilyMembers={setFamilyMembers} setModalVisible={setModalVisible} familyId={familyId} />
               <Pressable style={[styles.button, styles.buttonClose]} onPress={() => setModalVisible(false)}>
                 <Text style={styles.textStyle}>Close This Pop Up</Text>
               </Pressable>
