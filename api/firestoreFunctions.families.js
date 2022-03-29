@@ -11,9 +11,11 @@ import {
   Timestamp,
   updateDoc,
   where,
+  deleteDoc,
 } from "firebase/firestore";
 
 import addScranPlan from "../api/firestoreFunctions.scranPlan";
+import { addShortList, getShortListFromCollection } from "./firestoreFunctions.shortLists";
 
 // import app from "../firebase";
 import { fireDB } from "../firebase";
@@ -123,15 +125,19 @@ async function listenFamily(familyId) {
 // E.g. any groups inactive for more than time x should be deleted
 
 async function toggleFamilyStatus(familyId) {
-  const docRef = doc(fireDB, "families", familyId);
-  const currIsActive = (await getDoc(docRef)).get("isActive");
+  try{
+    const docRef = doc(fireDB, "families", familyId);
+    const currIsActive = (await getDoc(docRef)).get("isActive");
 
-  await updateDoc(docRef, {
-    isActive: !currIsActive,
-  });
+    await updateDoc(docRef, {
+      isActive: !currIsActive,
+    });
 
-  return !currIsActive;
-}
+    return !currIsActive;
+  } catch(err) {
+    return err
+  }
+};
 
 // Add a user to a family
 // If a user is already a family member they won't be added again.
@@ -140,35 +146,81 @@ async function toggleFamilyStatus(familyId) {
 // We should then check if they are a parent member in the group before allowing them to add a new user
 
 async function addUserToFamily(userId, familyId) {
-  const docRef = doc(fireDB, "families", familyId);
+  try{
+    const docRef = doc(fireDB, "families", familyId);
 
-  await updateDoc(docRef, {
-    familyMembers: arrayUnion(userId),
-  });
+    await updateDoc(docRef, {
+      familyMembers: arrayUnion(userId),
+    });
 
-  const userDocRef = doc(fireDB, "users", userId);
+    const selectionListIds = [];
+    const selectionQuerySnap = await getDocs(collection(fireDB, `families/${familyId}/selectionLists`));
+    selectionQuerySnap.forEach((doc) => {
+      selectionListIds.push(doc.id);
+    });
 
-  await updateDoc(userDocRef, {
-    groupIds: arrayUnion(docRef.id)
-  })
+    const mealPlanIds = [];
+    const mealPlanQuerySnap = await getDocs(collection(fireDB, `families/${familyId}/selectionLists/${selectionListIds[0]}/mealPlans`));
+    mealPlanQuerySnap.forEach((doc) => {
+      mealPlanIds.push(doc.id);
+    });
 
-  console.log("family member added: ", userId);
-  return docRef.id;
-}
+    await addShortList(userId, familyId, selectionListIds[0], mealPlanIds[0])
+
+    const userDocRef = doc(fireDB, "users", userId);
+
+    await updateDoc(userDocRef, {
+      groupIds: arrayUnion(docRef.id)
+    })
+
+    return docRef.id;
+  } catch(err) {
+    return err
+  }
+};
 
 // Delete a family member
 // Same comments as above
 
 async function removeUserFromFamily(userId, familyId) {
-  const docRef = doc(fireDB, "families", familyId);
+  try{
+    console.log(userId, familyId)
+    const docRef = doc(fireDB, "families", familyId);
 
-  await updateDoc(docRef, {
-    familyMembers: arrayRemove(userId),
-  });
+    await updateDoc(docRef, {
+      familyMembers: arrayRemove(userId),
+    });
 
-  console.log("family member removed: ", userId);
-  return docRef.id;
-}
+    const selectionListIds = [];
+    const selectionQuerySnap = await getDocs(collection(fireDB, `families/${familyId}/selectionLists`));
+    selectionQuerySnap.forEach((doc) => {
+      selectionListIds.push(doc.id);
+    });
+
+    const mealPlanIds = [];
+    const mealPlanQuerySnap = await getDocs(collection(fireDB, `families/${familyId}/selectionLists/${selectionListIds[0]}/mealPlans`));
+    mealPlanQuerySnap.forEach((doc) => {
+      mealPlanIds.push(doc.id);
+    });
+
+    const shortListInfo = await getShortListFromCollection(userId, familyId, selectionListIds[0], mealPlanIds[0]);
+    const shortListId = shortListInfo[0].id;
+
+    console.log(shortListId)
+
+    await deleteDoc(doc(fireDB, `families/${familyId}/selectionLists/${selectionListIds[0]}/mealPlans/${mealPlanIds[0]}/shortLists/${shortListId}`));
+
+    const userDocRef = doc(fireDB, "users", userId);
+
+    await updateDoc(userDocRef, {
+      groupIds: arrayRemove(familyId)
+    })
+
+    return docRef.id;
+  } catch(err) {
+    return err;
+  }
+};
 
 export {
   addFamily,

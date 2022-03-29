@@ -13,6 +13,7 @@ import { httpsCallable } from "firebase/functions";
 import UserNotLoggedIn from "../UserNotLoggedIn";
 import CreateGroupScreen from "./CreateGroupScreen";
 import AddChildrenScreen from "./AddChildrenScreen";
+import LeavingGroupModal from "./LeavingGroupModal";
 
 
 //STYLING - for modal
@@ -74,6 +75,7 @@ const HouseHoldScreen = ({ navigation }) => {
   const [firstName, setFirstName] = useState('');
   const [loadingMessage, setLoadingMessage] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
+  const [leavingModalVisible, setLeavingModalVisible] = useState(false);
 
 
   const switchToUserParentAccount = () => {
@@ -95,6 +97,10 @@ const HouseHoldScreen = ({ navigation }) => {
       });
   };
 
+  const leaveGroup = () => {
+
+  }
+
   //-----Use Effects-----
   useEffect(() => {
     auth.onAuthStateChanged(function (user) {
@@ -102,6 +108,7 @@ const HouseHoldScreen = ({ navigation }) => {
         setUserStatus(true);
         getUserDataAndClaims()
           .then(({ claims, userData, newUserId }) => {
+            setUserId(newUserId)
             setFirstName(userData.name);
             setParentStatus(claims.parent)
             if(userData.groupIds?.length > 0) {
@@ -129,7 +136,7 @@ const HouseHoldScreen = ({ navigation }) => {
           setFamilyName(family.groupName);
           setFamilyMembers(family.familyMembers);
       });
-    }
+    } 
   }, [familyId, familyStatus]);
 
   //------Rendering------
@@ -157,10 +164,14 @@ const HouseHoldScreen = ({ navigation }) => {
               color="#859cc7"
             />
           ) : (
-            <Text>
-              Want to invite others to join the group? Your invite code is:{" "}
-              {familyId}
-            </Text>
+            <View>
+              <Text>
+                Want to invite others to join the group? Your invite code is:
+              </Text>
+              <Text selectable={true}>
+                {familyId}
+              </Text>
+            </View>
           )}
           <Text>Group Members:</Text>
           {familyMembers.map((familyMember, index) => {
@@ -188,6 +199,24 @@ const HouseHoldScreen = ({ navigation }) => {
             <View style={styles.modalView}>
               <AddChildrenScreen setFamilyMembers={setFamilyMembers} />
               <Pressable style={[styles.button, styles.buttonClose]} onPress={() => setModalVisible(false)}>
+                <Text style={styles.textStyle}>Close This Pop Up</Text>
+              </Pressable>
+            </View>
+          </View>
+        </Modal>
+        {parentStatus ? <Button title="Leave this group" onPress={() => setLeavingModalVisible(true)} /> : null }
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={leavingModalVisible}
+          onRequestClose={() => {
+            setLeavingModalVisible(false);
+          }}
+        >
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <LeavingGroupModal userId={userId} familyId={familyId} setFamilyId={setFamilyId} setLeavingModalVisible={setLeavingModalVisible} setFamilyStatus={setFamilyStatus} />
+              <Pressable style={[styles.button, styles.buttonClose]} onPress={() => setLeavingModalVisible(false)}>
                 <Text style={styles.textStyle}>Close This Pop Up</Text>
               </Pressable>
             </View>

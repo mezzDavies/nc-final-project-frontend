@@ -24,24 +24,27 @@ import { fireDB } from "../firebase";
 // This is probably best triggered as an admin function when a user is added to a group
 
 async function addShortList(userId, familyId, selectionListId, mealPlanId) {
-  const docRef = await addDoc(
-    collection(
-      fireDB,
-      `/families/${familyId}/selectionLists/${selectionListId}/mealPlans/${mealPlanId}/shortLists`
-    ),
-    {
-      createdAt: Timestamp.fromDate(new Date()),
-      isConfirmed: false,
-      userId,
-      familyId,
-      selectionListId,
-      mealPlanId,
-      recipeIds: [],
-    }
-  );
-  console.log("ShortListId: ", docRef.id);
-  return docRef.id;
-}
+  try{
+    const docRef = await addDoc(
+      collection(
+        fireDB,
+        `/families/${familyId}/selectionLists/${selectionListId}/mealPlans/${mealPlanId}/shortLists`
+      ),
+      {
+        createdAt: Timestamp.fromDate(new Date()),
+        isConfirmed: false,
+        userId,
+        familyId,
+        selectionListId,
+        mealPlanId,
+        recipeIds: [],
+      }
+    );
+    return docRef.id;
+  } catch(err) {
+    return err;
+  }
+};
 
 async function deleteShortList(
   userId,
