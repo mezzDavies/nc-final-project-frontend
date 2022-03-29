@@ -22,6 +22,7 @@ const ShoppingListScreen = () => {
         .then(({ claims, userData, newUserId }) => {
           if(!userData.groupIds?.length > 0) {
             setFamilyStatus(false)
+            setIsLoading(false)
             return Promise.reject({ status: 400, message: "Not a member of any group"})
           } else {
             setFamilyStatus(true)
