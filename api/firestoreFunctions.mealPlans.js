@@ -110,15 +110,15 @@ async function calculateVotes(familyId, selectionListId, mealPlanId) {
   );
 
   await querySnapshot.forEach((shortList) => {
-    if (shortList.data().isConfirmed) {
-      shortList.data().recipeIds.forEach((recipeId) => {
-        if (Object.keys(votes).includes(recipeId.toString())) {
-          votes[recipeId] += 1;
-        } else {
-          votes[recipeId] = 1;
-        }
-      });
-    }
+    // if (shortList.data().isConfirmed) {
+    shortList.data().recipeIds.forEach((recipeId) => {
+      if (Object.keys(votes).includes(recipeId.toString())) {
+        votes[recipeId] += 1;
+      } else {
+        votes[recipeId] = 1;
+      }
+    });
+    // }
   });
 
   function getTopValues(obj, n) {
@@ -228,29 +228,18 @@ async function getMealPlan(familyId, selectionListId, mealPlanId) {
       const docSnap = await transaction.get(docRef);
       if (!docSnap.exists()) {
         console.log("No such document!");
-        // } else if (!docSnap.get("isConfirmed")) {
-        //   const recipeIds = await calculateVotes(
-        //     familyId,
-        //     selectionListId,
-        //     mealPlanId
-        //   );
-        //   const shoppingList = await calculateShoppingList(recipeIds);
-        //   transaction.update(docRef, {
-        //     recipeIds,
-        //     shoppingList,
-        //   });
-        // }
+      } else if (!docSnap.get("isConfirmed")) {
+        const recipeIds = await calculateVotes(
+          familyId,
+          selectionListId,
+          mealPlanId
+        );
+        const shoppingList = await calculateShoppingList(recipeIds);
+        transaction.update(docRef, {
+          recipeIds,
+          shoppingList,
+        });
       }
-      const recipeIds = await calculateVotes(
-        familyId,
-        selectionListId,
-        mealPlanId
-      );
-      const shoppingList = await calculateShoppingList(recipeIds);
-      transaction.update(docRef, {
-        recipeIds,
-        shoppingList,
-      });
     });
   } catch (e) {
     console.error(e);
