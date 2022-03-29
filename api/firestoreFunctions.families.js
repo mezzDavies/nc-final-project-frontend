@@ -14,9 +14,8 @@ import {
   deleteDoc,
 } from "firebase/firestore";
 
-import addScranPlan from "../api/firestoreFunctions.scranPlan";
+import { addScranPlan } from "../api/firestoreFunctions.scranPlan";
 import { addShortList, getShortListFromCollection } from "./firestoreFunctions.shortLists";
-
 
 // import app from "../firebase";
 import { fireDB } from "../firebase";
