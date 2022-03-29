@@ -26,7 +26,8 @@ const LeavingGroupModal = ({ userId, familyId, setFamilyId, setLeavingModalVisib
     //-----Rendering-----
     return (
         <View>
-            <Text>Are you sure you wish to leave the group? If you do so, your voting short list will be permanently lost.</Text>
+            <Text style={{textAlign: "center"}}>Are you sure you wish to leave the group?</Text>
+            <Text style={{textAlign: "center"}}>If you do so, your voting short list will be permanently lost.</Text>
             <Button title="Confirm" onPress={leaveFamilyConfirm} />
             <Text>{loadingMessage}</Text>
         </View>
