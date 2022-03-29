@@ -118,13 +118,16 @@ async function getShortList(
     shortListId
   );
   const docSnap = await getDoc(docRef);
-  if (docSnap.exists()) {
-    console.log("Document data:", docSnap.get("recipeIds"));
-    return docSnap.data();
+
+  if (!docSnap.exists()) {
+    throw new Error("Document does not exist!");
   }
-  // doc.data() will be undefined in this case
-  console.log("No such document!");
-  return undefined;
+  if (userId !== docSnap.data().userId) {
+    throw new Error("User is not permitted to edit this shortList");
+  }
+
+  console.log("Document data:", docSnap.get("recipeIds"));
+  return docSnap.data();
 }
 
 // Adds a recipeId to a shortList
@@ -176,19 +179,14 @@ async function addToShortList(
       if (userId !== shortListDoc.data().userId) {
         throw new Error("User is not permitted to edit this shortList");
       }
-      if (shortListDoc.data().recipeIds.length >= 7) {
-        throw new Error("Short List is full. Remove items firs");
-      }
+      // if (shortListDoc.data().recipeIds.length >= 7) {
+      //   throw new Error("Short List is full. Remove items firs");
+      // }
 
       transaction.update(shortListRef, {
         recipeIds: arrayUnion(recipeId),
       });
-      console.log(
-        "Added - shortList: ",
-        shortListRef.id,
-        "recipeId: ",
-        recipeId
-      );
+
       return shortListRef.id;
     });
   } catch (e) {
@@ -197,6 +195,28 @@ async function addToShortList(
 }
 
 // Deletes a recipeId from a shortList
+// async function deleteFromShortList(
+//   userId,
+//   familyId,
+//   selectionListId,
+//   mealPlanId,
+//   shortListId,
+//   recipeId
+// ) {
+//   const docRef = doc(
+//     fireDB,
+//     `/families/${familyId}/selectionLists/${selectionListId}/mealPlans/${mealPlanId}/shortLists`,
+//     shortListId
+//   );
+
+//   await updateDoc(docRef, {
+//     recipeIds: arrayRemove(recipeId),
+//   });
+//   console.log("Deleted - shortList: ", docRef.id, "recipeId: ", recipeId);
+
+//   return docRef.id;
+// }
+
 async function deleteFromShortList(
   userId,
   familyId,
@@ -205,18 +225,32 @@ async function deleteFromShortList(
   shortListId,
   recipeId
 ) {
-  const docRef = doc(
+  const shortListRef = doc(
     fireDB,
     `/families/${familyId}/selectionLists/${selectionListId}/mealPlans/${mealPlanId}/shortLists`,
     shortListId
   );
 
-  await updateDoc(docRef, {
-    recipeIds: arrayRemove(recipeId),
-  });
-  console.log("Deleted - shortList: ", docRef.id, "recipeId: ", recipeId);
+  try {
+    await runTransaction(fireDB, async (transaction) => {
+      const shortListDoc = await transaction.get(shortListRef);
+      if (!shortListDoc.exists()) {
+        throw new Error("Document does not exist!");
+      }
 
-  return docRef.id;
+      if (userId !== shortListDoc.data().userId) {
+        throw new Error("User is not permitted to edit this shortList");
+      }
+
+      transaction.update(shortListRef, {
+        recipeIds: arrayRemove(recipeId),
+      });
+
+      return shortListRef.id;
+    });
+  } catch (e) {
+    console.log(e);
+  }
 }
 
 // Order shortList (prioritise)
