@@ -114,7 +114,7 @@ const RecipePage = ({ route }) => {
         </View>
         <View style={stylesVar.buttons}>
           <CustomButton text="test button" />
-          <Button title="Add to shortlist" onPress={addToSelectionPress} />
+          <Button title="Add to Selection List" onPress={addToSelectionPress} />
         </View>
       </View>
     </ScrollView>
