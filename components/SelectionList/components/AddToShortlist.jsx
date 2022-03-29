@@ -4,7 +4,9 @@ import { useState, useEffect } from "react";
 import {
   addToShortList,
   getShortList,
+  getShortListFromCollection,
 } from "../../../api/firestoreFunctions.shortLists";
+import { getMealPlans } from "../../../api/firestoreFunctions.mealPlans";
 
 const AddToShortList = ({
   recipeId,
@@ -12,11 +14,12 @@ const AddToShortList = ({
   selectionListId,
   idArray,
   setIdArray,
+  userId,
+  mealPlanId,
+  shortListId
 }) => {
-  const userId = "ItsERU60MCYeXcSCtXJeaBR1JQa2";
-  const mealPlanId = "V00CM4zYfykUNjxUXI80";
-  const shortListId = "5w7i9bZCss4JXtgfQWg6";
-  const getShortListId = "pyo37SSXc3rlDrODekIY";
+
+  console.log(shortListId)
 
   return (
     <Button

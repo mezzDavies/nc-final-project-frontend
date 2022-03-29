@@ -87,7 +87,11 @@ async function getFamily(familyId) {
     getDocs(collectionRef),
   ]);
 
+  console.log(querySnapshots, 'querysnapshots')
+
   result.family = querySnapshots[0].data();
+
+  console.log(result.family, 'familydata')
 
   querySnapshots[1].forEach((selectionList) => {
     if (selectionList.get("isActive") === true) {
@@ -97,8 +101,10 @@ async function getFamily(familyId) {
     }
   });
 
+  console.log(result)
+
   return result;
-}
+};
 
 // Setup a listener on the family members only, other info can be added if needed
 async function listenFamily(familyId) {
