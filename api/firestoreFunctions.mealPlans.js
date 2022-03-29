@@ -132,6 +132,8 @@ async function calculateVotes(familyId, selectionListId, mealPlanId) {
 async function calculateShoppingList(recipeIds) {
   const shoppingList = [];
 
+  console.log(recipeIds);
+
   const results = await recipeIds.map((recipeId) =>
     getDocs(collection(fireDB, `recipes/${recipeId}/ingredients`))
   );
@@ -207,6 +209,7 @@ async function getMealPlans(familyId, selectionListId) {
     });
   });
 
+  console.log(result);
   return result;
 }
 
@@ -225,18 +228,29 @@ async function getMealPlan(familyId, selectionListId, mealPlanId) {
       const docSnap = await transaction.get(docRef);
       if (!docSnap.exists()) {
         console.log("No such document!");
-      } else if (!docSnap.get("isConfirmed")) {
-        const recipeIds = await calculateVotes(
-          familyId,
-          selectionListId,
-          mealPlanId
-        );
-        const shoppingList = await calculateShoppingList(recipeIds);
-        transaction.update(docRef, {
-          recipeIds,
-          shoppingList,
-        });
+        // } else if (!docSnap.get("isConfirmed")) {
+        //   const recipeIds = await calculateVotes(
+        //     familyId,
+        //     selectionListId,
+        //     mealPlanId
+        //   );
+        //   const shoppingList = await calculateShoppingList(recipeIds);
+        //   transaction.update(docRef, {
+        //     recipeIds,
+        //     shoppingList,
+        //   });
+        // }
       }
+      const recipeIds = await calculateVotes(
+        familyId,
+        selectionListId,
+        mealPlanId
+      );
+      const shoppingList = await calculateShoppingList(recipeIds);
+      transaction.update(docRef, {
+        recipeIds,
+        shoppingList,
+      });
     });
   } catch (e) {
     console.error(e);
@@ -244,6 +258,7 @@ async function getMealPlan(familyId, selectionListId, mealPlanId) {
 
   const docSnap = await getDoc(docRef);
   if (docSnap.exists()) {
+    console.log(docSnap.data());
     return docSnap.data();
   }
   // doc.data() will be undefined in this case

@@ -17,6 +17,7 @@ import {
 import addScranPlan from "../api/firestoreFunctions.scranPlan";
 import { addShortList, getShortListFromCollection } from "./firestoreFunctions.shortLists";
 
+
 // import app from "../firebase";
 import { fireDB } from "../firebase";
 
@@ -37,6 +38,8 @@ async function addFamily(userId, groupName) {
   await updateDoc(userDocRef, {
     groupIds: arrayUnion(docRef.id),
   });
+
+  await addScranPlan(docRef.id);
 
   return docRef.id;
 }
