@@ -13,7 +13,7 @@ import {
   where,
 } from "firebase/firestore";
 
-import addScranPlan from "../api/firestoreFunctions.scranPlan";
+import { addScranPlan } from "../api/firestoreFunctions.scranPlan";
 
 // import app from "../firebase";
 import { fireDB } from "../firebase";
@@ -35,6 +35,8 @@ async function addFamily(userId, groupName) {
   await updateDoc(userDocRef, {
     groupIds: arrayUnion(docRef.id),
   });
+
+  await addScranPlan(docRef.id);
 
   return docRef.id;
 }
@@ -143,8 +145,8 @@ async function addUserToFamily(userId, familyId) {
   const userDocRef = doc(fireDB, "users", userId);
 
   await updateDoc(userDocRef, {
-    groupIds: arrayUnion(docRef.id)
-  })
+    groupIds: arrayUnion(docRef.id),
+  });
 
   console.log("family member added: ", userId);
   return docRef.id;

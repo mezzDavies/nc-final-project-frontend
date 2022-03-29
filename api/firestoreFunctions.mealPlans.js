@@ -132,6 +132,8 @@ async function calculateVotes(familyId, selectionListId, mealPlanId) {
 async function calculateShoppingList(recipeIds) {
   const shoppingList = [];
 
+  console.log(recipeIds);
+
   const results = await recipeIds.map((recipeId) =>
     getDocs(collection(fireDB, `recipes/${recipeId}/ingredients`))
   );
@@ -183,10 +185,10 @@ async function calculateShoppingList(recipeIds) {
     (key) => listGroupedTotalled[key]
   );
 
-  console.log(shoppingList);
-  console.log(listGrouped);
-  console.log(listGroupedTotalled);
-  console.log(listGroupedTotalledFlat);
+  // console.log(shoppingList);
+  // console.log(listGrouped);
+  // console.log(listGroupedTotalled);
+  // console.log(listGroupedTotalledFlat);
 
   return shoppingList;
 }
@@ -207,6 +209,7 @@ async function getMealPlans(familyId, selectionListId) {
     });
   });
 
+  console.log(result);
   return result;
 }
 
@@ -244,6 +247,7 @@ async function getMealPlan(familyId, selectionListId, mealPlanId) {
 
   const docSnap = await getDoc(docRef);
   if (docSnap.exists()) {
+    console.log(docSnap.data());
     return docSnap.data();
   }
   // doc.data() will be undefined in this case

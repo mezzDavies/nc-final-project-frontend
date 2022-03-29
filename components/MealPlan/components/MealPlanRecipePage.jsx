@@ -1,10 +1,10 @@
 import { React, useEffect, useState } from "react";
 import { View, Text, Image, StyleSheet, ScrollView } from "react-native";
+import { getMealPlans } from "../../../api/firestoreFunctions.mealPlans";
 import { getRecipeById } from "../../../api/firestoreFunctions.recipes";
-import { addToSelectionList } from "../../../api/firestoreFunctions.selectionLists";
-
-const familyId = "yPRj8Q1cEgwJ465bec04";
-const selectionListId = "oeAuz0njIbYyPeLUqpUw";
+import { getSelectionList } from "../../../api/firestoreFunctions.selectionLists";
+import getUserDataAndClaims from "../../../utils/getUserDataAndClaims";
+import { getFamilies } from "../../../api/firestoreFunctions.families";
 
 const MealPlanRecipePage = ({ route }) => {
   const [imageUrl, setImageUrl] = useState("");
@@ -14,9 +14,12 @@ const MealPlanRecipePage = ({ route }) => {
   const [instructions, setInstructions] = useState("");
   const [servings, setServings] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const [selectionListId, setSelectionListId] = useState("");
+  const [familyId, setFamilyId] = useState("");
+  const [selectionList, setSelectionList] = useState("");
+  const [userId, setUserId] = useState("");
 
   const recipeId = route.params.id;
-  console.log(recipeId);
 
   const styles = StyleSheet.create({
     body: {
@@ -41,6 +44,47 @@ const MealPlanRecipePage = ({ route }) => {
         setIsLoading(false);
       })
       .catch((err) => console.log("error in catch >>>", err));
+  }, []);
+
+  useEffect(() => {
+    getUserDataAndClaims()
+      .then(({ claims, userData, newUserId }) => {
+        setUserId(newUserId);
+        return newUserId;
+      })
+      .then((userId) => {
+        return getFamilies(userId)
+          .then((familyId) => {
+            setFamilyId(familyId[0]);
+            return familyId[0];
+          })
+          .then((res) => {
+            getSelectionLists(res)
+              .then((selectionId) => {
+                setSelectionListId(selectionId[0]);
+                const newFamilyId = res;
+                const newSelectionListId = selectionId[0];
+                return Promise.all([newFamilyId, newSelectionListId]);
+              })
+              .then(([newFamilyId, newSelectionListId]) => {
+                console.log(newFamilyId, newSelectionListId);
+                return Promise.all([
+                  getSelectionList(newFamilyId, newSelectionListId),
+                  newFamilyId,
+                  newSelectionListId,
+                ]);
+              })
+              .then(([selectList, newFamilyId, newSelectionListId]) => {
+                console.log(newFamilyId, newSelectionListId);
+                setSelectionList(finalSelectionList[0]);
+                getMealPlans(newFamilyId, newSelectionListId);
+                return Promise.all([newFamilyId, newSelectionListId]);
+              })
+              .then(([newFamilyId, newSelectionListId]) => {
+                console.log(newFamilyId, newSelectionListId);
+              });
+          });
+      });
   }, []);
 
   if (isLoading) return <Text>Loading...</Text>;
