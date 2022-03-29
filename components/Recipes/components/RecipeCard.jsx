@@ -1,8 +1,10 @@
 import { Text, Image, View, TouchableHighlight } from "react-native";
 
-const RecipeCard = ({ recipe }) => {
-  const { id, title, image, instructions, readyInMinutes, servings, summary } =
-    recipe;
+const RecipeCard = ({ recipe, navigation }) => {
+  const { id, title, image, instructions, readyInMinutes, servings, summary } = recipe;
+
+  console.log(id)
+  
   return (
     <View>
       <TouchableHighlight
