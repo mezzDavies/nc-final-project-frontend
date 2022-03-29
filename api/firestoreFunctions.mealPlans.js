@@ -185,10 +185,10 @@ async function calculateShoppingList(recipeIds) {
     (key) => listGroupedTotalled[key]
   );
 
-  // console.log(shoppingList);
-  // console.log(listGrouped);
-  // console.log(listGroupedTotalled);
-  // console.log(listGroupedTotalledFlat);
+  console.log(shoppingList);
+  console.log(listGrouped);
+  console.log(listGroupedTotalled);
+  console.log(listGroupedTotalledFlat);
 
   return shoppingList;
 }
@@ -228,18 +228,29 @@ async function getMealPlan(familyId, selectionListId, mealPlanId) {
       const docSnap = await transaction.get(docRef);
       if (!docSnap.exists()) {
         console.log("No such document!");
-      } else if (!docSnap.get("isConfirmed")) {
-        const recipeIds = await calculateVotes(
-          familyId,
-          selectionListId,
-          mealPlanId
-        );
-        const shoppingList = await calculateShoppingList(recipeIds);
-        transaction.update(docRef, {
-          recipeIds,
-          shoppingList,
-        });
+        // } else if (!docSnap.get("isConfirmed")) {
+        //   const recipeIds = await calculateVotes(
+        //     familyId,
+        //     selectionListId,
+        //     mealPlanId
+        //   );
+        //   const shoppingList = await calculateShoppingList(recipeIds);
+        //   transaction.update(docRef, {
+        //     recipeIds,
+        //     shoppingList,
+        //   });
+        // }
       }
+      const recipeIds = await calculateVotes(
+        familyId,
+        selectionListId,
+        mealPlanId
+      );
+      const shoppingList = await calculateShoppingList(recipeIds);
+      transaction.update(docRef, {
+        recipeIds,
+        shoppingList,
+      });
     });
   } catch (e) {
     console.error(e);
