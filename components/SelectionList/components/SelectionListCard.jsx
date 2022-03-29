@@ -14,6 +14,9 @@ const SelectionListCard = ({
   familyId,
   selectionListId,
   setSelectionList,
+  userId,
+  mealPlanId,
+  shortListId
 }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [recipe, setRecipe] = useState([]);
@@ -62,6 +65,9 @@ const SelectionListCard = ({
         recipeId={recipeId}
         navigation={navigation}
         selectionListId={selectionListId}
+        userId={userId}
+        mealPlanId={mealPlanId}
+        shortListId={shortListId}
       />
       <DeleteRecipeFromList
         recipeId={recipeId}

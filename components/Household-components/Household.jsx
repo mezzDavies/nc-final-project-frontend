@@ -124,9 +124,10 @@ const HouseHoldScreen = ({ navigation }) => {
 
   useEffect(() => {
     if (familyId) {
-      getFamily(familyId).then(({ family }) => {
-        setFamilyName(family.groupName);
-        setFamilyMembers(family.familyMembers);
+      getFamily(familyId)
+        .then(({ family }) => {
+          setFamilyName(family.groupName);
+          setFamilyMembers(family.familyMembers);
       });
     }
   }, [familyId, familyStatus]);

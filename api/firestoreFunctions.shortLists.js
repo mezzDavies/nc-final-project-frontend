@@ -86,20 +86,19 @@ async function getShortListFromCollection(
   selectionListId,
   mealPlanId
 ) {
-  const q = query(
-    collection(
-      fireDB,
-      `/families/${familyId}/selectionLists/${selectionListId}/mealPlans/${mealPlanId}/shortLists`
-    ),
-    where("userId", "==", userId)
-  );
+  try{
+    const q = query(collection(fireDB, `families/${familyId}/selectionLists/${selectionListId}/mealPlans/${mealPlanId}/shortLists`), where("userId", "==", `${userId}`));
 
-  const result = [];
-  const querySnapshot = await getDocs(q);
-  querySnapshot.forEach((shortList) => {
-    result.push(shortList.id);
-  });
-  return result;
+    const result = [];
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      result.push({id: doc.id, data: doc.data()})
+    });
+
+    return result;
+  } catch(err) {
+    return err
+  }
 }
 
 // View the current RecipeIds in a shortList
