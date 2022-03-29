@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, ScrollView, Button } from "react-native";
+import { View, Text, ScrollView, Button, Switch } from "react-native";
 import {
   getSelectionLists,
   getSelectionList,
@@ -7,6 +7,7 @@ import {
 import { getMealPlan, getMealPlans } from "../api/firestoreFunctions.mealPlans";
 import getUserDataAndClaims from "../utils/getUserDataAndClaims";
 import { getFamilies } from "../api/firestoreFunctions.families";
+import ShoppingListCard from "./ShoppingListCard";
 
 const ShoppingListScreen = () => {
   const [recipeIds, setRecipeIds] = useState([652134, 511728, 648432]);
@@ -21,6 +22,7 @@ const ShoppingListScreen = () => {
   const [userId, setUserId] = useState("");
   const [mealPlanId, setMealPlanId] = useState([]);
   const [recipeCards, setRecipeCards] = useState([]);
+  const [isEnabled, setIsEnabled] = useState(false);
 
   useEffect(() => {
     setIsLoading(true);
@@ -92,11 +94,12 @@ const ShoppingListScreen = () => {
         </Text>
       </View>
       <View>
-        {shoppingList.map((listItem) => {
+        {shoppingList.map((listItem, index) => {
           return (
-            <Text
-              key={listItem.id}
-            >{`${listItem.name} - ${listItem.amount} ${listItem.unit}`}</Text>
+            <ShoppingListCard
+              listItem={listItem}
+              key={`${listItem.id} + ${index}`}
+            />
           );
         })}
       </View>
