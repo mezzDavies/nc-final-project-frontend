@@ -13,7 +13,7 @@ import { addToSelectionList } from "../../api/firestoreFunctions.selectionLists"
 import { getFamilies } from "../../api/firestoreFunctions.families";
 import getUserDataAndClaims from "../../utils/getUserDataAndClaims";
 import { getSelectionLists } from "../../api/firestoreFunctions.selectionLists";
-
+import Styles from "../MealPlan/components/StylesComponent";
 import CustomButton from "../reusables/CustomButton";
 
 const RecipePage = ({ route }) => {
@@ -28,7 +28,8 @@ const RecipePage = ({ route }) => {
   const [userId, setUserId] = useState([]);
   const [selectionListId, setSelectionListId] = useState([]);
 
-  const recipeId = route.params.id
+  const stylesVar = Styles();
+  const recipeId = route.params.id;
 
   useEffect(() => {
     getUserDataAndClaims()
@@ -43,7 +44,6 @@ const RecipePage = ({ route }) => {
             return familyId;
           })
           .then((res) => {
-            console.log(res);
             getSelectionLists(res).then((selectionId) => {
               setSelectionListId(selectionId[0]);
             });
@@ -67,60 +67,6 @@ const RecipePage = ({ route }) => {
       .catch((err) => console.log("error in catch >>>", err));
   }, []);
 
-  const styles = StyleSheet.create({
-    image: {
-      width: 300,
-      height: 200,
-      alignContent: "center",
-      marginLeft: 25,
-      marginRight: 25,
-      borderRadius: 10,
-    },
-    instructTitle: {
-      alignContent: "center",
-      fontSize: 20,
-      paddingTop: 10,
-      fontFamily: "Bangers_400Regular",
-    },
-    instructions: {
-      alignContent: "center",
-      padding: 20,
-      borderStyle: "solid",
-      borderColor: "black",
-      borderWidth: 2,
-      borderRadius: 5,
-      marginLeft: 8,
-      marginRight: 8,
-      marginBottom: 8,
-    },
-    mealTitle: {
-      alignContent: "center",
-      paddingLeft: 20,
-      paddingRight: 20,
-      paddingTop: 10,
-      fontFamily: "Bangers_400Regular",
-      fontSize: 25,
-    },
-    ingredientsTitle: {
-      fontSize: 20,
-      fontFamily: "Bangers_400Regular",
-    },
-    ingredients: {
-      alignContent: "center",
-      paddingLeft: 20,
-      paddingRight: 20,
-      borderStyle: "solid",
-      borderColor: "grey",
-      borderWidth: 2,
-      borderRadius: 5,
-      marginLeft: 8,
-      marginRight: 8,
-    },
-    mins: {
-      alignContent: "center",
-    },
-  });
-
   if (isLoading) return <Text>Loading...</Text>;
 
   const addToSelectionPress = () => {
@@ -133,30 +79,28 @@ const RecipePage = ({ route }) => {
 
   return (
     <ScrollView>
-
       <View>
-
         <Image
           source={{
             width: 556,
             height: 370,
             uri: `${imageUrl}`,
           }}
-          style={styles.image}
+          style={stylesVar.image}
         />
         <View>
           <View>
-            <Text style={styles.mealTitle}>{recipeTitle}</Text>
-            <Text style={styles.mins}>{`${cookTime} mins`}</Text>
+            <Text style={stylesVar.mealTitle}>{recipeTitle}</Text>
+            <Text style={stylesVar.mins}>{`${cookTime} mins`}</Text>
           </View>
 
           <View>
             <Text
-              style={styles.ingredientsTitle}
+              style={stylesVar.ingredientsTitle}
             >{`Ingredients - serves ${servings}`}</Text>
             {ingredients.map((ingredient, index) => {
               return (
-                <Text key={`${ingredient.id}`} style={styles.ingredients}>
+                <Text key={`${ingredient.id}`} style={stylesVar.ingredients}>
                   {ingredient.original}
                 </Text>
               );
@@ -164,11 +108,11 @@ const RecipePage = ({ route }) => {
           </View>
 
           <View>
-            <Text style={styles.instructTitle}>Instructions</Text>
-            <Text style={styles.instructions}>{instructions}</Text>
+            <Text style={stylesVar.instructTitle}>Instructions</Text>
+            <Text style={stylesVar.instructions}>{instructions}</Text>
           </View>
         </View>
-        <View style={styles.buttons}>
+        <View style={stylesVar.buttons}>
           <CustomButton text="test button" />
           <Button title="Add to shortlist" onPress={addToSelectionPress} />
         </View>

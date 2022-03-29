@@ -1,4 +1,5 @@
 import React from "react";
+import { StyleSheet } from "react-native";
 
 const Styles = () => {
   const styles = StyleSheet.create({
@@ -54,6 +55,8 @@ const Styles = () => {
       alignContent: "center",
     },
   });
+
+  return styles;
 };
 
 export default Styles;
