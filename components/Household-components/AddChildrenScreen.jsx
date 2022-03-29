@@ -4,9 +4,8 @@ import { Button, Text, View } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 
 //IMPORTS - utils functions
-import { FormTextField } from "../FormTextField";
+import { FormTextField } from "../Reusables/FormTextField";
 import { createChildAccount } from "../../api/firestoreFunctions.users";
-import getUserDataAndClaims from "../../utils/getUserDataAndClaims";
 
 //----------COMPONENT----------
 const AddChildrenScreen = ({ setFamilyMembers, setModalVisible, familyId }) => {

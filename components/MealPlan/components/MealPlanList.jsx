@@ -1,5 +1,8 @@
+//IMPORTS - react
 import React, { useState, useEffect } from "react";
 import { Text, View, Button } from "react-native";
+
+//IMPORTS - firebase
 import {
   getMealPlan,
   toggleMealPlanStatus,
@@ -11,9 +14,12 @@ import {
   getSelectionLists,
   getSelectionList,
 } from "../../../api/firestoreFunctions.selectionLists";
-import getUserDataAndClaims from "../../../utils/getUserDataAndClaims";
 import { getFamilies } from "../../../api/firestoreFunctions.families";
 
+//IMPORTS - components & utils
+import getUserDataAndClaims from "../../../utils/getUserDataAndClaims";
+
+//----------COMPONENT-----------
 const MealPlanList = ({ navigation }) => {
   const [mealPlan, setMealPlan] = useState([]);
   const [mealPlanConfirmation, setMealPlanConfirmation] = useState(false);

@@ -1,90 +1,63 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, ScrollView, Button, Switch } from "react-native";
-import {
-  getSelectionLists,
-  getSelectionList,
-} from "../api/firestoreFunctions.selectionLists";
+import { getSelectionLists } from "../api/firestoreFunctions.selectionLists";
 import { getMealPlan, getMealPlans } from "../api/firestoreFunctions.mealPlans";
 import getUserDataAndClaims from "../utils/getUserDataAndClaims";
-import { getFamilies } from "../api/firestoreFunctions.families";
 import ShoppingListCard from "./ShoppingListCard";
+import { auth } from "../firebase";
+import UserNotLoggedIn from "./UserNotLoggedIn";
 
 const ShoppingListScreen = () => {
-  const [recipeIds, setRecipeIds] = useState([652134, 511728, 648432]);
+  const [userStatus, setUserStatus] = useState(false);
+  const [familyStatus, setFamilyStatus] = useState(false);
   const [shoppingList, setShoppingList] = useState([]);
-  const [mealPlan, setMealPlan] = useState([]);
-  const [mealPlanConfirmation, setMealPlanConfirmation] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [isChild, setIsChild] = useState(false);
-  const [familyId, setFamilyId] = useState("");
-  const [selectionListId, setSelectionListId] = useState("");
-  const [selectionList, setSelectionList] = useState("");
-  const [userId, setUserId] = useState("");
-  const [mealPlanId, setMealPlanId] = useState([]);
-  const [recipeCards, setRecipeCards] = useState([]);
-  const [isEnabled, setIsEnabled] = useState(false);
 
   useEffect(() => {
     setIsLoading(true);
-    getUserDataAndClaims()
-      .then(({ claims, userData, newUserId }) => {
-        setUserId(newUserId);
-        return newUserId;
-      })
-      .then((userId) => {
-        return getFamilies(userId)
-          .then((familyId) => {
-            setFamilyId(familyId[0]);
-            return familyId[0];
-          })
-          .then((res) => {
-            getSelectionLists(res)
-              .then((selectionId) => {
-                setSelectionListId(selectionId[0]);
-                const newFamilyId = res;
-                const newSelectionListId = selectionId[0];
-                return Promise.all([newFamilyId, newSelectionListId]);
-              })
-              .then(([newFamilyId, newSelectionListId]) => {
-                return Promise.all([
-                  getSelectionList(newFamilyId, newSelectionListId),
-                  newFamilyId,
-                  newSelectionListId,
-                ]);
-              })
-              .then(([finalSelectionList, newFamilyId, newSelectionListId]) => {
-                setSelectionList(finalSelectionList[0]);
-                const mealPlanId = getMealPlans(
-                  newFamilyId,
-                  newSelectionListId
-                );
-                return Promise.all([
-                  newFamilyId,
-                  newSelectionListId,
-                  mealPlanId,
-                ]);
-              })
-              .then(([newFamilyId, newSelectionListId, mealPlanIdentity]) => {
-                setMealPlanId(mealPlanIdentity[0].mealPlanId);
-                return getMealPlan(
-                  newFamilyId,
-                  newSelectionListId,
-                  mealPlanIdentity[0].mealPlanId
-                );
-              })
-              .then((mealPlan) => {
-                setMealPlan(mealPlan.recipeIds);
-                return Promise.all([mealPlan.shoppingList]);
-              })
-              .then(([newShoppingList]) => {
-                setShoppingList(newShoppingList);
-                setIsLoading(false);
-              });
-          });
-      });
-  }, []);
+    auth.onAuthStateChanged(function (user) {
+      if(user) {
+        setUserStatus(true);
+        getUserDataAndClaims()
+        .then(({ claims, userData, newUserId }) => {
+          if(!userData.groupIds?.length > 0) {
+            setFamilyStatus(false)
+            return Promise.reject({ status: 400, message: "Not a member of any group"})
+          } else {
+            setFamilyStatus(true)
+            const currentIds = {
+              user: newUserId,
+              family: userData.groupIds[0]
+            }
+            return Promise.all([currentIds, getSelectionLists(currentIds.family)])
+          }
+        })
+        .then(([currentIds, newSelectionId]) => {
+          currentIds.selection = newSelectionId[0]
+          return Promise.all([currentIds, getMealPlans(currentIds.family, currentIds.selection)]);
+        })
+        .then(([currentIds, newMealPlanId]) => {
+          currentIds.mealPlan = newMealPlanId[0].mealPlanId
+          return getMealPlan(currentIds.family, currentIds.selection, currentIds.mealPlan);
+        })
+        .then((mealPlan) => {
+          setShoppingList(mealPlan.shoppingList);
+          setIsLoading(false);
+        })
+        .catch((err) => {
+          return err
+        });
+      } else {
+        setUserStatus(false);
+        setShoppingList([]);
+        setIsLoading(false);
+      }
+    })
+  }, [userStatus]);
 
   if (isLoading) return <Text>Loading...</Text>;
+  if (!userStatus) return <UserNotLoggedIn setUserStatus={setUserStatus} />
+  if (!familyStatus) return <Text>It looks like you're not part of a group yet, take a look at the household page under your account.</Text>
 
   return (
     <ScrollView>

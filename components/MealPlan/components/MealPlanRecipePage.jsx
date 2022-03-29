@@ -1,11 +1,17 @@
+//IMPORTS - react
 import { React, useEffect, useState } from "react";
 import { View, Text, Image, StyleSheet, ScrollView } from "react-native";
+
+//IMPORTS - firebase
 import { getMealPlans } from "../../../api/firestoreFunctions.mealPlans";
 import { getRecipeById } from "../../../api/firestoreFunctions.recipes";
 import { getSelectionList } from "../../../api/firestoreFunctions.selectionLists";
-import getUserDataAndClaims from "../../../utils/getUserDataAndClaims";
 import { getFamilies } from "../../../api/firestoreFunctions.families";
 
+//IMPORTS - components & utils
+import getUserDataAndClaims from "../../../utils/getUserDataAndClaims";
+
+//----------COMPONENT----------
 const MealPlanRecipePage = ({ route }) => {
   const [imageUrl, setImageUrl] = useState("");
   const [ingredients, setIngredients] = useState([]);

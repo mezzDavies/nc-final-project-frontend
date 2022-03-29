@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { Button, View, Text, Modal, Pressable, StyleSheet } from "react-native";
 import { useForm, Controller } from "react-hook-form";
-import { FormTextField } from "../FormTextField";
+import { FormTextField } from "../Reusables/FormTextField";
 
 //IMPORTS - firebase
 import { addFamily } from "../../api/firestoreFunctions.families";

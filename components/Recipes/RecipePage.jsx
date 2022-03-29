@@ -1,3 +1,4 @@
+//IMPORTS - react
 import { React, useEffect, useState } from "react";
 import {
   View,
@@ -8,15 +9,20 @@ import {
   ScrollView,
 } from "react-native";
 
+//IMPORTS - firebase
 import { getRecipeById } from "../../api/firestoreFunctions.recipes";
 import { addToSelectionList } from "../../api/firestoreFunctions.selectionLists";
 import { getFamilies } from "../../api/firestoreFunctions.families";
 import getUserDataAndClaims from "../../utils/getUserDataAndClaims";
 import { getSelectionLists } from "../../api/firestoreFunctions.selectionLists";
-import Styles from "../MealPlan/components/StylesComponent";
-import CustomButton from "../reusables/CustomButton";
 
+//IMPORTS - components & utils
+import Styles from "../Reusables/StylesComponent";
+import CustomButton from "../Reusables/CustomButton";
+
+//----------COMPONENT----------
 const RecipePage = ({ route }) => {
+  //-----Declarations-----
   const [imageUrl, setImageUrl] = useState("");
   const [ingredients, setIngredients] = useState([]);
   const [recipeTitle, setRecipeTitle] = useState("");

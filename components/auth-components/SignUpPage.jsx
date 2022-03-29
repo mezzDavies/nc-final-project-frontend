@@ -11,7 +11,7 @@ import { httpsCallable } from "firebase/functions";
 import { doc, setDoc } from "firebase/firestore";
 
 //IMPORTS - utils functions
-import { FormTextField } from "../FormTextField";
+import { FormTextField } from "../Reusables/FormTextField";
 import getUserDataAndClaims from "../../utils/getUserDataAndClaims";
 
 // ----------COMPONENT----------
