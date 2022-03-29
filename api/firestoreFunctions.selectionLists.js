@@ -139,6 +139,7 @@ async function getSelectionLists(familyId) {
       selectionLists.push(selectionList.id);
     }
   });
+  return selectionLists;
 }
 
 // View the current RecipeRefs in a selectionList

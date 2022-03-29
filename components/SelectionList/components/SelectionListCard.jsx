@@ -3,6 +3,8 @@ import { Text, View, Image, TouchableHighlight } from "react-native";
 import { getRecipeById } from "../../../api/firestoreFunctions.recipes";
 import AddToShortList from "./AddToShortlist";
 import DeleteRecipeFromList from "./DeleteRecipeFromList";
+import { doc, getDoc } from "firebase/firestore";
+import { fireDB } from "../../../firebase";
 
 const SelectionListCard = ({
   idArray,
@@ -16,9 +18,22 @@ const SelectionListCard = ({
   const [isLoading, setIsLoading] = useState(true);
   const [recipe, setRecipe] = useState([]);
 
+  async function shortGetRecipeById(recipeId) {
+    const recipeIdAsStr = recipeId.toString();
+    const docRef = doc(fireDB, "recipes", recipeIdAsStr);
+
+    const result = {};
+
+    const querySnapshots = await Promise.all([getDoc(docRef)]);
+
+    result.summary = querySnapshots[0].data();
+
+    return result;
+  }
+
   useEffect(() => {
     setIsLoading(true);
-    getRecipeById(recipeId)
+    shortGetRecipeById(recipeId)
       .then(({ summary }) => {
         setRecipe(summary);
         setIsLoading(false);
