@@ -15,6 +15,7 @@ import {
   getSelectionList,
 } from "../../../api/firestoreFunctions.selectionLists";
 import { getFamilies } from "../../../api/firestoreFunctions.families";
+import { getShortListsCgBy } from "../../../api/fireStoreFunctions.collectionGroup";
 
 //IMPORTS - components & utils
 import getUserDataAndClaims from "../../../utils/getUserDataAndClaims";
@@ -32,6 +33,71 @@ const MealPlanList = ({ navigation }) => {
   const [mealPlanId, setMealPlanId] = useState([]);
   const [recipeCards, setRecipeCards] = useState([]);
 
+  // useEffect(() => {
+  //   setIsLoading(true);
+  //   getUserDataAndClaims()
+  //     .then(({ claims, userData, newUserId }) => {
+  //       setUserId(newUserId);
+  //       return newUserId;
+  //     })
+  //     .then((userId) => {
+  //       return getFamilies(userId)
+  //         .then((familyId) => {
+  //           setFamilyId(familyId[0]);
+  //           return familyId[0];
+  //         })
+  //         .then((res) => {
+  //           getSelectionLists(res)
+  //             .then((selectionId) => {
+  //               setSelectionListId(selectionId[0]);
+  //               const newFamilyId = res;
+  //               const newSelectionListId = selectionId[0];
+  //               return Promise.all([newFamilyId, newSelectionListId]);
+  //             })
+  //             .then(([newFamilyId, newSelectionListId]) => {
+  //               return Promise.all([
+  //                 getSelectionList(newFamilyId, newSelectionListId),
+  //                 newFamilyId,
+  //                 newSelectionListId,
+  //               ]);
+  //             })
+  //             .then(([finalSelectionList, newFamilyId, newSelectionListId]) => {
+  //               setSelectionList(finalSelectionList[0]);
+  //               const mealPlanId = getMealPlans(
+  //                 newFamilyId,
+  //                 newSelectionListId
+  //               );
+  //               return Promise.all([
+  //                 newFamilyId,
+  //                 newSelectionListId,
+  //                 mealPlanId,
+  //               ]);
+  //             })
+  //             .then(([newFamilyId, newSelectionListId, mealPlanIdentity]) => {
+  //               setMealPlanId(mealPlanIdentity[0].mealPlanId);
+  //               return getMealPlan(
+  //                 newFamilyId,
+  //                 newSelectionListId,
+  //                 mealPlanIdentity[0].mealPlanId
+  //               );
+  //             })
+  //             .then((mealPlan) => {
+  //               setMealPlan(mealPlan.recipeIds);
+  //               return Promise.all([
+  //                 mealPlan.recipeIds.map((recipe) => getRecipeCardById(recipe)),
+  //               ]);
+  //             })
+  //             .then(([recipeCards]) => {
+  //               return Promise.all(recipeCards);
+  //             })
+  //             .then((result) => {
+  //               setRecipeCards(result);
+  //               setIsLoading(false);
+  //             });
+  //         });
+  //     });
+  // }, []);
+
   useEffect(() => {
     setIsLoading(true);
     getUserDataAndClaims()
@@ -40,60 +106,30 @@ const MealPlanList = ({ navigation }) => {
         return newUserId;
       })
       .then((userId) => {
-        return getFamilies(userId)
-          .then((familyId) => {
-            setFamilyId(familyId[0]);
-            return familyId[0];
-          })
-          .then((res) => {
-            getSelectionLists(res)
-              .then((selectionId) => {
-                setSelectionListId(selectionId[0]);
-                const newFamilyId = res;
-                const newSelectionListId = selectionId[0];
-                return Promise.all([newFamilyId, newSelectionListId]);
-              })
-              .then(([newFamilyId, newSelectionListId]) => {
-                return Promise.all([
-                  getSelectionList(newFamilyId, newSelectionListId),
-                  newFamilyId,
-                  newSelectionListId,
-                ]);
-              })
-              .then(([finalSelectionList, newFamilyId, newSelectionListId]) => {
-                setSelectionList(finalSelectionList[0]);
-                const mealPlanId = getMealPlans(
-                  newFamilyId,
-                  newSelectionListId
-                );
-                return Promise.all([
-                  newFamilyId,
-                  newSelectionListId,
-                  mealPlanId,
-                ]);
-              })
-              .then(([newFamilyId, newSelectionListId, mealPlanIdentity]) => {
-                setMealPlanId(mealPlanIdentity[0].mealPlanId);
-                return getMealPlan(
-                  newFamilyId,
-                  newSelectionListId,
-                  mealPlanIdentity[0].mealPlanId
-                );
-              })
-              .then((mealPlan) => {
-                setMealPlan(mealPlan.recipeIds);
-                return Promise.all([
-                  mealPlan.recipeIds.map((recipe) => getRecipeCardById(recipe)),
-                ]);
-              })
-              .then(([recipeCards]) => {
-                return Promise.all(recipeCards);
-              })
-              .then((result) => {
-                setRecipeCards(result);
-                setIsLoading(false);
-              });
-          });
+        return getShortListsCgBy(userId);
+      })
+      .then((res) => {
+        setFamilyId(res[0].familyId);
+        setSelectionListId(res[0].selectionListId);
+        setMealPlanId(res[0].mealPlanId);
+        return getMealPlan(
+          res[0].familyId,
+          res[0].selectionListId,
+          res[0].mealPlanId
+        );
+      })
+      .then((mealPlan) => {
+        setMealPlan(mealPlan.recipeIds);
+        return Promise.all([
+          mealPlan.recipeIds.map((recipe) => getRecipeCardById(recipe)),
+        ]);
+      })
+      .then(([recipeCards]) => {
+        return Promise.all(recipeCards);
+      })
+      .then((result) => {
+        setRecipeCards(result);
+        setIsLoading(false);
       });
   }, []);
 
