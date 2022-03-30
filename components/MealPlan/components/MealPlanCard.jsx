@@ -41,6 +41,12 @@ const MealPlanCard = ({ recipe, navigation, index, mealPlan, setMealPlan }) => {
     "Sunday",
   ];
 
+  function arraymove(arr, fromIndex, toIndex) {
+    var element = arr[fromIndex];
+    arr.splice(fromIndex, 1);
+    arr.splice(toIndex, 0, element);
+  }
+
   // console.log(mealPlan);
   // console.log(setMealPlan);
 
@@ -66,7 +72,7 @@ const MealPlanCard = ({ recipe, navigation, index, mealPlan, setMealPlan }) => {
           data={weekDays}
           onSelect={(selectedItem, index) => {
             setMealPlan((currentMealPlan) => {
-              console.log(currentMealPlan);
+              arraymove(mealPlan, index);
             });
           }}
         />
@@ -76,3 +82,6 @@ const MealPlanCard = ({ recipe, navigation, index, mealPlan, setMealPlan }) => {
 };
 
 export default MealPlanCard;
+
+//current index of meal
+//index of the day they want it on
