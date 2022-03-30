@@ -5,6 +5,7 @@ import { Text, View, Button } from "react-native";
 //IMPORTS - firebase
 import {
   getMealPlan,
+  orderMealPlan,
   toggleMealPlanStatus,
 } from "../../../api/firestoreFunctions.mealPlans";
 import MealPlanCard from "./MealPlanCard";
@@ -122,6 +123,7 @@ const MealPlanList = ({ navigation }) => {
         );
       })
       .then((mealPlan) => {
+        setMealPlanConfirmation(mealPlan.isConfirmed);
         setMealPlan(mealPlan.recipeIds);
         return Promise.all([
           mealPlan.recipeIds.map((recipe) => getRecipeCardById(recipe)),
@@ -185,16 +187,17 @@ const MealPlanList = ({ navigation }) => {
           isChild
             ? "Only adult user can confirm Meal Plans"
             : mealPlanConfirmation
-            ? "Meal Plan Already Confirmed"
+            ? "Meal Plan Confirmed"
             : "Confirm Your Meal Plan"
         }
         onPress={() => {
-          toggleMealPlanStatus(familyId, selectionListId, mealPlanId);
+          toggleMealPlanStatus(familyId, selectionListId, mealPlanId); // changes isConfirmed to false
           setMealPlanConfirmation((currentMealPlanConfirmation) => {
             return !currentMealPlanConfirmation;
           });
+          orderMealPlan(familyId, selectionListId, mealPlanId, mealPlan); //
         }}
-        disabled={isChild ? true : mealPlanConfirmation}
+        disabled={isChild}
       />
     </View>
   );
