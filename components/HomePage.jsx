@@ -36,25 +36,28 @@ const Homepage = ({ navigation }) => {
       <>
         <ScrollView>
           <View>
-            <Text style={{ textAlign: "center", marginTop: 300 }}>
+            <Text style={{ textAlign: "center", marginTop: 10, fontSize: 15 }}>
               Hi, it looks like you're not logged in yet. You can see the
               starter of Planet Scran It below, but to access the main course,
               you'll need to log in or sign up.
             </Text>
             <RandomRecipes navigation={navigation} />
-            <RecipesList navigation={navigation} />
-            <Button
-              title="Go to sign up..."
-              onPress={() =>
-                navigation.navigate("Account", { screen: "SignUp" })
-              }
-            />
-            <Button
-              title="Go to sign in..."
-              onPress={() =>
-                navigation.navigate("Account", { screen: "SignIn" })
-              }
-            />
+            <View style={{marginTop: 10, marginBottom: 5, marginLeft: 10, marginRight: 10}}>
+              <Button
+                title="Go to sign up..."
+                onPress={() =>
+                  navigation.navigate("Account", { screen: "SignUp" })
+                }
+              />
+            </View>
+            <View style={{marginTop: 10, marginBottom: 5, marginLeft: 10, marginRight: 10}}>
+              <Button
+                title="Go to sign in..."
+                onPress={() =>
+                  navigation.navigate("Account", { screen: "SignIn" })
+                }
+              />
+            </View>
           </View>
         </ScrollView>
       </>
