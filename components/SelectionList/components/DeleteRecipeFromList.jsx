@@ -1,6 +1,7 @@
 import { Button } from "react-native";
 import React, { useState } from "react";
 import { deleteFromSelectionList } from "../../../api/firestoreFunctions.selectionLists";
+import styles from "./SelectionStyles";
 
 const DeleteRecipeFromList = ({
   familyId,
@@ -30,6 +31,7 @@ const DeleteRecipeFromList = ({
 
   return (
     <Button
+      style={styles.deleteBtn}
       title="Delete From Selection List"
       onPress={() => {
         removeRecipePress();
