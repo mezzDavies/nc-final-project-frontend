@@ -1,21 +1,22 @@
-import { Switch, Text, View } from "react-native";
+import { Switch, Text, View, CheckBox } from "react-native";
 import { useState } from "react";
+import styles from "./ShoppingStyles";
 
 const ShoppingListCard = ({ listItem }) => {
-  const [isEnabled, setIsEnabled] = useState(false);
-
-  const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
+  const [isSelected, setIsSelected] = useState(false);
 
   return (
-    <View>
-      <Switch
-        trackColor={{ false: "#767577", true: "#81b0ff" }}
-        thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
-        ios_backgroundColor="#3e3e3e"
-        onValueChange={toggleSwitch}
-        value={isEnabled}
-      />
-      <Text>{`${listItem.name} - ${listItem.amount} ${listItem.unit}`}</Text>
+    <View style={styles.container}>
+      <View style={styles.checkboxContainer}>
+        <CheckBox
+          value={isSelected}
+          onValueChange={setIsSelected}
+          style={styles.checkbox}
+        />
+        <Text
+          style={styles.label}
+        >{`${listItem.name} - ${listItem.amount} ${listItem.unit}`}</Text>
+      </View>
     </View>
   );
 };

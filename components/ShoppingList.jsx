@@ -63,8 +63,8 @@ const ShoppingListScreen = () => {
   return (
     <ScrollView>
       <View>
-        <Text style={{ textAlign: "center", marginTop: 15 }}>
-          Shopping List
+        <Text style={{ textAlign: "center", marginTop: 15, marginBottom: 10 }}>
+          This Week's Shopping List:
         </Text>
       </View>
       <View>
