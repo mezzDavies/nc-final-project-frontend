@@ -1,11 +1,12 @@
 import React from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
+import { FontAwesome5 } from "@expo/vector-icons";
 
 const navigationIcons = ({ route }) => ({
   tabBarIcon: () => {
-    if (route.name === "Recipes") {
-      return <Ionicons name="search-outline" size={24} color="#FEF4EC" />;
+    if (route.name === "Homepage") {
+      return <FontAwesome5 name="home" size={24} color="#FEF4EC" />;
     }
     if (route.name === "Vote") {
       return <Feather name="thumbs-up" size={24} color="#FEF4EC" />;

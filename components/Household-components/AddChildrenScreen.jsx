@@ -4,24 +4,15 @@ import { Button, Text, View } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 
 //IMPORTS - utils functions
-import { FormTextField } from "../FormTextField";
+import { FormTextField } from "../Reusables/FormTextField";
 import { createChildAccount } from "../../api/firestoreFunctions.users";
-import getUserDataAndClaims from "../../utils/getUserDataAndClaims";
 
 //----------COMPONENT----------
-const AddChildrenScreen = ({ setFamilyMembers }) => {
+const AddChildrenScreen = ({ setFamilyMembers, setModalVisible, familyId }) => {
     //-----Declarations-----
     const { control, handleSubmit, reset, formState: { errors } } = useForm();
     const [loadingMessage, setLoadingMessage] = useState('')
-    const [familyId, setFamilyId] = useState('');
-
-    useEffect(() => {
-    getUserDataAndClaims()
-        .then(({ claims, userData, newUserId }) => {
-        setFamilyId(userData.groupIds[0]);
-        })
-      }, [])
-    
+        
     const onSubmit = (data) => {
         const firstName = data.firstName;
 
@@ -33,6 +24,7 @@ const AddChildrenScreen = ({ setFamilyMembers }) => {
                     const newFamilyMembers = [...currFamilyMembers, childRef]
                     return newFamilyMembers;
                 })
+                setModalVisible(false);
             })
             .catch((err) => {
                 return err

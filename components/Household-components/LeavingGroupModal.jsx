@@ -1,11 +1,9 @@
 //IMPORTS - react
 import React, { useState, useEffect } from "react";
 import { Button, Text, View } from "react-native";
-import { removeUserFromFamily } from "../../api/firestoreFunctions.families";
 
-//IMPORTS - utils functions
-import { createChildAccount } from "../../api/firestoreFunctions.users";
-import getUserDataAndClaims from "../../utils/getUserDataAndClaims";
+//IMPORTS - firebase
+import { removeUserFromFamily } from "../../api/firestoreFunctions.families";
 
 //----------COMPONENT----------
 const LeavingGroupModal = ({ userId, familyId, setFamilyId, setLeavingModalVisible, setFamilyStatus }) => {
