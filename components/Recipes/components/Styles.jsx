@@ -3,11 +3,17 @@ import { StyleSheet } from "react-native";
 const styles = StyleSheet.create({
   recipes: {
     marginTop: 16,
-    backgroundColor: "fff",
+    backgroundColor: "white",
+    marginRight: 10,
+    marginLeft: 10,
+    padding: 15,
+    borderRadius: 10,
+    marginBottom: 16,
+    alignItems: "center",
   },
   image: {
-    width: 200,
-    height: 200,
+    width: 80,
+    height: 80,
     alignContent: "center",
     borderRadius: 8,
     marginBottom: 10,
@@ -25,6 +31,22 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 16,
     justifyContent: "center",
+  },
+  dividingLine: {
+    borderStyle: "solid",
+    borderBottomColor: "black",
+    borderBottomWidth: 0.25,
+    width: 200,
+    marginTop: 20,
+    alignItems: "center",
+  },
+  tagLine: {
+    color: "black",
+    fontWeight: "800",
+    fontSize: 17,
+    marginBottom: 15,
+    color: "#DD1F13",
+    alignContent: "center",
   },
 });
 
