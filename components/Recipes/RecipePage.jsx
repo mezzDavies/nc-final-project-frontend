@@ -21,7 +21,7 @@ import Styles from "../Reusables/StylesComponent";
 import CustomButton from "../Reusables/CustomButton";
 
 //----------COMPONENT----------
-const RecipePage = ({ route }) => {
+const RecipePage = ({ route, navigation }) => {
   //-----Declarations-----
   const [imageUrl, setImageUrl] = useState("");
   const [ingredients, setIngredients] = useState([]);
@@ -81,6 +81,7 @@ const RecipePage = ({ route }) => {
         "Error: recipe not added. Please check your connection and click again to add recipe."
       );
     });
+    navigation.navigate("HomePage");
   };
 
   return (
