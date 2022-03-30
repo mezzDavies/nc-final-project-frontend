@@ -1,31 +1,25 @@
-//IMPORTS - react
 import { React, useEffect, useState } from "react";
 import {
   View,
   Text,
   Button,
   Image,
-  StyleSheet,
   ScrollView,
+  ImageBackground,
 } from "react-native";
-
-//IMPORTS - firebase
 import { getRecipeById } from "../../api/firestoreFunctions.recipes";
 import { addToSelectionList } from "../../api/firestoreFunctions.selectionLists";
 import { getFamilies } from "../../api/firestoreFunctions.families";
 import getUserDataAndClaims from "../../utils/getUserDataAndClaims";
 import { getSelectionLists } from "../../api/firestoreFunctions.selectionLists";
-
-//IMPORTS - components & utils
-import Styles from "../Reusables/StylesComponent";
+import styles from "./components/RecipePageStyles";
 import CustomButton from "../Reusables/CustomButton";
 import { auth } from "../../firebase";
 
-//----------COMPONENT----------
 const RecipePage = ({ route, navigation }) => {
-  //-----Declarations-----
   const [userStatus, setUserStatus] = useState(false);
   const [parentStatus, setParentStatus] = useState(false);
+
   const [imageUrl, setImageUrl] = useState("");
   const [ingredients, setIngredients] = useState([]);
   const [recipeTitle, setRecipeTitle] = useState("");
@@ -35,8 +29,6 @@ const RecipePage = ({ route, navigation }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [familyId, setFamilyId] = useState([]);
   const [selectionListId, setSelectionListId] = useState([]);
-
-  const stylesVar = Styles();
   const recipeId = route.params.id;
 
   useEffect(() => {
@@ -104,40 +96,38 @@ const RecipePage = ({ route, navigation }) => {
   return (
     <ScrollView>
       <View>
-        <Image
-          source={{
-            width: 556,
-            height: 370,
-            uri: `${imageUrl}`,
-          }}
-          style={stylesVar.image}
-        />
         <View>
-          <View>
-            <Text style={stylesVar.mealTitle}>{recipeTitle}</Text>
-            <Text style={stylesVar.mins}>{`${cookTime} mins`}</Text>
-          </View>
-
-          <View>
-            <Text
-              style={stylesVar.ingredientsTitle}
-            >{`Ingredients - serves ${servings}`}</Text>
+          <ImageBackground
+            source={{
+              width: 556,
+              height: 250,
+              uri: `${imageUrl}`,
+            }}
+            style={styles.image}
+          >
+            <View style={styles.recipeHeader}>
+              <Text style={styles.mealTitle}>{recipeTitle}</Text>
+              <Text style={styles.dividingLine} />
+              <Text style={styles.mins}>{`Ready in ${cookTime} minutes`}</Text>
+              <Text style={styles.mins}>{`Serves ${servings}`}</Text>
+            </View>
+          </ImageBackground>
+          <View style={styles.ingredients}>
+            <Text style={styles.ingredientsTitle}>{`Ingredients`}</Text>
             {ingredients.map((ingredient, index) => {
               return (
-                <Text key={`${ingredient.id}`} style={stylesVar.ingredients}>
-                  {ingredient.original}
-                </Text>
+                <Text key={`${ingredient.id}`}>{ingredient.original}</Text>
               );
             })}
           </View>
 
-          <View>
-            <Text style={stylesVar.instructTitle}>Instructions</Text>
-            <Text style={stylesVar.instructions}>{instructions}</Text>
+          <View style={styles.ingredients}>
+            <Text style={styles.ingredientsTitle}>Instructions</Text>
+            <Text>{instructions}</Text>
           </View>
         </View>
-        <View style={stylesVar.buttons}>
-          {userStatus && parentStatus ? <Button title="Add to Selection List" onPress={addToSelectionPress} /> : null }
+        <View style={styles.buttons}>
+          {userStatus && parentStatus ? <Button title="Add to Selection List" onPress={addToSelectionPress} color="#DD1F13"/> : null }
         </View>
       </View>
     </ScrollView>
