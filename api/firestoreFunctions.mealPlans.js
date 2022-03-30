@@ -75,6 +75,21 @@ async function toggleMealPlanStatus(familyId, selectionListId, mealPlanId) {
   return !currIsConfirmed;
 }
 
+// Order mealPlan (days of the week) - only use after isConfirmed toggled to true
+async function orderMealPlan(familyId, selectionListId, mealPlanId, recipeIds) {
+  const docRef = doc(
+    fireDB,
+    `/families/${familyId}/selectionLists/${selectionListId}/mealPlans`,
+    mealPlanId
+  );
+
+  await updateDoc(docRef, {
+    recipeIds: recipeIds,
+  });
+
+  return docRef.id;
+}
+
 // async function calculateVotes(familyId, selectionListId, mealPlanId) {
 //   const votes = {};
 
