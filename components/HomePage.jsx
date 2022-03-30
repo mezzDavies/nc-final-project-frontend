@@ -26,11 +26,8 @@ const Homepage = ({ navigation }) => {
     return (
       <ScrollView>
         <View>
-          <Button
-            title="View all recipes..."
-            onPress={() => navigation.navigate("RecipesAll")}
-          />
           <RandomRecipes navigation={navigation} />
+          <RecipesList navigation={navigation} />
         </View>
       </ScrollView>
     );
@@ -40,9 +37,12 @@ const Homepage = ({ navigation }) => {
         <ScrollView>
           <View>
             <Text style={{ textAlign: "center", marginTop: 300 }}>
-              Hi, it looks like you're not logged in yet. You can see the starter of Planet Scran It below, but to access the main course, you'll need to log in or sign up.
+              Hi, it looks like you're not logged in yet. You can see the
+              starter of Planet Scran It below, but to access the main course,
+              you'll need to log in or sign up.
             </Text>
             <RandomRecipes navigation={navigation} />
+            <RecipesList navigation={navigation} />
             <Button
               title="Go to sign up..."
               onPress={() =>
