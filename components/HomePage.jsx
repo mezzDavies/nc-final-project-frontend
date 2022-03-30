@@ -13,6 +13,7 @@ const Homepage = ({ navigation }) => {
       if (user) {
         setUserStatus(true);
         getUserDataAndClaims().then(({ claims, userData, newUserId }) => {
+          console.log(claims)
           setFirstName(userData.name);
         });
       } else {
