@@ -35,30 +35,30 @@ const RecipePage = ({ route, navigation }) => {
     setIsLoading(true);
     auth.onAuthStateChanged(function (user) {
       if (user) {
-        setUserStatus(true)
+        setUserStatus(true);
         getUserDataAndClaims()
-        .then(({ claims, userData, newUserId }) => {
-          if(!claims.parent) {
-            setParentStatus(false)
-          } else {
-            setParentStatus(true)
-          }
-          const currentIds = {
-            user: newUserId,
-            family: userData.groupIds[0]
-          }
-          setFamilyId(currentIds.family)
-          return currentIds
-        })
-        .then((currentIds) => {
-          return getSelectionLists(currentIds.family)
-        })
-        .then((selectionId) => {
-          setSelectionListId(selectionId[0]);
-        })
-        .catch((err) => {
-          return err
-        });
+          .then(({ claims, userData, newUserId }) => {
+            if (!claims.parent) {
+              setParentStatus(false);
+            } else {
+              setParentStatus(true);
+            }
+            const currentIds = {
+              user: newUserId,
+              family: userData.groupIds[0],
+            };
+            setFamilyId(currentIds.family);
+            return currentIds;
+          })
+          .then((currentIds) => {
+            return getSelectionLists(currentIds.family);
+          })
+          .then((selectionId) => {
+            setSelectionListId(selectionId[0]);
+          })
+          .catch((err) => {
+            return err;
+          });
       } else {
         setUserStatus(false);
         setIsLoading(false);
@@ -100,7 +100,7 @@ const RecipePage = ({ route, navigation }) => {
           <ImageBackground
             source={{
               width: 556,
-              height: 250,
+              height: 400,
               uri: `${imageUrl}`,
             }}
             style={styles.image}
@@ -112,22 +112,30 @@ const RecipePage = ({ route, navigation }) => {
               <Text style={styles.mins}>{`Serves ${servings}`}</Text>
             </View>
           </ImageBackground>
-          <View style={styles.ingredients}>
-            <Text style={styles.ingredientsTitle}>{`Ingredients`}</Text>
-            {ingredients.map((ingredient, index) => {
-              return (
-                <Text key={`${ingredient.id}`}>{ingredient.original}</Text>
-              );
-            })}
-          </View>
+          <View style={styles.infoContainer}>
+            <View style={styles.ingredients}>
+              <Text style={styles.ingredientsTitle}>{`Ingredients`}</Text>
+              {ingredients.map((ingredient, index) => {
+                return (
+                  <Text key={`${ingredient.id}`}>{ingredient.original}</Text>
+                );
+              })}
+            </View>
 
-          <View style={styles.ingredients}>
-            <Text style={styles.ingredientsTitle}>Instructions</Text>
-            <Text>{instructions}</Text>
+            <View style={styles.instructions}>
+              <Text style={styles.ingredientsTitle}>Instructions</Text>
+              <Text>{instructions}</Text>
+            </View>
           </View>
         </View>
         <View style={styles.buttons}>
-          {userStatus && parentStatus ? <Button title="Add to Selection List" onPress={addToSelectionPress} color="#DD1F13"/> : null }
+          {userStatus && parentStatus ? (
+            <Button
+              title="Add to Selection List"
+              onPress={addToSelectionPress}
+              color="#DD1F13"
+            />
+          ) : null}
         </View>
       </View>
     </ScrollView>
