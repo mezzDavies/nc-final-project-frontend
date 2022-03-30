@@ -2,10 +2,11 @@ import { Text, Image, View, TouchableHighlight } from "react-native";
 import styles from "./Styles";
 
 const RecipeCard = ({ recipe, navigation }) => {
-  const { id, title, image, instructions, readyInMinutes, servings, summary } = recipe;
+  const { id, title, image, instructions, readyInMinutes, servings, summary } =
+    recipe;
 
-  console.log(id)
-  
+  console.log(id);
+
   return (
     <View style={styles.recipe}>
       <TouchableHighlight
@@ -19,6 +20,7 @@ const RecipeCard = ({ recipe, navigation }) => {
       <Text style={styles.recipeInfo}>
         Ready in {readyInMinutes} minutes | Serves {servings}
       </Text>
+      <Text style={styles.dividingLine} />
     </View>
   );
 };

@@ -22,8 +22,18 @@ const RecipesList = ({ navigation }) => {
 
   return (
     <View style={styles.recipes}>
+      <Text style={styles.tagLine}>
+        Click on a meal you like to see the ingredients and method for
+        cooking...
+      </Text>
       {recipesList.map((recipe, index) => {
-        return <RecipeCard recipe={recipe} navigation={navigation} key={`${recipe.id} - ${index}`} />;
+        return (
+          <RecipeCard
+            recipe={recipe}
+            navigation={navigation}
+            key={`${recipe.id} - ${index}`}
+          />
+        );
       })}
     </View>
   );

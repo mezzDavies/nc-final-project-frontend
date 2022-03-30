@@ -2,18 +2,18 @@ import React, { useState, useEffect } from "react";
 import { Button, View, Text, ScrollView } from "react-native";
 import { auth } from "../firebase";
 import RandomRecipes from "./RandomRecipes";
+import RecipesList from "./Recipes/components/RecipesList";
 import getUserDataAndClaims from "../utils/getUserDataAndClaims";
 
 const Homepage = ({ navigation }) => {
   const [userStatus, setUserStatus] = useState(false);
-  const [firstName, setFirstName] = useState('');
+  const [firstName, setFirstName] = useState("");
 
   useEffect(() => {
     auth.onAuthStateChanged(function (user) {
       if (user) {
         setUserStatus(true);
         getUserDataAndClaims().then(({ claims, userData, newUserId }) => {
-          console.log(claims)
           setFirstName(userData.name);
         });
       } else {
@@ -27,7 +27,7 @@ const Homepage = ({ navigation }) => {
       <ScrollView>
         <View>
           <Button
-            title="View all Recipes..."
+            title="View all recipes..."
             onPress={() => navigation.navigate("RecipesAll")}
           />
           <RandomRecipes navigation={navigation} />

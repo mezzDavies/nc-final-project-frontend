@@ -18,15 +18,15 @@ export default function RandomRecipes({ navigation }) {
     getRecipes().then(({ recipeCards }) => {
       if (mounted) {
         const shuffled = [...recipeCards].sort(() => 0.5 - Math.random());
-        setRecipes(shuffled.slice(0, 3));
+        setRecipes(shuffled.slice(0, 1));
         setIsLoading(false);
       }
     });
     return () => (mounted = false);
   }, []);
 
-  const imageStyles = StyleSheet.create({
-    container: {
+  const styles = StyleSheet.create({
+    image: {
       width: 300,
       height: 200,
       alignContent: "center",
@@ -34,36 +34,55 @@ export default function RandomRecipes({ navigation }) {
       marginRight: 25,
       borderRadius: 10,
     },
-  });
-
-  const titleStyle = StyleSheet.create({
-    container: {
+    title: {
       fontSize: 20,
       margin: 5,
+      marginLeft: 25,
+      marginTop: 10,
+      color: "#DD1F13",
+      fontSize: 30,
+      fontFamily: "Bangers_400Regular",
     },
-  });
-
-  const minutesStyle = StyleSheet.create({
-    container: {
+    minutes: {
       textAlign: "center",
+      marginBottom: 10,
+    },
+    minutes: {
+      marginTop: 5,
+      textAlign: "center",
+      marginBottom: 10,
+    },
+    foodTitle: {
+      textAlign: "center",
+      color: "black",
+      fontSize: 25,
+      fontFamily: "Bangers_400Regular",
+      marginTop: 10,
+    },
+    loadingText: {
+      marginTop: 200,
+      textAlign: "center",
+      color: "black",
+      fontSize: 35,
+      fontFamily: "Bangers_400Regular",
+    },
+    tagLine: {
+      color: "black",
+      fontWeight: "800",
+      fontSize: 17,
+      marginLeft: 25,
       marginBottom: 10,
     },
   });
 
-  const foodTitleStyle = StyleSheet.create({
-    container: {
-      textAlign: "center",
-    },
-  });
-
-  if (isLoading) return <Text>Loading...</Text>;
+  if (isLoading) return <Text style={styles.loadingText}>Loading...</Text>;
 
   return (
-    <View>
-      <Text style={titleStyle.container}>Todays favourites...</Text>
+    <View style={styles.background}>
+      <Text style={styles.title}>Todays favourite...</Text>
       {recipes
         ? recipes.map((recipe) => {
-            const { image, readyInMinutes, title, id } = recipe;
+            const { image, readyInMinutes, title, id, servings } = recipe;
             return (
               <View key={`container-` + id}>
                 <TouchableHighlight
@@ -74,16 +93,16 @@ export default function RandomRecipes({ navigation }) {
                   <Image
                     key={"image-" + id}
                     source={{ uri: image }}
-                    style={imageStyles.container}
+                    style={styles.image}
                   />
                 </TouchableHighlight>
-                <Text key={"title-" + id} style={foodTitleStyle.container}>
+                <Text key={"title-" + id} style={styles.foodTitle}>
                   {title}
                 </Text>
                 <Text
                   key={"minutes-" + id}
-                  style={minutesStyle.container}
-                >{`${readyInMinutes} minutes`}</Text>
+                  style={styles.minutes}
+                >{`Ready in ${readyInMinutes} minutes | Serves ${servings}`}</Text>
               </View>
             );
           })
