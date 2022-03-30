@@ -9,13 +9,17 @@ const RecipesList = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    let mounted = true;
     setIsLoading(true);
     getRecipes()
       .then(({ recipeCards: recipes }) => {
-        setRecipesList(recipes);
-        setIsLoading(false);
+        if (mounted) {
+          setRecipesList(recipes);
+          setIsLoading(false);
+        }
       })
       .catch((err) => console.log(err));
+    return () => (mounted = false);
   }, []);
 
   if (isLoading) return <Text>Loading...</Text>;

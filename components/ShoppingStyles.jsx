@@ -5,6 +5,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+    paddingBottom: 10,
   },
   checkboxContainer: {
     flexDirection: "row",
@@ -15,18 +16,22 @@ const styles = StyleSheet.create({
   },
   label: {
     margin: 8,
+    color: "black",
+    fontFamily: "System",
+    fontSize: 16,
   },
   title: {
     flex: 1,
     fontSize: 20,
     marginBottom: 10,
-    fontWeight: 600,
+    fontWeight: 700,
+    color: "#DD1F13",
   },
   list: {
     alignContent: "center",
     padding: 15,
     borderStyle: "solid",
-    borderColor: "grey",
+    borderColor: "#DD1F13",
     borderWidth: 1,
     borderRadius: 4,
     marginTop: 15,
