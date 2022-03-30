@@ -1,13 +1,11 @@
 import * as React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-
 import Homepage from "../HomePage";
 import HouseHoldScreen from "../Household-components/Household";
 import JoinGroupScreen from "../Household-components/JoinGroupScreen";
 import CreateGroupScreen from "../Household-components/CreateGroupScreen";
 import AddChildrenScreen from "../Household-components/AddChildrenScreen";
 import RecipePage from "../Recipes/RecipePage";
-import RecipeCard from "../Recipes/components/RecipeCard";
 import ProfileScreen from "../Profile";
 import SelectionListScreen from "../SelectionList/SelectionListScreen";
 import ShoppingListScreen from "../ShoppingList";
@@ -29,7 +27,6 @@ const HomepageNavigation = () => {
         <Stack.Screen name="RecipePage" component={RecipePage} />
         <Stack.Screen name="Testing" component={TestingPage} />
         <Stack.Screen name="RecipesAll" component={RecipesAll} />
-        <Stack.Screen name="RecipeCard" component={RecipeCard} />
       </Stack.Navigator>
     </>
   );

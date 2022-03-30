@@ -43,10 +43,11 @@ const styles = StyleSheet.create({
   tagLine: {
     color: "black",
     fontWeight: "800",
-    fontSize: 17,
+    fontSize: 14,
     marginBottom: 15,
     color: "#DD1F13",
     alignContent: "center",
+    marginTop: 10,
   },
 });
 
