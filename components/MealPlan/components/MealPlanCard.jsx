@@ -9,8 +9,14 @@ import {
 import SelectDropdown from "react-native-select-dropdown";
 import { useState } from "react";
 
-const MealPlanCard = ({ recipe, navigation, index, mealPlan, setMealPlan }) => {
-  const [newMealPlan, setNewMealPlan] = useState([]);
+const MealPlanCard = ({
+  recipe,
+  navigation,
+  index,
+  mealPlan,
+  setMealPlan,
+  setSettingDays,
+}) => {
   const { id, image, instructions, readyInMinutes, servings, summary, title } =
     recipe;
 
@@ -41,13 +47,15 @@ const MealPlanCard = ({ recipe, navigation, index, mealPlan, setMealPlan }) => {
     "Sunday",
   ];
 
-  function arraymove(arr, fromIndex, toIndex) {
+  function arrayMove(arr, fromIndex, toIndex) {
     var element = arr[fromIndex];
     arr.splice(fromIndex, 1);
     arr.splice(toIndex, 0, element);
+    return arr;
   }
 
-  // console.log(mealPlan);
+  console.log(mealPlan);
+  // console.log(id);
   // console.log(setMealPlan);
 
   return (
@@ -71,9 +79,9 @@ const MealPlanCard = ({ recipe, navigation, index, mealPlan, setMealPlan }) => {
           rowTextStyle={styles.dropdown1RowTxtStyle}
           data={weekDays}
           onSelect={(selectedItem, index) => {
-            setMealPlan((currentMealPlan) => {
-              arraymove(mealPlan, index);
-            });
+            const recipeIndex = mealPlan.findIndex((recipe) => recipe == id);
+            setMealPlan(arrayMove(mealPlan, recipeIndex, index));
+            setSettingDays((currentSettingDays) => !currentSettingDays);
           }}
         />
       </View>
@@ -85,3 +93,6 @@ export default MealPlanCard;
 
 //current index of meal
 //index of the day they want it on
+
+//onSelect of dropdown returns index of selectedItem and index of selectedDay
+//onSelect of confirm selection invokes arraymove and setMealPlan

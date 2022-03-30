@@ -31,8 +31,11 @@ const MealPlanList = ({ navigation }) => {
   const [userId, setUserId] = useState("");
   const [mealPlanId, setMealPlanId] = useState([]);
   const [recipeCards, setRecipeCards] = useState([]);
+  const [settingDays, setSettingDays] = useState(true);
+  const [useEffectLoading, setUseEffectLoading] = useState(false);
 
   useEffect(() => {
+    setUseEffectLoading(true);
     setIsLoading(true);
     getUserDataAndClaims()
       .then(({ claims, userData, newUserId }) => {
@@ -92,6 +95,7 @@ const MealPlanList = ({ navigation }) => {
               .then((result) => {
                 setRecipeCards(result);
                 setIsLoading(false);
+                setUseEffectLoading(false);
               });
           });
       });
@@ -107,6 +111,19 @@ const MealPlanList = ({ navigation }) => {
       .catch((err) => console.log(err));
   }, []);
 
+  useEffect(() => {
+    if (!useEffectLoading) {
+      Promise.all([mealPlan.map((recipe) => getRecipeCardById(recipe))])
+        .then(([recipeCards]) => {
+          return Promise.all(recipeCards);
+        })
+        .then((result) => {
+          setRecipeCards(result);
+          setIsLoading(false);
+        });
+    }
+  }, [mealPlan, settingDays]);
+
   if (isLoading) return <Text>Is Loading...</Text>;
 
   return (
@@ -116,6 +133,7 @@ const MealPlanList = ({ navigation }) => {
         {recipeCards.map((recipe, index) => {
           return (
             <MealPlanCard
+              setSettingDays={setSettingDays}
               mealPlan={mealPlan}
               setMealPlan={setMealPlan}
               index={index}
