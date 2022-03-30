@@ -77,7 +77,9 @@ const SignInPage = ({ setUserStatus }) => {
         )}
         name="password"
       />
-      <Button title="Submit" onPress={handleSubmit(onSubmit)} />
+      <View style={{marginTop: 10, marginBottom: 5, marginLeft: 10, marginRight: 10}}>
+        <Button title="Submit" onPress={handleSubmit(onSubmit)} />
+      </View>
       <Text>{loadingMessage}</Text>
     </View>
   );

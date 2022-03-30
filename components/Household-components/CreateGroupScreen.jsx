@@ -53,6 +53,15 @@ const styles = StyleSheet.create({
   modalText: {
     marginBottom: 15,
     textAlign: "center"
+  },
+  optionContainer: {
+    marginTop: 20,
+    marginBottom: 30,
+    marginLeft: 5,
+    marginRight: 5,
+    borderWidth: 3,
+    borderColor: "#031a40",
+    borderRadius: 5
   }
 });
 
@@ -81,35 +90,42 @@ const CreateGroupScreen = ({ setFamilyStatus, userId, setUserId, firstName }) =>
   //-----Rendering------
   return (
     <View>
-      <Text>{`Hi ${firstName}, it looks like you're not part of a group yet, let's fix that now. You can create a new group by entering a group name, or if you have an invite code from another group, you can join them by clicking the link below.`}</Text>
-      <Controller
-        defaultValue=""
-        control={control}
-        rules={{
-          required: {
-            value: true,
-            message: "Please enter a new group name.",
-          },
-        }}
-        render={({ field: { onChange, value } }) => (
-          <FormTextField
-            error={errors.groupName}
-            errorText={errors.groupName?.message}
-            placeholder="Group Name"
-            onChangeText={(value) => onChange(value)}
-            value={value}
-          />
-        )}
-        name="groupName"
-      />
-      <Button title="Create New Group" onPress={handleSubmit(onSubmit)} />
+      <Text style={{ textAlign: "center", marginTop: 50, marginBottom: 20, marginLeft: 10, marginRight: 10, fontSize: 20 }}>{`Hi ${firstName}, it looks like you're not part of a group yet, let's fix that now. You can create a new group by entering a group name here...`}</Text>
+      <View style={styles.optionContainer}>
+        <Controller
+          defaultValue=""
+          control={control}
+          rules={{
+            required: {
+              value: true,
+              message: "Please enter a new group name.",
+            },
+          }}
+          render={({ field: { onChange, value } }) => (
+            <FormTextField
+              error={errors.groupName}
+              errorText={errors.groupName?.message}
+              placeholder="Enter a Group Name Here"
+              onChangeText={(value) => onChange(value)}
+              value={value}
+            />
+          )}
+          name="groupName"
+        />
+        <View style={{marginTop: 10, marginBottom: 5, marginLeft: 10, marginRight: 10}}>
+          <Button title="Create New Group" onPress={handleSubmit(onSubmit)} />
+        </View>
+      </View>
+      <Text style={{ textAlign: "center", marginTop: 20, marginBottom: 10, marginLeft: 10, marginRight: 10, fontSize: 20 }}>{`Or if you have been given an invite code by a friend or family member, you can join their group instead...`}</Text>
       <Text>{loadingMessage}</Text>
-      <Button
-        title="Join an Existing Group"
-        onPress={() => {
-          setModalVisible(true)
-        }}
-      />
+      <View style={{marginTop: 10, marginBottom: 5, marginLeft: 10, marginRight: 10}}>
+        <Button
+          title="Join an Existing Group"
+          onPress={() => {
+            setModalVisible(true)
+          }}
+        />
+      </View>
       <Modal
           animationType="slide"
           transparent={true}

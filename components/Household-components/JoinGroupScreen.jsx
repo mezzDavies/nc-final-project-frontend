@@ -38,10 +38,8 @@ const JoinGroupScreen = ({ userId, firstName, setFamilyStatus, setModalVisible }
   return (
     <View>
       <Text>
-        Hi {firstName}, it looks like you're trying to join an existing group,
-        to do this you'll need an invite code for that group. If you don't have
-        one, ask a member of the group to send you one and you can join
-        immediately!
+        Hi {firstName}, to join an existsing group, please enter that group's invite code below.
+        If you haven't been given one, tell your friend or family member to take a look on their household page, it should be there.
       </Text>
       <Controller
         defaultValue=""
