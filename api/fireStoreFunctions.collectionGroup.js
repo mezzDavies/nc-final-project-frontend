@@ -1,6 +1,7 @@
 import { collectionGroup, getDocs, query, where } from "firebase/firestore";
 
 import { fireDB } from "../firebase";
+
 async function getShortListsCgBy(userId) {
   const shortLists = query(
     collectionGroup(fireDB, "shortLists"),

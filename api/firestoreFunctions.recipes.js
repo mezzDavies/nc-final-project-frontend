@@ -1,6 +1,3 @@
-// lodash
-// import _ from "lodash";
-
 import {
   collection,
   doc,
@@ -10,7 +7,6 @@ import {
   where,
 } from "firebase/firestore";
 
-// import app from "../firebase";
 import { fireDB } from "../firebase";
 
 async function getRecipes() {

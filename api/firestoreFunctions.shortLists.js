@@ -23,7 +23,7 @@ import { fireDB } from "../firebase";
 // This is probably best triggered as an admin function when a user is added to a group
 
 async function addShortList(userId, familyId, selectionListId, mealPlanId) {
-  try{
+  try {
     const docRef = await addDoc(
       collection(
         fireDB,
@@ -40,10 +40,10 @@ async function addShortList(userId, familyId, selectionListId, mealPlanId) {
       }
     );
     return docRef.id;
-  } catch(err) {
+  } catch (err) {
     return err;
   }
-};
+}
 
 async function deleteShortList(
   userId,
@@ -88,18 +88,24 @@ async function getShortListFromCollection(
   selectionListId,
   mealPlanId
 ) {
-  try{
-    const q = query(collection(fireDB, `families/${familyId}/selectionLists/${selectionListId}/mealPlans/${mealPlanId}/shortLists`), where("userId", "==", `${userId}`));
+  try {
+    const q = query(
+      collection(
+        fireDB,
+        `families/${familyId}/selectionLists/${selectionListId}/mealPlans/${mealPlanId}/shortLists`
+      ),
+      where("userId", "==", `${userId}`)
+    );
 
     const result = [];
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
-      result.push({id: doc.id, data: doc.data()})
+      result.push({ id: doc.id, data: doc.data() });
     });
 
     return result;
-  } catch(err) {
-    return err
+  } catch (err) {
+    return err;
   }
 }
 
@@ -127,34 +133,10 @@ async function getShortList(
     throw new Error("User is not permitted to edit this shortList");
   }
 
-  console.log("Document data:", docSnap.get("recipeIds"));
   return docSnap.data();
 }
 
-// Adds a recipeId to a shortList
-
-// async function addToShortList(
-//   userId,
-//   familyId,
-//   selectionListId,
-//   mealPlanId,
-//   shortListId,
-//   recipeId
-// ) {
-//   const docRef = doc(
-//     fireDB,
-//     `/families/${familyId}/selectionLists/${selectionListId}/mealPlans/${mealPlanId}/shortLists`,
-//     shortListId
-//   );
-
-//   await updateDoc(docRef, {
-//     recipeIds: arrayUnion(recipeId),
-//   });
-//   console.log("Added - shortList: ", docRef.id, "recipeId: ", recipeId);
-
-//   return docRef.id;
-// }
-
+// Adds a recipe to a users shortList
 // This version limits recipeIds to 7 and userIds must match
 async function addToShortList(
   userId,
@@ -195,29 +177,6 @@ async function addToShortList(
   }
 }
 
-// Deletes a recipeId from a shortList
-// async function deleteFromShortList(
-//   userId,
-//   familyId,
-//   selectionListId,
-//   mealPlanId,
-//   shortListId,
-//   recipeId
-// ) {
-//   const docRef = doc(
-//     fireDB,
-//     `/families/${familyId}/selectionLists/${selectionListId}/mealPlans/${mealPlanId}/shortLists`,
-//     shortListId
-//   );
-
-//   await updateDoc(docRef, {
-//     recipeIds: arrayRemove(recipeId),
-//   });
-//   console.log("Deleted - shortList: ", docRef.id, "recipeId: ", recipeId);
-
-//   return docRef.id;
-// }
-
 async function deleteFromShortList(
   userId,
   familyId,
@@ -254,8 +213,9 @@ async function deleteFromShortList(
   }
 }
 
-// Order shortList (prioritise)
+// Order shortList to prioritise - not currently used
 // allow isConfrmed to be set to true (but not changed back to false)
+
 async function orderShortList(
   userId,
   familyId,

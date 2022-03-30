@@ -1,6 +1,3 @@
-// lodash
-// import _ from "lodash";
-
 import {
   addDoc,
   collection,
@@ -33,14 +30,7 @@ async function addMealPlan(familyId, selectionListId) {
       shoppingList: [],
     }
   );
-  console.log(
-    "mealPlanId: ",
-    docRef.id,
-    "familyId ",
-    familyId,
-    "selectionListId ",
-    selectionListId
-  );
+
   return docRef.id;
 }
 
@@ -53,7 +43,6 @@ async function deleteMealPlan(familyId, selectionListId, mealPlanId) {
       mealPlanId
     )
   );
-  console.log("meal plan removed: ", mealPlanId);
 }
 
 // Deleting a document and all its sub-collections is an admin task.
@@ -90,6 +79,7 @@ async function orderMealPlan(familyId, selectionListId, mealPlanId, recipeIds) {
   return docRef.id;
 }
 
+// Original calculate votes based on index position
 // async function calculateVotes(familyId, selectionListId, mealPlanId) {
 //   const votes = {};
 
@@ -147,8 +137,6 @@ async function calculateVotes(familyId, selectionListId, mealPlanId) {
 async function calculateShoppingList(recipeIds) {
   const shoppingList = [];
 
-  console.log(recipeIds);
-
   const results = await recipeIds.map((recipeId) =>
     getDocs(collection(fireDB, `recipes/${recipeId}/ingredients`))
   );
@@ -167,6 +155,7 @@ async function calculateShoppingList(recipeIds) {
     });
   });
 
+  // Variations on shoppingList calculation:
   // function groupBy(objectArray, property) {
   //   return objectArray.reduce(function (acc, obj) {
   //     let key = obj[property];
@@ -224,7 +213,6 @@ async function getMealPlans(familyId, selectionListId) {
     });
   });
 
-  console.log(result);
   return result;
 }
 
@@ -262,7 +250,6 @@ async function getMealPlan(familyId, selectionListId, mealPlanId) {
 
   const docSnap = await getDoc(docRef);
   if (docSnap.exists()) {
-    console.log(docSnap.data());
     return docSnap.data();
   }
   // doc.data() will be undefined in this case

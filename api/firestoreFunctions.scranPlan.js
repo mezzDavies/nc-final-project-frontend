@@ -1,6 +1,3 @@
-// lodash
-// import _ from "lodash";
-
 import {
   collection,
   doc,
@@ -14,25 +11,6 @@ import { getShortLists } from "./firestoreFunctions.shortLists";
 
 // import app from "../firebase";
 import { fireDB } from "../firebase";
-
-// This is the original version.
-// It works but doesn't use the transaction functionality
-// I'll delete it before we go live
-// async function addScranPlanTransaction(familyId) {
-//   try {
-//     await runTransaction(fireDB, async () => {
-//       const familyDoc = await getFamily(familyId);
-//       const selectionListRef = await addSelectionList(familyId);
-//       const mealPlanRef = await addMealPlan(familyId, selectionListRef);
-//       await familyDoc.family.familyMembers.forEach((member) => {
-//         addShortList(member, familyId, selectionListRef, mealPlanRef);
-//       });
-//       console.log("did it work!");
-//     });
-//   } catch (e) {
-//     console.error(e);
-//   }
-// }
 
 async function addScranPlan(familyId) {
   // Uses the current local time to set the scran plan start date to 0000 on the next Monday.
@@ -101,7 +79,6 @@ async function addScranPlan(familyId) {
           recipeIds: [],
         });
       });
-      console.log("Transaction successfully committed");
     });
     return scranPlanRef.id;
   } catch (e) {
