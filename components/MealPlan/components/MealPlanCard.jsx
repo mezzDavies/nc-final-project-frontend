@@ -6,7 +6,7 @@ import {
   Image,
   StyleSheet,
 } from "react-native";
-import SelectDropdown from "react-native-select-dropdown";
+import SelectDropdown from "../../SelectDropdown/src/SelectDropdown";
 import { useState } from "react";
 
 const MealPlanCard = ({
