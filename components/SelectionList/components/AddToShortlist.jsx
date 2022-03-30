@@ -3,6 +3,7 @@ import { Button } from "react-native";
 import { useState, useEffect } from "react";
 import {
   addToShortList,
+  deleteFromShortList,
   getShortList,
   getShortListFromCollection,
 } from "../../../api/firestoreFunctions.shortLists";
@@ -19,25 +20,46 @@ const AddToShortList = ({
   mealPlanId,
   shortListId,
 }) => {
-  console.log(shortListId);
+  const [inIdArray, setInIdArray] = useState(false);
+
+  useEffect(() => {
+    setInIdArray(idArray.includes(recipeId));
+  }, []);
 
   return (
     <Button
       style={styles.voteBtn}
-      title="Vote"
-      disabled={idArray.includes(recipeId) ? true : false}
+      title={inIdArray ? `Already Voted` : `Vote`}
       onPress={() => {
-        setIdArray((currentIdArray) => {
-          return [...currentIdArray, recipeId];
-        });
-        addToShortList(
-          userId,
-          familyId,
-          selectionListId,
-          mealPlanId,
-          shortListId,
-          recipeId
-        );
+        if (inIdArray) {
+          deleteFromShortList(
+            userId,
+            familyId,
+            selectionListId,
+            mealPlanId,
+            shortListId,
+            recipeId
+          );
+          setInIdArray(false);
+          setIdArray((currentIdArray) => {
+            const newArray = [...currentIdArray];
+            const index = newArray.indexOf(recipeId);
+            return newArray.splice(index, 1);
+          });
+        } else {
+          setIdArray((currentIdArray) => {
+            return [...currentIdArray, recipeId];
+          });
+          setInIdArray(true);
+          addToShortList(
+            userId,
+            familyId,
+            selectionListId,
+            mealPlanId,
+            shortListId,
+            recipeId
+          );
+        }
       }}
     />
   );

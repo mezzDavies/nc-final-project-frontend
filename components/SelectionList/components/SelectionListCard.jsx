@@ -70,13 +70,6 @@ const SelectionListCard = ({
         mealPlanId={mealPlanId}
         shortListId={shortListId}
       />
-      <DeleteRecipeFromList
-        recipeId={recipeId}
-        selectionListId={selectionListId}
-        setSelectionList={setSelectionList}
-        recipe={recipe}
-        familyId={familyId}
-      />
     </View>
   );
 };

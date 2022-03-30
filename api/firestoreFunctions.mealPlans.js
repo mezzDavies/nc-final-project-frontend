@@ -278,4 +278,5 @@ export {
   getMealPlan,
   getMealPlans,
   toggleMealPlanStatus,
+  orderMealPlan,
 };
