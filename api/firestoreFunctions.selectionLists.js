@@ -6,13 +6,16 @@ import {
   arrayUnion,
   addDoc,
   collection,
+  collectionGroup,
   deleteDoc,
   doc,
   getDoc,
   getDocs,
   onSnapshot,
+  query,
   Timestamp,
   updateDoc,
+  where,
 } from "firebase/firestore";
 
 // import app from "../firebase";
@@ -191,6 +194,31 @@ async function addToSelectionList(familyId, selectionListId, recipeId) {
 
   return docRef.id;
 }
+
+// Delete a recipeId from a selectionList
+// async function deleteFromSelectionList(familyId, selectionListId, recipeId) {
+//   const shortListsQuery = query(
+//     collectionGroup(fireDB, "shortLists"),
+//     where("familyId", "==", familyId),
+//     where("recipeIds", "array-contains", recipeId)
+//   );
+//   const result = [];
+//   const querySnapshot = await getDocs(shortLists);
+//   querySnapshot.forEach((doc) => {
+//     result.push(doc.data());
+//   });
+
+//   if (result.length > 0) {
+//     console.log("cannot delete as recipeId is in a family members short list");
+//     return undefined;
+//   }
+//   if (result.length === 0) {
+//   console.log("results returned: ", result.length);
+//   const docRef = doc(
+//     fireDB,
+//     `families/${familyId}/selectionLists`,
+//     selectionListId
+//   );
 
 // Delete a recipeId from a selectionList
 async function deleteFromSelectionList(familyId, selectionListId, recipeId) {
