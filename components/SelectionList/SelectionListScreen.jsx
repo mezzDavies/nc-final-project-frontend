@@ -13,6 +13,7 @@ import getUserDataAndClaims from "../../utils/getUserDataAndClaims";
 import { getMealPlans } from "../../api/firestoreFunctions.mealPlans";
 import { getShortListFromCollection } from "../../api/firestoreFunctions.shortLists";
 import { auth } from "../../firebase";
+import UserNotLoggedIn from "../UserNotLoggedIn";
 
 //----------COMPONENT----------
 const SelectionListScreen = ({ navigation }) => {
@@ -37,6 +38,7 @@ const SelectionListScreen = ({ navigation }) => {
           .then(({ claims, userData, newUserId }) => {
             if (!userData.groupIds?.length > 0) {
               setFamilyStatus(false);
+              setIsLoading(false);
               return Promise.reject({
                 status: 400,
                 message: "Not a member of a group",
