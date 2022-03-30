@@ -122,7 +122,6 @@ async function deleteSelectionList(familyId, selectionListId) {
   await deleteDoc(
     doc(fireDB, `families/${familyId}/selectionLists`, selectionListId)
   );
-  console.log("selection list removed: ", selectionListId);
 }
 
 // Get all selectionLists for a family
@@ -160,21 +159,6 @@ async function getSelectionList(familyId, selectionListId) {
   return undefined;
 }
 
-// Setup a listener on the selectionList
-async function listenSelectionList(familyId, selectionListId) {
-  const docListener = onSnapshot(
-    doc(fireDB, `families/${familyId}/selectionLists`, selectionListId),
-    (selectionList) => {
-      // console.log("selectionList: ", doc.id(), "current data: ", doc.data());
-      console.log(
-        "Current recipeIds from selectionList: ",
-        selectionList.get("recipeIds")
-      );
-    }
-  );
-  return docListener;
-}
-
 // Adds a recipeId to a selectionList
 async function addToSelectionList(familyId, selectionListId, recipeId) {
   const docRef = doc(
@@ -186,8 +170,6 @@ async function addToSelectionList(familyId, selectionListId, recipeId) {
   await updateDoc(docRef, {
     recipeIds: arrayUnion(recipeId),
   });
-
-  console.log("Added - selectionList: ", docRef.id, "recipeId: ", recipeId);
 
   return docRef.id;
 }
@@ -204,8 +186,6 @@ async function deleteFromSelectionList(familyId, selectionListId, recipeId) {
     recipeIds: arrayRemove(recipeId),
   });
 
-  console.log("Deleted - selectionList: ", docRef.id, "recipeId: ", recipeId);
-
   return docRef.id;
 }
 
@@ -216,7 +196,6 @@ export {
   deleteFromSelectionList,
   getSelectionList,
   getSelectionLists,
-  listenSelectionList,
   toggleSelectionListStatus,
   updateSelectionListName,
   updateSelectionListSchedule,

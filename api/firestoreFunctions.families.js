@@ -15,15 +15,15 @@ import {
 } from "firebase/firestore";
 
 import { addScranPlan } from "../api/firestoreFunctions.scranPlan";
-import { addShortList, getShortListFromCollection } from "./firestoreFunctions.shortLists";
+import {
+  addShortList,
+  getShortListFromCollection,
+} from "./firestoreFunctions.shortLists";
 
 // import app from "../firebase";
 import { fireDB } from "../firebase";
 
-// Create a new family (group) within the families collection.
-// At the moment it doesn't check that a group with the same name, familyId doesn't already exist
-// We need to implement that before we go live. collectionGroups is the way to do it but we may need to restructure data
-
+// Add a new family
 async function addFamily(userId, groupName) {
   const docRef = await addDoc(collection(fireDB, "families"), {
     createdAt: Timestamp.fromDate(new Date()),
@@ -44,7 +44,6 @@ async function addFamily(userId, groupName) {
 }
 
 // Update the family name
-
 async function updateFamilyName(familyId, newGroupName) {
   const docRef = doc(fireDB, "families", familyId);
 
@@ -55,8 +54,7 @@ async function updateFamilyName(familyId, newGroupName) {
   return docRef.id;
 }
 
-// Find out the familyId of the active (isActive: true) families a user belongs to:
-
+// Find out the familyIds of the active (isActive: true) families a user belongs to:
 async function getFamilies(userId) {
   const q = query(
     collection(fireDB, "families"),
@@ -91,11 +89,7 @@ async function getFamily(familyId) {
     getDocs(collectionRef),
   ]);
 
-  console.log(querySnapshots, 'querysnapshots')
-
   result.family = querySnapshots[0].data();
-
-  console.log(result.family, 'familydata')
 
   querySnapshots[1].forEach((selectionList) => {
     if (selectionList.get("isActive") === true) {
@@ -105,21 +99,7 @@ async function getFamily(familyId) {
     }
   });
 
-  console.log(result)
-
   return result;
-};
-
-// Setup a listener on the family members only, other info can be added if needed
-async function listenFamily(familyId) {
-  const docListener = onSnapshot(
-    doc(fireDB, `families`, familyId),
-    (family) => {
-      family.data();
-      console.log(family.get("familyMembers"));
-    }
-  );
-  return docListener;
 }
 
 // Deleting a document and all its sub-collections is an admin task.
@@ -127,7 +107,7 @@ async function listenFamily(familyId) {
 // E.g. any groups inactive for more than time x should be deleted
 
 async function toggleFamilyStatus(familyId) {
-  try{
+  try {
     const docRef = doc(fireDB, "families", familyId);
     const currIsActive = (await getDoc(docRef)).get("isActive");
 
@@ -136,10 +116,10 @@ async function toggleFamilyStatus(familyId) {
     });
 
     return !currIsActive;
-  } catch(err) {
-    return err
+  } catch (err) {
+    return err;
   }
-};
+}
 
 // Add a user to a family
 // If a user is already a family member they won't be added again.
@@ -148,7 +128,7 @@ async function toggleFamilyStatus(familyId) {
 // We should then check if they are a parent member in the group before allowing them to add a new user
 
 async function addUserToFamily(userId, familyId) {
-  try{
+  try {
     const docRef = doc(fireDB, "families", familyId);
 
     await updateDoc(docRef, {
@@ -156,37 +136,44 @@ async function addUserToFamily(userId, familyId) {
     });
 
     const selectionListIds = [];
-    const selectionQuerySnap = await getDocs(collection(fireDB, `families/${familyId}/selectionLists`));
+    const selectionQuerySnap = await getDocs(
+      collection(fireDB, `families/${familyId}/selectionLists`)
+    );
     selectionQuerySnap.forEach((doc) => {
       selectionListIds.push(doc.id);
     });
 
     const mealPlanIds = [];
-    const mealPlanQuerySnap = await getDocs(collection(fireDB, `families/${familyId}/selectionLists/${selectionListIds[0]}/mealPlans`));
+    const mealPlanQuerySnap = await getDocs(
+      collection(
+        fireDB,
+        `families/${familyId}/selectionLists/${selectionListIds[0]}/mealPlans`
+      )
+    );
     mealPlanQuerySnap.forEach((doc) => {
       mealPlanIds.push(doc.id);
     });
 
-    await addShortList(userId, familyId, selectionListIds[0], mealPlanIds[0])
+    await addShortList(userId, familyId, selectionListIds[0], mealPlanIds[0]);
 
     const userDocRef = doc(fireDB, "users", userId);
 
     await updateDoc(userDocRef, {
-      groupIds: arrayUnion(docRef.id)
-    })
+      groupIds: arrayUnion(docRef.id),
+    });
 
     return docRef.id;
-  } catch(err) {
-    return err
+  } catch (err) {
+    return err;
   }
-};
+}
 
 // Delete a family member
 // Same comments as above
 
 async function removeUserFromFamily(userId, familyId) {
-  try{
-    console.log(userId, familyId)
+  try {
+    console.log(userId, familyId);
     const docRef = doc(fireDB, "families", familyId);
 
     await updateDoc(docRef, {
@@ -194,35 +181,52 @@ async function removeUserFromFamily(userId, familyId) {
     });
 
     const selectionListIds = [];
-    const selectionQuerySnap = await getDocs(collection(fireDB, `families/${familyId}/selectionLists`));
+    const selectionQuerySnap = await getDocs(
+      collection(fireDB, `families/${familyId}/selectionLists`)
+    );
     selectionQuerySnap.forEach((doc) => {
       selectionListIds.push(doc.id);
     });
 
     const mealPlanIds = [];
-    const mealPlanQuerySnap = await getDocs(collection(fireDB, `families/${familyId}/selectionLists/${selectionListIds[0]}/mealPlans`));
+    const mealPlanQuerySnap = await getDocs(
+      collection(
+        fireDB,
+        `families/${familyId}/selectionLists/${selectionListIds[0]}/mealPlans`
+      )
+    );
     mealPlanQuerySnap.forEach((doc) => {
       mealPlanIds.push(doc.id);
     });
 
-    const shortListInfo = await getShortListFromCollection(userId, familyId, selectionListIds[0], mealPlanIds[0]);
+    const shortListInfo = await getShortListFromCollection(
+      userId,
+      familyId,
+      selectionListIds[0],
+      mealPlanIds[0]
+    );
     const shortListId = shortListInfo[0].id;
 
-    console.log(shortListId)
+    console.log(shortListId);
 
-    await deleteDoc(doc(fireDB, `families/${familyId}/selectionLists/${selectionListIds[0]}/mealPlans/${mealPlanIds[0]}/shortLists/${shortListId}`));
+    await deleteDoc(
+      doc(
+        fireDB,
+        `families/${familyId}/selectionLists/${selectionListIds[0]}/mealPlans/${mealPlanIds[0]}/shortLists/${shortListId}`
+      )
+    );
 
     const userDocRef = doc(fireDB, "users", userId);
 
     await updateDoc(userDocRef, {
-      groupIds: arrayRemove(familyId)
-    })
+      groupIds: arrayRemove(familyId),
+    });
 
     return docRef.id;
-  } catch(err) {
+  } catch (err) {
     return err;
   }
-};
+}
 
 export {
   addFamily,
@@ -230,7 +234,6 @@ export {
   addUserToFamily,
   getFamilies,
   getFamily,
-  listenFamily,
   removeUserFromFamily,
   toggleFamilyStatus,
 };
