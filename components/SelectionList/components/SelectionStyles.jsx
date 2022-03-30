@@ -23,6 +23,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     margin: 15,
+    width: 400,
   },
   intro: { fontSize: 20, textAlign: "center" },
   introContainer: { marginTop: 15, padding: 10, marginBottom: 20 },
@@ -37,11 +38,11 @@ const styles = StyleSheet.create({
     borderStyle: "solid",
     borderBottomColor: "#DD1F13",
     borderBottomWidth: 0.25,
-    width: 375,
+    width: 400,
     textAlign: "center",
     margin: 10,
   },
-  spacing: { marginBottom: 15 },
+  spacing: { marginBottom: 10 },
 });
 
 export default styles;

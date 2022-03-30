@@ -113,15 +113,18 @@ const SelectionListScreen = ({ navigation }) => {
 
   return (
     <ScrollView>
-      <View style={styles.introContainer}>
-        <Text style={styles.intro}>
-          Click <Ionicons name="add-circle-outline" color="#DD1F13" size={20} />{" "}
-          to vote for a recipe to be in the Meal Plan
-        </Text>
-        <Text style={styles.intro}>
-          Click <Ionicons name="remove-circle" color="#DD1F13" size={20} /> to
-          undo your vote for a recipe
-        </Text>
+      <View>
+        <View style={styles.introContainer}>
+          <Text style={styles.intro}>
+            Click{" "}
+            <Ionicons name="add-circle-outline" color="#DD1F13" size={20} /> to
+            vote for a recipe to be in the Meal Plan
+          </Text>
+          <Text style={styles.intro}>
+            Click <Ionicons name="remove-circle" color="#DD1F13" size={20} /> to
+            undo your vote for a recipe
+          </Text>
+        </View>
         <Text style={styles.spacing} />
         <View style={styles.recipes}>
           {selectionList.map((recipeId, index) => {
