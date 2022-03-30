@@ -14,7 +14,6 @@ const Homepage = ({ navigation }) => {
       if (user) {
         setUserStatus(true);
         getUserDataAndClaims().then(({ claims, userData, newUserId }) => {
-          console.log(claims);
           setFirstName(userData.name);
         });
       } else {
@@ -27,8 +26,11 @@ const Homepage = ({ navigation }) => {
     return (
       <ScrollView>
         <View>
+          <Button
+            title="View all recipes..."
+            onPress={() => navigation.navigate("RecipesAll")}
+          />
           <RandomRecipes navigation={navigation} />
-          <RecipesList navigation={navigation} />
         </View>
       </ScrollView>
     );
