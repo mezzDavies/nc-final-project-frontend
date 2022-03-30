@@ -7,6 +7,7 @@ import {
   TouchableHighlight,
 } from "react-native";
 import { getRecipes } from "../api/firestoreFunctions.recipes";
+import { Ionicons } from "@expo/vector-icons";
 
 export default function RandomRecipes({ navigation }) {
   const [recipes, setRecipes] = useState([]);
@@ -36,7 +37,7 @@ export default function RandomRecipes({ navigation }) {
       marginBottom: 6,
       alignItems: "center",
       borderColor: "#DD1F13",
-      borderWidth: 5,
+      borderWidth: 3,
     },
     image: {
       width: 300,
@@ -73,7 +74,7 @@ export default function RandomRecipes({ navigation }) {
       color: "#DD1F13",
       fontSize: 22,
       fontFamily: "Bangers_400Regular",
-      marginTop: 10,
+      marginTop: 15,
     },
     loadingText: {
       marginTop: 200,
@@ -89,6 +90,8 @@ export default function RandomRecipes({ navigation }) {
       marginLeft: 25,
       marginBottom: 10,
     },
+    icons: { marginRight: 3 },
+    peopleIcon: { marginLeft: 3, marginRight: 3 },
   });
 
   if (isLoading) return <Text style={styles.loadingText}>Loading...</Text>;
@@ -115,10 +118,23 @@ export default function RandomRecipes({ navigation }) {
                 <Text key={"title-" + id} style={styles.foodTitle}>
                   {title}
                 </Text>
-                <Text
-                  key={"minutes-" + id}
-                  style={styles.minutes}
-                >{`Ready in ${readyInMinutes} minutes | Serves ${servings}`}</Text>
+                <Text key={"minutes-" + id} style={styles.minutes}>
+                  {" "}
+                  <Ionicons
+                    name="timer"
+                    size={17}
+                    color="#DD1F13"
+                    style={styles.icons}
+                  />
+                  Ready in {readyInMinutes} minutes |{" "}
+                  <Ionicons
+                    name="people"
+                    size={17}
+                    color="#DD1F13"
+                    style={styles.peopleIcon}
+                  />
+                  Serves ${servings}
+                </Text>
               </View>
             );
           })

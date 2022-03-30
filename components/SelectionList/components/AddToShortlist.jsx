@@ -62,7 +62,7 @@ const AddToShortList = ({
         }}
       >
         <Ionicons
-          name={inIdArray ? "add-circle-outline" : "remove-circle"}
+          name={inIdArray ? "remove-circle" : "add-circle-outline"}
           size={30}
           color={inIdArray ? "#DD1F13" : "#DD1F13"}
         />

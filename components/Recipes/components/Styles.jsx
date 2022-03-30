@@ -26,6 +26,7 @@ const styles = StyleSheet.create({
   },
   recipeTitle: {
     fontWeight: "bold",
+    marginBottom: 5,
   },
   recipe: {
     flexDirection: "column",
@@ -50,6 +51,8 @@ const styles = StyleSheet.create({
     marginTop: 10,
     textAlign: "center",
   },
+  icons: { marginRight: 3 },
+  peopleIcon: { marginLeft: 3, marginRight: 3 },
 });
 
 export default styles;
