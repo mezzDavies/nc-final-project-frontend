@@ -23,13 +23,13 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: "#DD1F13",
     flexShrink: 1,
-    fontWeight: 600,
+    fontWeight: "600",
   },
   ingredientsTitle: {
     color: "#DD1F13",
     fontSize: 20,
     marginBottom: 10,
-    fontWeight: 600,
+    fontWeight: "600",
   },
   ingredients: {
     alignContent: "center",
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
   },
   mins: {
     color: "#DD1F13",
-    fontWeight: 400,
+    fontWeight: "400",
   },
   dividingLine: {
     borderStyle: "solid",
