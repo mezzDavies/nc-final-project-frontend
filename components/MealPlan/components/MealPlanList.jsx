@@ -109,7 +109,7 @@ const MealPlanList = ({ navigation }) => {
         return newUserId;
       })
       .then((userId) => {
-    return getShortListsCgBy(userId);
+        return getShortListsCgBy(userId);
       })
       .then((res) => {
         setFamilyId(res[0].familyId);
@@ -122,20 +122,19 @@ const MealPlanList = ({ navigation }) => {
         );
       })
       .then((mealPlan) => {
-       setMealPlan(mealPlan.recipeIds);
-       return Promise.all([
-       mealPlan.recipeIds.map((recipe) => getRecipeCardById(recipe)),
-      ]);
-           })
-             .then(([recipeCards]) => {
-              return Promise.all(recipeCards);
-              })
-              .then((result) => {
-                setRecipeCards(result);
-                setIsLoading(false);
-                setUseEffectLoading(false);
-              });
-          });
+        setMealPlan(mealPlan.recipeIds);
+        return Promise.all([
+          mealPlan.recipeIds.map((recipe) => getRecipeCardById(recipe)),
+        ]);
+      })
+      .then(([recipeCards]) => {
+        return Promise.all(recipeCards);
+      })
+      .then((result) => {
+        setRecipeCards(result);
+        setIsLoading(false);
+        setUseEffectLoading(false);
+      });
   }, []);
 
   useEffect(() => {
