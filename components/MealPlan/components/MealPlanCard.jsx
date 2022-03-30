@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import SelectDropdown from "../../SelectDropdown/src/SelectDropdown";
 import { useState } from "react";
+import styles from "./MealPlanStyling";
 
 const MealPlanCard = ({
   recipe,
@@ -21,21 +22,6 @@ const MealPlanCard = ({
     recipe;
 
   let position = index;
-
-  const styles = StyleSheet.create({
-    dropdown1BtnTxtStyle: { color: "#444", textAlign: "left" },
-    dropdown1DropdownStyle: { backgroundColor: "#EFEFEF" },
-    dropdown1RowStyle: {
-      backgroundColor: "#EFEFEF",
-      borderBottomColor: "#C5C5C5",
-    },
-    dropdown1RowTxtStyle: { color: "#444", textAlign: "left" },
-    dropdownsRow: {
-      flexDirection: "row",
-      width: "100%",
-      paddingHorizontal: "5%",
-    },
-  });
 
   const weekDays = [
     "Monday",
@@ -54,21 +40,17 @@ const MealPlanCard = ({
     return arr;
   }
 
-  console.log(mealPlan);
-  // console.log(id);
-  // console.log(setMealPlan);
-
   return (
-    <View>
+    <View style={styles.recipe}>
       <Text>{weekDays[index]}</Text>
       <TouchableHighlight
         onPress={() => {
           navigation.navigate("MealPlanRecipePage", { id });
         }}
       >
-        <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
+        <Image source={{ uri: image }} style={styles.image} />
       </TouchableHighlight>
-      <Text>{`${title}`}</Text>
+      <Text style={(styles.recipeInfo, styles.recipeTitle)}>{`${title}`}</Text>
       <View style={styles.dropdownsRow}>
         <SelectDropdown
           buttonStyle={styles.dropdown1BtnStyle}

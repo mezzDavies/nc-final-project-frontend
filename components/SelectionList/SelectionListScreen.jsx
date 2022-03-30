@@ -13,6 +13,8 @@ import getUserDataAndClaims from "../../utils/getUserDataAndClaims";
 import { getMealPlans } from "../../api/firestoreFunctions.mealPlans";
 import { getShortListFromCollection } from "../../api/firestoreFunctions.shortLists";
 import { auth } from "../../firebase";
+import { Ionicons } from "@expo/vector-icons";
+import styles from "./components/SelectionStyles";
 
 //----------COMPONENT----------
 const SelectionListScreen = ({ navigation }) => {
@@ -111,24 +113,35 @@ const SelectionListScreen = ({ navigation }) => {
 
   return (
     <ScrollView>
-      <View>
-        {selectionList.map((recipeId, index) => {
-          return (
-            <SelectionListCard
-              idArray={idArray}
-              setIdArray={setIdArray}
-              recipeId={recipeId}
-              selectionListId={selectionListId}
-              familyId={familyId}
-              setSelectionList={setSelectionList}
-              userId={userId}
-              mealPlanId={mealPlanId}
-              shortListId={shortListId}
-              key={`${recipeId} - ${index}`}
-              navigation={navigation}
-            />
-          );
-        })}
+      <View style={styles.introContainer}>
+        <Text style={styles.intro}>
+          Click <Ionicons name="add-circle-outline" color="#DD1F13" size={20} />{" "}
+          to vote for a recipe to be in the Meal Plan
+        </Text>
+        <Text style={styles.intro}>
+          Click <Ionicons name="remove-circle" color="#DD1F13" size={20} /> to
+          undo your vote for a recipe
+        </Text>
+        <Text style={styles.spacing} />
+        <View style={styles.recipes}>
+          {selectionList.map((recipeId, index) => {
+            return (
+              <SelectionListCard
+                idArray={idArray}
+                setIdArray={setIdArray}
+                recipeId={recipeId}
+                selectionListId={selectionListId}
+                familyId={familyId}
+                setSelectionList={setSelectionList}
+                userId={userId}
+                mealPlanId={mealPlanId}
+                shortListId={shortListId}
+                key={`${recipeId} - ${index}`}
+                navigation={navigation}
+              />
+            );
+          })}
+        </View>
       </View>
     </ScrollView>
   );

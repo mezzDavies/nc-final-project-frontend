@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Text, View, Image, TouchableHighlight } from "react-native";
-import { getRecipeById } from "../../../api/firestoreFunctions.recipes";
 import AddToShortList from "./AddToShortlist";
-import DeleteRecipeFromList from "./DeleteRecipeFromList";
+import { Ionicons } from "@expo/vector-icons";
 import { doc, getDoc } from "firebase/firestore";
 import { fireDB } from "../../../firebase";
 import styles from "./SelectionStyles";
@@ -50,26 +49,33 @@ const SelectionListCard = ({
   const { id, image, readyInMinutes, servings, title } = recipe;
 
   return (
-    <View style={styles.recipe}>
-      <TouchableHighlight
-        onPress={() => {
-          navigation.navigate("RecipePage", { id });
-        }}
-      >
-        <Image source={{ uri: image }} style={styles.image} />
-      </TouchableHighlight>
-      <Text style={(styles.recipeInfo, styles.recipeTitle)}>{`${title}`}</Text>
-      <AddToShortList
-        idArray={idArray}
-        setIdArray={setIdArray}
-        familyId={familyId}
-        recipeId={recipeId}
-        navigation={navigation}
-        selectionListId={selectionListId}
-        userId={userId}
-        mealPlanId={mealPlanId}
-        shortListId={shortListId}
-      />
+    <View>
+      <View style={styles.recipe}>
+        <TouchableHighlight
+          onPress={() => {
+            navigation.navigate("RecipePage", { id });
+          }}
+        >
+          <Image source={{ uri: image }} style={styles.image} />
+        </TouchableHighlight>
+        <Text
+          style={(styles.recipeInfo, styles.recipeTitle)}
+        >{`${title}`}</Text>
+        <AddToShortList
+          idArray={idArray}
+          setIdArray={setIdArray}
+          familyId={familyId}
+          recipeId={recipeId}
+          navigation={navigation}
+          selectionListId={selectionListId}
+          userId={userId}
+          mealPlanId={mealPlanId}
+          shortListId={shortListId}
+        />
+      </View>
+      <View>
+        <Text style={styles.dividingLine} />
+      </View>
     </View>
   );
 };

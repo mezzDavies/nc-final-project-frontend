@@ -1,13 +1,12 @@
 import react from "react";
-import { Button } from "react-native";
+import { View } from "react-native";
 import { useState, useEffect } from "react";
 import {
   addToShortList,
   deleteFromShortList,
-  getShortList,
-  getShortListFromCollection,
 } from "../../../api/firestoreFunctions.shortLists";
-import { getMealPlans } from "../../../api/firestoreFunctions.mealPlans";
+import { TouchableOpacity } from "react-native-web";
+import { Ionicons } from "@expo/vector-icons";
 import styles from "./SelectionStyles";
 
 const AddToShortList = ({
@@ -27,41 +26,48 @@ const AddToShortList = ({
   }, []);
 
   return (
-    <Button
-      style={styles.voteBtn}
-      title={inIdArray ? `Already Voted` : `Vote`}
-      onPress={() => {
-        if (inIdArray) {
-          deleteFromShortList(
-            userId,
-            familyId,
-            selectionListId,
-            mealPlanId,
-            shortListId,
-            recipeId
-          );
-          setInIdArray(false);
-          setIdArray((currentIdArray) => {
-            const newArray = [...currentIdArray];
-            const index = newArray.indexOf(recipeId);
-            return newArray.splice(index, 1);
-          });
-        } else {
-          setIdArray((currentIdArray) => {
-            return [...currentIdArray, recipeId];
-          });
-          setInIdArray(true);
-          addToShortList(
-            userId,
-            familyId,
-            selectionListId,
-            mealPlanId,
-            shortListId,
-            recipeId
-          );
-        }
-      }}
-    />
+    <View>
+      <TouchableOpacity
+        style={styles.plusButton}
+        onPress={() => {
+          if (inIdArray) {
+            deleteFromShortList(
+              userId,
+              familyId,
+              selectionListId,
+              mealPlanId,
+              shortListId,
+              recipeId
+            );
+            setInIdArray(false);
+            setIdArray((currentIdArray) => {
+              const newArray = [...currentIdArray];
+              const index = newArray.indexOf(recipeId);
+              return newArray.splice(index, 1);
+            });
+          } else {
+            setIdArray((currentIdArray) => {
+              return [...currentIdArray, recipeId];
+            });
+            setInIdArray(true);
+            addToShortList(
+              userId,
+              familyId,
+              selectionListId,
+              mealPlanId,
+              shortListId,
+              recipeId
+            );
+          }
+        }}
+      >
+        <Ionicons
+          name={inIdArray ? "add-circle-outline" : "remove-circle"}
+          size={30}
+          color={inIdArray ? "#DD1F13" : "#DD1F13"}
+        />
+      </TouchableOpacity>
+    </View>
   );
 };
 

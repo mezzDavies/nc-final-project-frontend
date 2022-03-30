@@ -20,6 +20,7 @@ import { getShortListsCgBy } from "../../../api/fireStoreFunctions.collectionGro
 
 //IMPORTS - components & utils
 import getUserDataAndClaims from "../../../utils/getUserDataAndClaims";
+import styles from "./MealPlanStyling";
 
 //----------COMPONENT-----------
 const MealPlanList = ({ navigation }) => {
@@ -165,23 +166,22 @@ const MealPlanList = ({ navigation }) => {
   if (isLoading) return <Text>Is Loading...</Text>;
 
   return (
-    <View>
-      <Text>
-        Meal Plan contents:
-        {recipeCards.map((recipe, index) => {
-          return (
-            <MealPlanCard
-              setSettingDays={setSettingDays}
-              mealPlan={mealPlan}
-              setMealPlan={setMealPlan}
-              index={index}
-              recipe={recipe}
-              key={`${recipe.id} - ${index}`}
-              navigation={navigation}
-            />
-          );
-        })}
-      </Text>
+    <View style={styles.recipes}>
+      <Text style={styles.tagLine}>Meal Plan contents:</Text>
+      {recipeCards.map((recipe, index) => {
+        return (
+          <MealPlanCard
+            setSettingDays={setSettingDays}
+            mealPlan={mealPlan}
+            setMealPlan={setMealPlan}
+            index={index}
+            recipe={recipe}
+            key={`${recipe.id} - ${index}`}
+            navigation={navigation}
+          />
+        );
+      })}
+
       <Button
         title={
           isChild

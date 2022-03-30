@@ -1,6 +1,16 @@
 import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
+  list: {
+    marginTop: 16,
+    backgroundColor: "white",
+    marginRight: 10,
+    marginLeft: 10,
+    padding: 15,
+    borderRadius: 10,
+    marginBottom: 16,
+    alignItems: "center",
+  },
   container: {
     flex: 1,
     alignItems: "center",
@@ -18,7 +28,7 @@ const styles = StyleSheet.create({
     margin: 8,
     color: "black",
     fontFamily: "System",
-    fontSize: 16,
+    fontSize: 14,
   },
   title: {
     flex: 1,
@@ -27,7 +37,7 @@ const styles = StyleSheet.create({
     fontWeight: 700,
     color: "#DD1F13",
   },
-  list: {
+  innerlist: {
     alignContent: "center",
     padding: 15,
     borderStyle: "solid",
