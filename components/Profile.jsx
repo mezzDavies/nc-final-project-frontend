@@ -35,19 +35,23 @@ const ProfileScreen = ({ navigation }) => {
   } else {
     return (
       <View>
-        <Text style={{ textAlign: "center", marginTop: 100 }}>
-          Hi {firstName} and welcome to your profile!
+        <Text style={{ textAlign: "center", marginTop: 70, marginBottom: 40, fontSize: 20 }}>
+          Hi {firstName} and welcome to Planet Scran It!
         </Text>
         {familyStatus === true ? 
-          <Text>
-            You're part of a household, that must be nice!
+          <Text style={{textAlign: "center", fontSize: 20}}>
+            Great news, you're already part of a group, head to your household to see who else has joined you!
           </Text> : 
-          <Text>
-            You're not part of a household yet, you can either start a new group or join an existing one from the household page.
+          <Text style={{textAlign: "center", fontSize: 20}}>
+            It looks like you're not part of a group just yet, head to your household page and you can create a new group, or you could join a friends!
           </Text>
         }
+        <View style={{marginTop: 10, marginBottom: 10, marginLeft: 10, marginRight: 10}}>
         <Button title="My Household" onPress={() => navigation.navigate("Household")} />
+        </View>
+        <View style={{marginLeft: 10, marginRight: 10}}>
         <Button title="Log Out" onPress={signUserOut} />
+        </View>
       </View>
     );
   }

@@ -72,6 +72,7 @@ const HouseHoldScreen = ({ navigation }) => {
   const [familyName, setFamilyName] = useState("");
   const [familyStatus, setFamilyStatus] = useState(false);
   const [firstName, setFirstName] = useState('');
+  const [ isLoading, setIsLoading] = useState(true);
   const [loadingMessage, setLoadingMessage] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
   const [leavingModalVisible, setLeavingModalVisible] = useState(false);
@@ -98,6 +99,7 @@ const HouseHoldScreen = ({ navigation }) => {
 
   //-----Use Effects-----
   useEffect(() => {
+    setIsLoading(true);
     auth.onAuthStateChanged(function (user) {
       if (user) {
         setUserStatus(true);
@@ -113,12 +115,14 @@ const HouseHoldScreen = ({ navigation }) => {
               setFamilyId('');
               setFamilyStatus(false);
             }
+            setIsLoading(false);
           })
       } else {
         setUserStatus(false);
         setFamilyId("");
         setFirstName("");
         setFamilyMembers([]);
+        setIsLoading(false);
       }
     })
   }, [userId, familyStatus, familyMembers]);
@@ -135,6 +139,8 @@ const HouseHoldScreen = ({ navigation }) => {
   }, [familyId, familyStatus]);
 
   //------Rendering------
+  if(isLoading) return <Text>Loading...</Text>
+
   if (!userStatus) {
     return <UserNotLoggedIn setUserStatus={setUserStatus} />;
   } else if (!familyStatus) {

@@ -48,12 +48,12 @@ const SignUpPage = ({ navigation, setUserStatus }) => {
   //-----Rendering-----
   return (
     <View>
-      <Text>
+      <Text style={{textAlign: "center"}}>
         Hi! Welcome to Planet Scran It, please enter your details below to sign
         up and enter a whole new world of food!
       </Text>
-      <Text>
-        Once you're registered, it may take a second to load but you will then be taken to the Sign In page to confirm your login details.
+      <Text style={{textAlign: "center"}}>
+        Once you're registered, it may take a second to load but you will then be taken to the Sign In page to your profile.
       </Text>
       <Controller
         defaultValue=""
@@ -116,7 +116,9 @@ const SignUpPage = ({ navigation, setUserStatus }) => {
         )}
         name="password"
       />
-      <Button title="Submit" onPress={handleSubmit(onSubmit)} />
+      <View style={{marginTop: 10, marginBottom: 5, marginLeft: 10, marginRight: 10}}>
+        <Button title="Submit" onPress={handleSubmit(onSubmit)} />
+      </View>
       <Text>{loadingMessage}</Text>
     </View>
   );
