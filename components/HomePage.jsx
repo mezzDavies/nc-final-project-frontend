@@ -31,20 +31,6 @@ const Homepage = ({ navigation }) => {
             onPress={() => navigation.navigate("RecipesAll")}
           />
           <RandomRecipes navigation={navigation} />
-          <Button
-            title="Go to Testing..."
-            onPress={() => navigation.navigate("Testing")}
-          />
-          <Button
-            title="Go to profile..."
-            onPress={() =>
-              navigation.navigate("Account", { screen: "Profile" })
-            }
-          />
-          <Button
-            title="Go to search page in..."
-            onPress={() => navigation.navigate("SearchPage")}
-          />
         </View>
       </ScrollView>
     );
@@ -53,14 +39,10 @@ const Homepage = ({ navigation }) => {
       <>
         <ScrollView>
           <View>
-            <RandomRecipes navigation={navigation} />
             <Text style={{ textAlign: "center", marginTop: 300 }}>
-              Home Screen
+              Hi, it looks like you're not logged in yet. You can see the starter of Planet Scran It below, but to access the main course, you'll need to log in or sign up.
             </Text>
-            <Button
-              title="Go to recipes..."
-              onPress={() => navigation.navigate("RecipePage")}
-            />
+            <RandomRecipes navigation={navigation} />
             <Button
               title="Go to sign up..."
               onPress={() =>
@@ -72,10 +54,6 @@ const Homepage = ({ navigation }) => {
               onPress={() =>
                 navigation.navigate("Account", { screen: "SignIn" })
               }
-            />
-            <Button
-              title="Go to search page in..."
-              onPress={() => navigation.navigate("SearchPage")}
             />
           </View>
         </ScrollView>
