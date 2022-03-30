@@ -94,6 +94,7 @@ const SelectionListScreen = ({ navigation }) => {
       } else {
         setUserStatus(false);
         setFamilyStatus(false);
+        setIsLoading(false);
       }
     });
   }, [userStatus, familyStatus]);

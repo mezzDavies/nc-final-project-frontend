@@ -96,10 +96,6 @@ const HouseHoldScreen = ({ navigation }) => {
       });
   };
 
-  const leaveGroup = () => {
-
-  }
-
   //-----Use Effects-----
   useEffect(() => {
     auth.onAuthStateChanged(function (user) {
@@ -155,28 +151,30 @@ const HouseHoldScreen = ({ navigation }) => {
   } else {
     return (
       <ScrollView>
-        <View>
+        <View style={styles.centeredView}>
           <Text>{loadingMessage}</Text>
-          <Text>
-            Hello {firstName}, and welcome to the {familyName} group!
-          </Text>
-          {!parentStatus ? (
-            <Button
-              title="Switch back to parent account"
-              onPress={switchToUserParentAccount}
-              color="#859cc7"
-            />
-          ) : (
-            <View>
-              <Text>
-                Want to invite others to join the group? Your invite code is:
-              </Text>
-              <Text selectable={true}>
-                {familyId}
-              </Text>
-            </View>
-          )}
-          <Text>Group Members:</Text>
+          <View style={{borderWidth: 2, borderColor: "#031a40", borderRadius: 5, alignContent: "center", marginLeft: 5, marginRight: 5}}>
+            <Text style={{textAlign: "center"}}>
+              Hello {firstName}, and welcome to the {familyName} group!
+            </Text>
+            {!parentStatus ? (
+              <Button
+                title="Switch back to parent account"
+                onPress={switchToUserParentAccount}
+                color="#859cc7"
+              />
+            ) : (
+              <View>
+                <Text style={{textAlign: "center"}}>
+                  Want to invite others to join the group? Your invite code is:
+                </Text>
+                <Text selectable={true} style={{textAlign: "center", fontWeight: "bold"}}>
+                  {familyId}
+                </Text>
+              </View>
+            )}
+          </View>
+          <Text style={{fontWeight: "bold", fontSize: 25, textDecorationLine: "underline"}}>Group Members:</Text>
           {familyMembers.map((familyMember, index) => {
             return (
               <FamilyMemberCard
@@ -189,7 +187,11 @@ const HouseHoldScreen = ({ navigation }) => {
               />
             );
           })}
-          {parentStatus ? <Button title="Add a child to the account" onPress={() => setModalVisible(true)} /> : null}
+          {parentStatus ? 
+            <View style={{marginBottom: 5}}>
+              <Button title="Add a Child to This Group" onPress={() => setModalVisible(true)} />
+            </View> : 
+            null}
         <Modal
           animationType="slide"
           transparent={true}
@@ -207,7 +209,7 @@ const HouseHoldScreen = ({ navigation }) => {
             </View>
           </View>
         </Modal>
-        {parentStatus ? <Button title="Leave this group" onPress={() => setLeavingModalVisible(true)} /> : null }
+        {parentStatus ? <Button title="Leave This Group" onPress={() => setLeavingModalVisible(true)} /> : null }
         <Modal
           animationType="slide"
           transparent={true}

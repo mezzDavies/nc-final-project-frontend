@@ -5,7 +5,7 @@ import { View, Text, Image, StyleSheet, ScrollView } from "react-native";
 //IMPORTS - firebase
 import { getMealPlans } from "../../../api/firestoreFunctions.mealPlans";
 import { getRecipeById } from "../../../api/firestoreFunctions.recipes";
-import { getSelectionList } from "../../../api/firestoreFunctions.selectionLists";
+import { getSelectionLists, getSelectionList } from "../../../api/firestoreFunctions.selectionLists";
 import { getFamilies } from "../../../api/firestoreFunctions.families";
 
 //IMPORTS - components & utils
@@ -73,7 +73,6 @@ const MealPlanRecipePage = ({ route }) => {
                 return Promise.all([newFamilyId, newSelectionListId]);
               })
               .then(([newFamilyId, newSelectionListId]) => {
-                console.log(newFamilyId, newSelectionListId);
                 return Promise.all([
                   getSelectionList(newFamilyId, newSelectionListId),
                   newFamilyId,
@@ -81,8 +80,7 @@ const MealPlanRecipePage = ({ route }) => {
                 ]);
               })
               .then(([selectList, newFamilyId, newSelectionListId]) => {
-                console.log(newFamilyId, newSelectionListId);
-                setSelectionList(finalSelectionList[0]);
+                setSelectionList(selectList);
                 getMealPlans(newFamilyId, newSelectionListId);
                 return Promise.all([newFamilyId, newSelectionListId]);
               })

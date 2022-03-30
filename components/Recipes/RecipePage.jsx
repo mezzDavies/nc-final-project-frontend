@@ -14,8 +14,12 @@ import getUserDataAndClaims from "../../utils/getUserDataAndClaims";
 import { getSelectionLists } from "../../api/firestoreFunctions.selectionLists";
 import styles from "./components/RecipePageStyles";
 import CustomButton from "../Reusables/CustomButton";
+import { auth } from "../../firebase";
 
 const RecipePage = ({ route, navigation }) => {
+  const [userStatus, setUserStatus] = useState(false);
+  const [parentStatus, setParentStatus] = useState(false);
+
   const [imageUrl, setImageUrl] = useState("");
   const [ingredients, setIngredients] = useState([]);
   const [recipeTitle, setRecipeTitle] = useState("");
@@ -24,28 +28,42 @@ const RecipePage = ({ route, navigation }) => {
   const [servings, setServings] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [familyId, setFamilyId] = useState([]);
-  const [userId, setUserId] = useState([]);
   const [selectionListId, setSelectionListId] = useState([]);
   const recipeId = route.params.id;
 
   useEffect(() => {
-    getUserDataAndClaims()
-      .then(({ claims, userData, newUserId }) => {
-        setUserId(newUserId);
-        return newUserId;
-      })
-      .then((userId) => {
-        return getFamilies(userId)
-          .then((familyId) => {
-            setFamilyId(familyId[0]);
-            return familyId;
-          })
-          .then((res) => {
-            getSelectionLists(res).then((selectionId) => {
-              setSelectionListId(selectionId[0]);
-            });
-          });
-      });
+    setIsLoading(true);
+    auth.onAuthStateChanged(function (user) {
+      if (user) {
+        setUserStatus(true)
+        getUserDataAndClaims()
+        .then(({ claims, userData, newUserId }) => {
+          if(!claims.parent) {
+            setParentStatus(false)
+          } else {
+            setParentStatus(true)
+          }
+          const currentIds = {
+            user: newUserId,
+            family: userData.groupIds[0]
+          }
+          setFamilyId(currentIds.family)
+          return currentIds
+        })
+        .then((currentIds) => {
+          return getSelectionLists(currentIds.family)
+        })
+        .then((selectionId) => {
+          setSelectionListId(selectionId[0]);
+        })
+        .catch((err) => {
+          return err
+        });
+      } else {
+        setUserStatus(false);
+        setIsLoading(false);
+      }
+    });
   }, []);
 
   useEffect(() => {
@@ -109,11 +127,7 @@ const RecipePage = ({ route, navigation }) => {
           </View>
         </View>
         <View style={styles.buttons}>
-          <Button
-            title="Add to Selection List"
-            onPress={addToSelectionPress}
-            color="#DD1F13"
-          />
+          {userStatus && parentStatus ? <Button title="Add to Selection List" onPress={addToSelectionPress} color="#DD1F13"/> : null }
         </View>
       </View>
     </ScrollView>

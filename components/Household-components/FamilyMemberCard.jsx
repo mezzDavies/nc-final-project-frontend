@@ -32,9 +32,9 @@ const FamilyMemberCard = ({ familyMember, loadingMessage, setLoadingMessage, set
     }, [])
 
     return (
-        <View style={{marginBottom: 10}}>
+        <View style={{marginBottom: 10, alignContent: "center"}}>
             <ImageBackground
-                style={{width: 400, height: 200, alignContent: "center", marginLeft: 25, marginRight: 25 }}
+                style={{width: 350, height: 125, alignContent: "center", marginLeft: 15, marginRight: 15 }}
                 imageStyle={{ borderRadius: 20 }}
                 source={{ uri: 'https://cdn.pixabay.com/photo/2017/06/06/22/37/italian-cuisine-2378729_960_720.jpg'}}
             >
