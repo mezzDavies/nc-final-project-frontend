@@ -34,12 +34,7 @@ const Header = ({ navigation }) => {
   }
   return (
     <SafeAreaView style={styles.body}>
-      <Text
-        style={styles.baseText}
-        onPress={() => navigation.navigate("Homepage")}
-      >
-        Planet Scran It{" "}
-      </Text>
+      <Text style={styles.baseText}>Planet Scran It </Text>
       <Text style={styles.tagLine}>A whole new world of food!</Text>
     </SafeAreaView>
   );
