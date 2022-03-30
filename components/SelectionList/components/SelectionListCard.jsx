@@ -5,6 +5,7 @@ import AddToShortList from "./AddToShortlist";
 import DeleteRecipeFromList from "./DeleteRecipeFromList";
 import { doc, getDoc } from "firebase/firestore";
 import { fireDB } from "../../../firebase";
+import styles from "./SelectionStyles";
 
 const SelectionListCard = ({
   idArray,
@@ -16,7 +17,7 @@ const SelectionListCard = ({
   setSelectionList,
   userId,
   mealPlanId,
-  shortListId
+  shortListId,
 }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [recipe, setRecipe] = useState([]);
@@ -49,15 +50,15 @@ const SelectionListCard = ({
   const { id, image, readyInMinutes, servings, title } = recipe;
 
   return (
-    <View>
+    <View style={styles.recipe}>
       <TouchableHighlight
         onPress={() => {
           navigation.navigate("RecipePage", { id });
         }}
       >
-        <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
+        <Image source={{ uri: image }} style={styles.image} />
       </TouchableHighlight>
-      <Text>{`${title}`}</Text>
+      <Text style={(styles.recipeInfo, styles.recipeTitle)}>{`${title}`}</Text>
       <AddToShortList
         idArray={idArray}
         setIdArray={setIdArray}

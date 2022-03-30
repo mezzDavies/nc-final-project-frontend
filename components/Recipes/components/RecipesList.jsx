@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Text, View } from "react-native";
 import { getRecipes } from "../../../api/firestoreFunctions.recipes";
 import RecipeCard from "./RecipeCard";
+import styles from "./Styles";
 
 const RecipesList = (searchTerm) => {
   const [recipesList, setRecipesList] = useState([]);
@@ -20,7 +21,7 @@ const RecipesList = (searchTerm) => {
   if (isLoading) return <Text>Loading...</Text>;
 
   return (
-    <View>
+    <View style={styles.recipes}>
       {recipesList.map((recipe, index) => {
         return <RecipeCard recipe={recipe} key={`${recipe.id} - ${index}`} />;
       })}

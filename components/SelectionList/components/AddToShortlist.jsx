@@ -7,6 +7,7 @@ import {
   getShortListFromCollection,
 } from "../../../api/firestoreFunctions.shortLists";
 import { getMealPlans } from "../../../api/firestoreFunctions.mealPlans";
+import styles from "./SelectionStyles";
 
 const AddToShortList = ({
   recipeId,
@@ -16,13 +17,13 @@ const AddToShortList = ({
   setIdArray,
   userId,
   mealPlanId,
-  shortListId
+  shortListId,
 }) => {
-
-  console.log(shortListId)
+  console.log(shortListId);
 
   return (
     <Button
+      style={styles.voteBtn}
       title="Vote"
       disabled={idArray.includes(recipeId) ? true : false}
       onPress={() => {
