@@ -42,6 +42,13 @@ const styles = StyleSheet.create({
     textAlign: "center",
     margin: 10,
   },
+  loadingText: {
+    marginTop: 200,
+    textAlign: "center",
+    color: "#DD1F13",
+    fontSize: 35,
+    fontFamily: "Bangers_400Regular",
+  },
   spacing: { marginBottom: 10 },
 });
 

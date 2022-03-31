@@ -37,6 +37,13 @@ const styles = StyleSheet.create({
     fontWeight: 700,
     color: "#DD1F13",
   },
+  loadingText: {
+    marginTop: 200,
+    textAlign: "center",
+    color: "#DD1F13",
+    fontSize: 35,
+    fontFamily: "Bangers_400Regular",
+  },
   innerlist: {
     alignContent: "center",
     padding: 15,
