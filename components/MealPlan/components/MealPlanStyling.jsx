@@ -26,7 +26,8 @@ const styles = StyleSheet.create({
   },
   recipeTitle: {
     fontWeight: "bold",
-    marginBottom: 5,
+    marginBottom: 10,
+    textAlign: "center",
   },
   recipe: {
     flexDirection: "column",
@@ -43,16 +44,43 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   tagLine: {
-    color: "black",
-    fontWeight: "800",
-    fontSize: 15,
-    marginBottom: 15,
+    flex: 1,
+    fontSize: 20,
+    marginBottom: 10,
+    fontWeight: 700,
     color: "#DD1F13",
-    marginTop: 10,
     textAlign: "center",
   },
-  icons: { marginRight: 3 },
-  peopleIcon: { marginLeft: 3, marginRight: 3 },
+  innerlist: {
+    alignContent: "center",
+    padding: 15,
+    borderStyle: "solid",
+    borderColor: "#DD1F13",
+    borderWidth: 1,
+    borderRadius: 4,
+    marginTop: 15,
+    marginLeft: 20,
+    marginRight: 20,
+    marginBottom: 15,
+  },
+  list: {
+    marginTop: 16,
+    backgroundColor: "white",
+    marginRight: 10,
+    marginLeft: 10,
+    padding: 15,
+    borderRadius: 10,
+    marginBottom: 16,
+    alignItems: "center",
+  },
+  weekdayTitle: {
+    fontSize: 17,
+    color: "#DD1F13",
+    fontWeight: "600",
+  },
+  button: {
+    marginTop: 10,
+  },
 });
 
 export default styles;

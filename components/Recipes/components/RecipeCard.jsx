@@ -1,4 +1,5 @@
 import { Text, Image, View, TouchableHighlight } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 import styles from "./Styles";
 
 const RecipeCard = ({ recipe, navigation }) => {
@@ -16,7 +17,20 @@ const RecipeCard = ({ recipe, navigation }) => {
       </TouchableHighlight>
       <Text style={(styles.recipeInfo, styles.recipeTitle)}>{`${title}`}</Text>
       <Text style={styles.recipeInfo}>
-        Ready in {readyInMinutes} minutes | Serves {servings}
+        <Ionicons
+          name="timer-outline"
+          size={17}
+          color="#DD1F13"
+          style={styles.icons}
+        />
+        Ready in {readyInMinutes} minutes |{" "}
+        <Ionicons
+          name="people-outline"
+          size={17}
+          color="#DD1F13"
+          style={styles.peopleIcon}
+        />
+        Serves {servings}
       </Text>
       <Text style={styles.dividingLine} />
     </View>

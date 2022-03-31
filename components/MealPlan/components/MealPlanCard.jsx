@@ -8,6 +8,8 @@ import {
 } from "react-native";
 import SelectDropdown from "../../SelectDropdown/src/SelectDropdown";
 import { useState } from "react";
+import { Picker } from "@react-native-picker/picker";
+import styles from "./MealPlanStyling";
 
 const MealPlanCard = ({
   recipe,
@@ -20,22 +22,9 @@ const MealPlanCard = ({
   const { id, image, instructions, readyInMinutes, servings, summary, title } =
     recipe;
 
-  let position = index;
+  const [selectedDay, setSelectedDay] = useState();
 
-  const styles = StyleSheet.create({
-    dropdown1BtnTxtStyle: { color: "#444", textAlign: "left" },
-    dropdown1DropdownStyle: { backgroundColor: "#EFEFEF" },
-    dropdown1RowStyle: {
-      backgroundColor: "#EFEFEF",
-      borderBottomColor: "#C5C5C5",
-    },
-    dropdown1RowTxtStyle: { color: "#444", textAlign: "left" },
-    dropdownsRow: {
-      flexDirection: "row",
-      width: "100%",
-      paddingHorizontal: "5%",
-    },
-  });
+  let position = index;
 
   const weekDays = [
     "Monday",
@@ -54,37 +43,37 @@ const MealPlanCard = ({
     return arr;
   }
 
-  console.log(mealPlan);
-  // console.log(id);
-  // console.log(setMealPlan);
-
   return (
-    <View>
-      <Text>{weekDays[index]}</Text>
+    <View style={styles.recipe}>
+      <Text style={styles.weekdayTitle}>{weekDays[index]}</Text>
       <TouchableHighlight
         onPress={() => {
           navigation.navigate("MealPlanRecipePage", { id });
         }}
       >
-        <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
+        <Image source={{ uri: image }} style={styles.image} />
       </TouchableHighlight>
-      <Text>{`${title}`}</Text>
-      <View style={styles.dropdownsRow}>
-        <SelectDropdown
-          buttonStyle={styles.dropdown1BtnStyle}
-          buttonTextStyle={styles.dropdown1BtnTxtStyle}
-          dropdownIconPosition={"right"}
-          dropdownStyle={styles.dropdown1DropdownStyle}
-          rowStyle={styles.dropdown1RowStyle}
-          rowTextStyle={styles.dropdown1RowTxtStyle}
-          data={weekDays}
-          onSelect={(selectedItem, index) => {
+      <Text style={(styles.recipeInfo, styles.recipeTitle)}>{`${title}`}</Text>
+      <View>
+        <Picker
+          selectedValue={selectedDay}
+          onValueChange={(itemValue, itemIndex) => {
+            setSelectedDay(itemValue);
             const recipeIndex = mealPlan.findIndex((recipe) => recipe == id);
-            setMealPlan(arrayMove(mealPlan, recipeIndex, index));
+            setMealPlan(arrayMove(mealPlan, recipeIndex, itemIndex));
             setSettingDays((currentSettingDays) => !currentSettingDays);
           }}
-        />
+        >
+          <Picker.Item label="Monday" value="Monday" />
+          <Picker.Item label="Tuesday" value="Tuesday" />
+          <Picker.Item label="Wednesday" value="Wednesday" />
+          <Picker.Item label="Thursday" value="Thursday" />
+          <Picker.Item label="Friday" value="Friday" />
+          <Picker.Item label="Saturday" value="Saturday" />
+          <Picker.Item label="Sunday" value="Sunday" />
+        </Picker>
       </View>
+      <Text style={styles.dividingLine} />
     </View>
   );
 };

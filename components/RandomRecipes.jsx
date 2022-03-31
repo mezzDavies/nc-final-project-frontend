@@ -7,6 +7,7 @@ import {
   TouchableHighlight,
 } from "react-native";
 import { getRecipes } from "../api/firestoreFunctions.recipes";
+import { Ionicons } from "@expo/vector-icons";
 
 export default function RandomRecipes({ navigation }) {
   const [recipes, setRecipes] = useState([]);
@@ -26,6 +27,18 @@ export default function RandomRecipes({ navigation }) {
   }, []);
 
   const styles = StyleSheet.create({
+    background: {
+      backgroundColor: "white",
+      marginTop: 16,
+      marginRight: 10,
+      marginLeft: 10,
+      padding: 15,
+      borderRadius: 10,
+      marginBottom: 6,
+      alignItems: "center",
+      borderColor: "#DD1F13",
+      borderWidth: 3,
+    },
     image: {
       width: 300,
       height: 200,
@@ -35,44 +48,50 @@ export default function RandomRecipes({ navigation }) {
       borderRadius: 10,
     },
     title: {
-      fontSize: 20,
+      fontSize: 15,
       margin: 5,
       marginLeft: 25,
-      marginTop: 10,
+      marginTop: 15,
+      marginBottom: 15,
       color: "#DD1F13",
+      textAlign: "center",
       fontSize: 30,
       fontFamily: "Bangers_400Regular",
     },
     minutes: {
       textAlign: "center",
       marginBottom: 10,
+      color: "#DD1F13",
     },
     minutes: {
       marginTop: 5,
       textAlign: "center",
       marginBottom: 10,
+      color: "#DD1F13",
     },
     foodTitle: {
       textAlign: "center",
-      color: "black",
-      fontSize: 25,
+      color: "#DD1F13",
+      fontSize: 22,
       fontFamily: "Bangers_400Regular",
-      marginTop: 10,
+      marginTop: 15,
     },
     loadingText: {
       marginTop: 200,
       textAlign: "center",
-      color: "black",
+      color: "#DD1F13",
       fontSize: 35,
       fontFamily: "Bangers_400Regular",
     },
     tagLine: {
-      color: "black",
+      color: "#DD1F13",
       fontWeight: "800",
       fontSize: 17,
       marginLeft: 25,
       marginBottom: 10,
     },
+    icons: { marginRight: 3 },
+    peopleIcon: { marginLeft: 3, marginRight: 3 },
   });
 
   if (isLoading) return <Text style={styles.loadingText}>Loading...</Text>;
@@ -99,10 +118,23 @@ export default function RandomRecipes({ navigation }) {
                 <Text key={"title-" + id} style={styles.foodTitle}>
                   {title}
                 </Text>
-                <Text
-                  key={"minutes-" + id}
-                  style={styles.minutes}
-                >{`Ready in ${readyInMinutes} minutes | Serves ${servings}`}</Text>
+                <Text key={"minutes-" + id} style={styles.minutes}>
+                  {" "}
+                  <Ionicons
+                    name="timer"
+                    size={17}
+                    color="#DD1F13"
+                    style={styles.icons}
+                  />
+                  Ready in {readyInMinutes} minutes |{" "}
+                  <Ionicons
+                    name="people"
+                    size={17}
+                    color="#DD1F13"
+                    style={styles.peopleIcon}
+                  />
+                  Serves ${servings}
+                </Text>
               </View>
             );
           })

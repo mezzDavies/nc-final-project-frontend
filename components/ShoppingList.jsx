@@ -83,16 +83,18 @@ const ShoppingListScreen = () => {
   return (
     <ScrollView>
       <View style={styles.list}>
-        <View style={styles.container}>
-          <Text style={styles.title}>This Week's Shopping List:</Text>
-          {shoppingList.map((listItem, index) => {
-            return (
-              <ShoppingListCard
-                listItem={listItem}
-                key={`${listItem.id} + ${index}`}
-              />
-            );
-          })}
+        <View style={styles.innerlist}>
+          <View style={styles.container}>
+            <Text style={styles.title}>This Week's Shopping List:</Text>
+            {shoppingList.map((listItem, index) => {
+              return (
+                <ShoppingListCard
+                  listItem={listItem}
+                  key={`${listItem.id} + ${index}`}
+                />
+              );
+            })}
+          </View>
         </View>
       </View>
     </ScrollView>

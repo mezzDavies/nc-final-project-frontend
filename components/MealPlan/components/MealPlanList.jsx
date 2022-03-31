@@ -20,6 +20,7 @@ import { getShortListsCgBy } from "../../../api/fireStoreFunctions.collectionGro
 
 //IMPORTS - components & utils
 import getUserDataAndClaims from "../../../utils/getUserDataAndClaims";
+import styles from "./MealPlanStyling";
 
 //----------COMPONENT-----------
 const MealPlanList = ({ navigation }) => {
@@ -142,7 +143,6 @@ const MealPlanList = ({ navigation }) => {
   useEffect(() => {
     getUserDataAndClaims()
       .then(({ claims, useData }) => {
-        console.log(claims.parent);
         if (claims.parent) setIsChild(false);
         else setIsChild(true);
       })
@@ -165,40 +165,45 @@ const MealPlanList = ({ navigation }) => {
   if (isLoading) return <Text>Is Loading...</Text>;
 
   return (
-    <View>
-      <Text>
-        Meal Plan contents:
-        {recipeCards.map((recipe, index) => {
-          return (
-            <MealPlanCard
-              setSettingDays={setSettingDays}
-              mealPlan={mealPlan}
-              setMealPlan={setMealPlan}
-              index={index}
-              recipe={recipe}
-              key={`${recipe.id} - ${index}`}
-              navigation={navigation}
+    <View style={styles.list}>
+      <View style={styles.innerlist}>
+        <Text style={styles.tagLine}>Your Meal Plan:</Text>
+        <View style={styles.recipes}>
+          {recipeCards.map((recipe, index) => {
+            return (
+              <MealPlanCard
+                setSettingDays={setSettingDays}
+                mealPlan={mealPlan}
+                setMealPlan={setMealPlan}
+                index={index}
+                recipe={recipe}
+                key={`${recipe.id} - ${index}`}
+                navigation={navigation}
+              />
+            );
+          })}
+          <View style={styles.button}>
+            <Button
+              title={
+                isChild
+                  ? "Only adult user can confirm Meal Plans"
+                  : mealPlanConfirmation
+                  ? "Meal Plan Already Confirmed"
+                  : "Confirm Your Meal Plan"
+              }
+              color={mealPlanConfirmation ? `#DD1F13` : `#53a369`}
+              onPress={() => {
+                toggleMealPlanStatus(familyId, selectionListId, mealPlanId); // changes isConfirmed to false
+                setMealPlanConfirmation((currentMealPlanConfirmation) => {
+                  return !currentMealPlanConfirmation;
+                });
+                orderMealPlan(familyId, selectionListId, mealPlanId, mealPlan); //
+              }}
+              disabled={isChild}
             />
-          );
-        })}
-      </Text>
-      <Button
-        title={
-          isChild
-            ? "Only adult user can confirm Meal Plans"
-            : mealPlanConfirmation
-            ? "Meal Plan Confirmed"
-            : "Confirm Your Meal Plan"
-        }
-        onPress={() => {
-          toggleMealPlanStatus(familyId, selectionListId, mealPlanId); // changes isConfirmed to false
-          setMealPlanConfirmation((currentMealPlanConfirmation) => {
-            return !currentMealPlanConfirmation;
-          });
-          orderMealPlan(familyId, selectionListId, mealPlanId, mealPlan); //
-        }}
-        disabled={isChild}
-      />
+          </View>
+        </View>
+      </View>
     </View>
   );
 };

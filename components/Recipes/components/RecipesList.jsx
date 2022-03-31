@@ -9,13 +9,17 @@ const RecipesList = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    let mounted = true;
     setIsLoading(true);
     getRecipes()
       .then(({ recipeCards: recipes }) => {
-        setRecipesList(recipes);
-        setIsLoading(false);
+        if (mounted) {
+          setRecipesList(recipes);
+          setIsLoading(false);
+        }
       })
       .catch((err) => console.log(err));
+    return () => (mounted = false);
   }, []);
 
   if (isLoading) return <Text>Loading...</Text>;
@@ -23,8 +27,7 @@ const RecipesList = ({ navigation }) => {
   return (
     <View style={styles.recipes}>
       <Text style={styles.tagLine}>
-        Click on a meal you like to see the ingredients and method for
-        cooking...
+        Click on a meal you like to find out more about each recipe...
       </Text>
       {recipesList.map((recipe, index) => {
         return (
