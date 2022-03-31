@@ -15,6 +15,7 @@ import { getShortListFromCollection } from "../../api/firestoreFunctions.shortLi
 import { auth } from "../../firebase";
 import { Ionicons } from "@expo/vector-icons";
 import styles from "./components/SelectionStyles";
+import UserNotLoggedIn from "../UserNotLoggedIn";
 
 //----------COMPONENT----------
 const SelectionListScreen = ({ navigation }) => {
@@ -39,6 +40,7 @@ const SelectionListScreen = ({ navigation }) => {
           .then(({ claims, userData, newUserId }) => {
             if (!userData.groupIds?.length > 0) {
               setFamilyStatus(false);
+              setIsLoading(false);
               return Promise.reject({
                 status: 400,
                 message: "Not a member of a group",
