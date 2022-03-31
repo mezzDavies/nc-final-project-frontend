@@ -18,7 +18,6 @@ const MealPlanScreen = ({ navigation }) => {
         getUserDataAndClaims()
           .then(({ claims, userData, newUserId }) => {
             if (!userData.groupIds?.length > 0) {
-              console.log("hello!");
               setFamilyStatus(false);
               return Promise.reject({
                 status: 400,
