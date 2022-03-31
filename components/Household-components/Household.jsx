@@ -1,6 +1,14 @@
 //IMPORTS - react
 import React, { useState, useEffect } from "react";
-import { View, Text, Button, ScrollView, Modal, Pressable, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  Button,
+  ScrollView,
+  Modal,
+  Pressable,
+  StyleSheet,
+} from "react-native";
 
 //IMPORTS - firebase
 import { auth, fireFunctions } from "../../firebase";
@@ -21,7 +29,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 22
+    marginTop: 22,
   },
   modalView: {
     margin: 20,
@@ -32,33 +40,33 @@ const styles = StyleSheet.create({
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
-      height: 2
+      height: 2,
     },
     shadowOpacity: 0.25,
     shadowRadius: 4,
-    elevation: 5
+    elevation: 5,
   },
   button: {
-    borderRadius: 15,
-    padding: 5,
+    padding: 10,
+    borderRadius: 7,
     elevation: 2,
-    marginTop: 5
+    marginTop: 15,
   },
   buttonOpen: {
-    backgroundColor: "#384e9c",
+    backgroundColor: "white",
   },
   buttonClose: {
-    backgroundColor: "#384e9c",
+    backgroundColor: "#DD1F13",
   },
   textStyle: {
-    color: "white",
     fontWeight: "bold",
-    textAlign: "center"
+    textAlign: "center",
+    color: "white",
   },
   modalText: {
     marginBottom: 15,
-    textAlign: "center"
-  }
+    textAlign: "center",
+  },
 });
 
 //----------COMPONENT----------
@@ -71,12 +79,11 @@ const HouseHoldScreen = ({ navigation }) => {
   const [familyMembers, setFamilyMembers] = useState([]);
   const [familyName, setFamilyName] = useState("");
   const [familyStatus, setFamilyStatus] = useState(false);
-  const [firstName, setFirstName] = useState('');
-  const [ isLoading, setIsLoading] = useState(true);
-  const [loadingMessage, setLoadingMessage] = useState('');
+  const [firstName, setFirstName] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
+  const [loadingMessage, setLoadingMessage] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
   const [leavingModalVisible, setLeavingModalVisible] = useState(false);
-
 
   const switchToUserParentAccount = () => {
     setLoadingMessage(`We're just loading the parent account again...`);
@@ -103,20 +110,19 @@ const HouseHoldScreen = ({ navigation }) => {
     auth.onAuthStateChanged(function (user) {
       if (user) {
         setUserStatus(true);
-        getUserDataAndClaims()
-          .then(({ claims, userData, newUserId }) => {
-            setUserId(newUserId)
-            setFirstName(userData.name);
-            setParentStatus(claims.parent)
-            if(userData.groupIds?.length > 0) {
-              setFamilyId(userData.groupIds[0]);
-              setFamilyStatus(true);
-            } else {
-              setFamilyId('');
-              setFamilyStatus(false);
-            }
-            setIsLoading(false);
-          })
+        getUserDataAndClaims().then(({ claims, userData, newUserId }) => {
+          setUserId(newUserId);
+          setFirstName(userData.name);
+          setParentStatus(claims.parent);
+          if (userData.groupIds?.length > 0) {
+            setFamilyId(userData.groupIds[0]);
+            setFamilyStatus(true);
+          } else {
+            setFamilyId("");
+            setFamilyStatus(false);
+          }
+          setIsLoading(false);
+        });
       } else {
         setUserStatus(false);
         setFamilyId("");
@@ -124,22 +130,20 @@ const HouseHoldScreen = ({ navigation }) => {
         setFamilyMembers([]);
         setIsLoading(false);
       }
-    })
+    });
   }, [userId, familyStatus, familyMembers]);
-
 
   useEffect(() => {
     if (familyId) {
-      getFamily(familyId)
-        .then(({ family }) => {
-          setFamilyName(family.groupName);
-          setFamilyMembers(family.familyMembers);
+      getFamily(familyId).then(({ family }) => {
+        setFamilyName(family.groupName);
+        setFamilyMembers(family.familyMembers);
       });
-    } 
+    }
   }, [familyId, familyStatus]);
 
   //------Rendering------
-  if(isLoading) return <Text>Loading...</Text>
+  if (isLoading) return <Text>Loading...</Text>;
 
   if (!userStatus) {
     return <UserNotLoggedIn setUserStatus={setUserStatus} />;
@@ -159,8 +163,17 @@ const HouseHoldScreen = ({ navigation }) => {
       <ScrollView>
         <View style={styles.centeredView}>
           <Text>{loadingMessage}</Text>
-          <View style={{borderWidth: 2, borderColor: "#031a40", borderRadius: 5, alignContent: "center", marginLeft: 5, marginRight: 5}}>
-            <Text style={{textAlign: "center"}}>
+          <View
+            style={{
+              borderWidth: 1,
+              borderColor: "#DD1F13",
+              borderRadius: 5,
+              alignContent: "center",
+              marginLeft: 5,
+              marginRight: 5,
+            }}
+          >
+            <Text style={{ textAlign: "center", padding: 15 }}>
               Hello {firstName}, and welcome to the {familyName} group!
             </Text>
             {!parentStatus ? (
@@ -171,16 +184,35 @@ const HouseHoldScreen = ({ navigation }) => {
               />
             ) : (
               <View>
-                <Text style={{textAlign: "center"}}>
+                <Text style={{ textAlign: "center", padding: 10 }}>
                   Want to invite others to join the group? Your invite code is:
                 </Text>
-                <Text selectable={true} style={{textAlign: "center", fontWeight: "bold"}}>
+                <Text
+                  selectable={true}
+                  style={{
+                    textAlign: "center",
+                    fontWeight: "bold",
+                    padding: 10,
+                    color: "#DD1F13",
+                    marginBottom: 10,
+                  }}
+                >
                   {familyId}
                 </Text>
               </View>
             )}
           </View>
-          <Text style={{fontWeight: "bold", fontSize: 25, textDecorationLine: "underline"}}>Group Members:</Text>
+          <Text
+            style={{
+              fontWeight: "bold",
+              fontSize: 25,
+              textDecorationLine: "underline",
+              color: "#DD1F13",
+              padding: 15,
+            }}
+          >
+            Group Members:
+          </Text>
           {familyMembers.map((familyMember, index) => {
             return (
               <FamilyMemberCard
@@ -193,46 +225,74 @@ const HouseHoldScreen = ({ navigation }) => {
               />
             );
           })}
-          {parentStatus ? 
-            <View style={{marginBottom: 5}}>
-              <Button title="Add a Child to This Group" onPress={() => setModalVisible(true)} />
-            </View> : 
-            null}
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={modalVisible}
-          onRequestClose={() => {
-            setModalVisible(false);
-          }}
-        >
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              <AddChildrenScreen setFamilyMembers={setFamilyMembers} setModalVisible={setModalVisible} familyId={familyId} />
-              <Pressable style={[styles.button, styles.buttonClose]} onPress={() => setModalVisible(false)}>
-                <Text style={styles.textStyle}>Close This Pop Up</Text>
-              </Pressable>
+          {parentStatus ? (
+            <View>
+              <Button
+                title="Add a Child to This Group"
+                color="#DD1F13"
+                onPress={() => setModalVisible(true)}
+              />
             </View>
-          </View>
-        </Modal>
-        {parentStatus ? <Button title="Leave This Group" onPress={() => setLeavingModalVisible(true)} /> : null }
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={leavingModalVisible}
-          onRequestClose={() => {
-            setLeavingModalVisible(false);
-          }}
-        >
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              <LeavingGroupModal userId={userId} familyId={familyId} setFamilyId={setFamilyId} setLeavingModalVisible={setLeavingModalVisible} setFamilyStatus={setFamilyStatus} />
-              <Pressable style={[styles.button, styles.buttonClose]} onPress={() => setLeavingModalVisible(false)}>
-                <Text style={styles.textStyle}>Close This Pop Up</Text>
-              </Pressable>
+          ) : null}
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={() => {
+              setModalVisible(false);
+            }}
+          >
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+                <AddChildrenScreen
+                  setFamilyMembers={setFamilyMembers}
+                  setModalVisible={setModalVisible}
+                  familyId={familyId}
+                />
+                <Pressable
+                  style={[styles.button, styles.buttonClose]}
+                  onPress={() => setModalVisible(false)}
+                >
+                  <Text style={styles.textStyle}>Close This Pop Up</Text>
+                </Pressable>
+              </View>
             </View>
-          </View>
-        </Modal>
+          </Modal>
+          {parentStatus ? (
+            <View style={{ margin: 10 }}>
+              <Button
+                title="Leave This Group"
+                color="#DD1F13"
+                onPress={() => setLeavingModalVisible(true)}
+              />
+            </View>
+          ) : null}
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={leavingModalVisible}
+            onRequestClose={() => {
+              setLeavingModalVisible(false);
+            }}
+          >
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+                <LeavingGroupModal
+                  userId={userId}
+                  familyId={familyId}
+                  setFamilyId={setFamilyId}
+                  setLeavingModalVisible={setLeavingModalVisible}
+                  setFamilyStatus={setFamilyStatus}
+                />
+                <Pressable
+                  style={[styles.button, styles.buttonClose]}
+                  onPress={() => setLeavingModalVisible(false)}
+                >
+                  <Text style={styles.textStyle}>Close This Pop Up</Text>
+                </Pressable>
+              </View>
+            </View>
+          </Modal>
         </View>
       </ScrollView>
     );
