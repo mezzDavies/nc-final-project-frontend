@@ -12,26 +12,25 @@ const SignInPage = ({ setUserStatus }) => {
     reset,
     formState: { errors },
   } = useForm();
-  const [loadingMessage, setLoadingMessage] = useState('');
+  const [loadingMessage, setLoadingMessage] = useState("");
 
   const onSubmit = (data) => {
     const email = data.email;
     const password = data.password;
 
-    setLoadingMessage(`We're just logging you in...`)
-    signInWithEmailAndPassword(auth, email, password)
-      .then((cred) => {
-        reset();
-        setUserStatus(true)
-      });
+    setLoadingMessage(`We're just logging you in...`);
+    signInWithEmailAndPassword(auth, email, password).then((cred) => {
+      reset();
+      setUserStatus(true);
+    });
   };
 
   useEffect(() => {
-    auth.onAuthStateChanged(function(user) {
-      if(user) {
+    auth.onAuthStateChanged(function (user) {
+      if (user) {
         setUserStatus(true);
       }
-    })
+    });
   }, []);
 
   return (
@@ -46,13 +45,15 @@ const SignInPage = ({ setUserStatus }) => {
           },
         }}
         render={({ field: { onChange, value } }) => (
-          <FormTextField
-            error={errors.email}
-            errorText={errors.email?.message}
-            placeholder="Email"
-            onChangeText={(value) => onChange(value)}
-            value={value}
-          />
+          <View style={{ margin: 5 }}>
+            <FormTextField
+              error={errors.email}
+              errorText={errors.email?.message}
+              placeholder="Email"
+              onChangeText={(value) => onChange(value)}
+              value={value}
+            />
+          </View>
         )}
         name="email"
       />
@@ -66,19 +67,29 @@ const SignInPage = ({ setUserStatus }) => {
           },
         }}
         render={({ field: { onChange, value } }) => (
-          <FormTextField
-            error={errors.password}
-            errorText={errors.password?.message}
-            secureTextEntry={true}
-            placeholder="Password"
-            onChangeText={(value) => onChange(value)}
-            value={value}
-          />
+          <View style={{ margin: 5 }}>
+            <FormTextField
+              error={errors.password}
+              errorText={errors.password?.message}
+              secureTextEntry={true}
+              placeholder="Password"
+              onChangeText={(value) => onChange(value)}
+              value={value}
+            />
+          </View>
         )}
         name="password"
       />
-      <View style={{marginTop: 10, marginBottom: 5, marginLeft: 10, marginRight: 10}}>
-        <Button title="Submit" onPress={handleSubmit(onSubmit)} />
+      <View
+        style={{
+          margin: 20,
+        }}
+      >
+        <Button
+          title="Submit"
+          onPress={handleSubmit(onSubmit)}
+          color="#DD1F13"
+        />
       </View>
       <Text>{loadingMessage}</Text>
     </View>

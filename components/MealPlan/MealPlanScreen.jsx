@@ -40,10 +40,27 @@ const MealPlanScreen = ({ navigation }) => {
   if (!userStatus) return <UserNotLoggedIn setUserStatus={setUserStatus} />;
   if (!familyStatus)
     return (
-      <Text>
-        It looks like you're not part of a group yet, take a look at the
-        household page under your account.
-      </Text>
+      <View
+        style={{
+          borderColor: "#DD1F13",
+          borderWidth: 1,
+          padding: 10,
+          margin: 20,
+        }}
+      >
+        <Text
+          style={{
+            textAlign: "center",
+            fontSize: 16,
+            fontWeight: "700",
+            padding: 40,
+            color: "#DD1F13",
+          }}
+        >
+          It looks like you're not part of a group yet, take a look at the
+          household page under your account.
+        </Text>
+      </View>
     );
 
   return (
