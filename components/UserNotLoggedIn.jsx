@@ -25,12 +25,19 @@ const styles = StyleSheet.create({
 const UserNotLoggedIn = ({ setUserStatus }) => {
   return (
     <ScrollView>
-      <View>
+      <View
+        style={{
+          marginLeft: 35,
+          marginRight: 35,
+          marginTop: 30,
+          fontWeight: "700",
+          color: "#DD1F13",
+        }}
+      >
         <Text
           style={{
             marginLeft: 25,
             marginRight: 25,
-            marginTop: 25,
             fontWeight: "700",
             color: "#DD1F13",
           }}

@@ -67,6 +67,13 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     textAlign: "center",
   },
+  loadingText: {
+    marginTop: 200,
+    textAlign: "center",
+    color: "#DD1F13",
+    fontSize: 35,
+    fontFamily: "Bangers_400Regular",
+  },
 });
 
 //----------COMPONENT----------
@@ -143,7 +150,7 @@ const HouseHoldScreen = ({ navigation }) => {
   }, [familyId, familyStatus]);
 
   //------Rendering------
-  if (isLoading) return <Text>Loading...</Text>;
+  if (isLoading) return <Text style={styles.loadingText}>Loading...</Text>;
 
   if (!userStatus) {
     return <UserNotLoggedIn setUserStatus={setUserStatus} />;

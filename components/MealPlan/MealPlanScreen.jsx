@@ -4,6 +4,7 @@ import MealPlanList from "./components/MealPlanList";
 import UserNotLoggedIn from "../UserNotLoggedIn";
 import { auth } from "../../firebase";
 import getUserDataAndClaims from "../../utils/getUserDataAndClaims";
+import styles from "../Recipes/components/Styles";
 
 const MealPlanScreen = ({ navigation }) => {
   const [userStatus, setUserStatus] = useState(false);
@@ -19,12 +20,14 @@ const MealPlanScreen = ({ navigation }) => {
           .then(({ claims, userData, newUserId }) => {
             if (!userData.groupIds?.length > 0) {
               setFamilyStatus(false);
+              setIsLoading(false);
               return Promise.reject({
                 status: 400,
                 message: "Not a member of any group",
               });
             } else {
               setFamilyStatus(true);
+              setIsLoading(false);
             }
           })
           .catch((err) => {
@@ -33,9 +36,12 @@ const MealPlanScreen = ({ navigation }) => {
       } else {
         setUserStatus(false);
         setFamilyStatus(false);
+        setIsLoading(false);
       }
     });
   }, [userStatus, familyStatus]);
+
+  if (isLoading) return <Text style={styles.loadingText}>Loading...</Text>;
 
   if (!userStatus) return <UserNotLoggedIn setUserStatus={setUserStatus} />;
   if (!familyStatus)

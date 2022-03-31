@@ -22,7 +22,7 @@ const RecipesList = ({ navigation }) => {
     return () => (mounted = false);
   }, []);
 
-  if (isLoading) return <Text>Loading...</Text>;
+  if (isLoading) return <Text></Text>;
 
   return (
     <View style={styles.recipes}>
