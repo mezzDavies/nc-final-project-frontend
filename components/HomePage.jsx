@@ -4,23 +4,30 @@ import { auth } from "../firebase";
 import RandomRecipes from "./RandomRecipes";
 import RecipesList from "./Recipes/components/RecipesList";
 import getUserDataAndClaims from "../utils/getUserDataAndClaims";
+import styles from "./Recipes/components/Styles";
 
 const Homepage = ({ navigation }) => {
   const [userStatus, setUserStatus] = useState(false);
   const [firstName, setFirstName] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    setIsLoading(true);
     auth.onAuthStateChanged(function (user) {
       if (user) {
         setUserStatus(true);
         getUserDataAndClaims().then(({ claims, userData, newUserId }) => {
           setFirstName(userData.name);
         });
+        setIsLoading(false);
       } else {
         setUserStatus(false);
+        setIsLoading(false);
       }
     });
   }, []);
+
+  if (isLoading) return <Text style={styles.loadingText}>Loading...</Text>;
 
   if (userStatus) {
     return (
