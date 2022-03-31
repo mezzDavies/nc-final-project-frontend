@@ -70,7 +70,7 @@ const ShoppingListScreen = () => {
     });
   }, [userStatus]);
 
-  if (isLoading) return <Text>Loading...</Text>;
+  if (isLoading) return <Text style={styles.loadingText}>Loading...</Text>;
   if (!userStatus) return <UserNotLoggedIn setUserStatus={setUserStatus} />;
   if (!familyStatus)
     return (

@@ -44,7 +44,7 @@ const SelectionListCard = ({
       .catch((err) => console.log(err));
   }, []);
 
-  if (isLoading) return <Text>Loading...</Text>;
+  if (isLoading) return <Text style={styles.loadingText}>Loading...</Text>;
 
   const { id, image, readyInMinutes, servings, title } = recipe;
 
