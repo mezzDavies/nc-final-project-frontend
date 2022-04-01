@@ -19,7 +19,7 @@ Clone the project
 Go to the project directory
 
 ```bash
-  cd nc-final-project-fronted
+  cd nc-final-project-frontend
 ```
 
 Install dependencies
