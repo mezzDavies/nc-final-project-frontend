@@ -13,4 +13,12 @@ module.exports = {
   },
   plugins: ["react"],
   rules: {},
+  overrides: [
+    {
+      files: ["api/firestoreFunctions.users.js"],
+      rules: {
+        "no-underscore-dangle": "off",
+      },
+    },
+  ],
 };
